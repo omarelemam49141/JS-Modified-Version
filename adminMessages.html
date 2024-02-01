@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <!-- Basic -->
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <!-- Mobile Metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+      <!-- Site Metas -->
+      <meta name="keywords" content="" />
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="shortcut icon" href="images/favicon.png" type="">
+      <title>Messages</title>
+      <!-- loader -->
+      <link rel="stylesheet" href="loader/dist/loader.css">
+      <!-- bootstrap core css -->
+      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+      <!-- font awesome style -->
+      <link href="css/all.min.css" rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link href="css/style.css" rel="stylesheet" />
+      <!-- responsive style -->
+      <link href="css/responsive.css" rel="stylesheet" />
+   </head>
+   <body>
+      <!-- start-loader -->
+      <div id="loader">
+         <div class="pl">
+            <div class="pl__outer-ring"></div>
+            <div class="pl__inner-ring"></div>
+            <div class="pl__track-cover"></div>
+            <div class="pl__ball">
+               <div class="pl__ball-texture"></div>
+               <div class="pl__ball-outer-shadow"></div>
+               <div class="pl__ball-inner-shadow"></div>
+               <div class="pl__ball-side-shadows"></div>
+            </div>
+         </div>
+      </div>
+      <!-- end-loader -->
+      <div class="hero_area">
+         <!-- header section strats -->
+         <header class="header_section">
+            <div class="container">
+               <nav class="navbar navbar-expand-lg custom_nav-container ">
+                  <a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
+                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class=""> </span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                     <ul class="navbar-nav">
+                        <li class="nav-item active">
+                           <a class="nav-link" href="customer.html">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                           <button class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              <span class="nav-label" id="welcome-user"><span class="caret"></span>
+                           </button>
+                           <ul class="dropdown-menu" id="user-DropDown">
+                             <li><a class="dropdown-item" href="profile.html">Profile</a></li>
+                             <li><a class="dropdown-item" href="usersCRUD.html">Users</a></li>
+                             <li><a class="dropdown-item" href="#">Log out</a></li>
+                           </ul>
+                        </li>
+                        <!-- <li class="nav-item dropdown">
+                           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"><span class="nav-label" id="welcome-user"><span class="caret"></span></a>
+                           <ul class="dropdown-menu" id="user-DropDown">
+                              <li><a href="profile.html">Profile</a></li>
+                              <li><a href="usersCRUD.html">Users</a></li>
+                              <li><a href="#" id="logOut">Log out</a></li>
+                           </ul>
+                        </li> -->
+                        <li class="nav-item">
+                           <a class="nav-link" href="Crud-Admin.html">Products</a>
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="orderHistory.html">Orders</a>
+                        </li>     
+                     </ul>
+                  </div>
+               </nav>
+            </div>
+
+            <div class="container">
+                <h4 class="mt-4">Toatl Messages: <span class="h3 text-success" id="messageCount"></span></h4>
+                <table class="table table-striped table-hover mt-2">
+                    <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Date sent</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                       
+                      </tbody>
+                </table>
+            </div>
+            
+         </header>
+      </div>
+      <!-- end header section -->
+
+      <!-- Message details -->
+      
+      <!-- Modal -->
+<div class="modal fade" id="message-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      <!-- end Message details -->
+      
+
+      <div class="cpy_">
+         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
+         
+            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+         
+         </p>
+      </div>
+      <!-- jQery -->
+      <script src="js/jquery-3.4.1.min.js"></script>
+      <!-- popper js -->
+      <script src="js/popper.min.js"></script>
+      <!-- bootstrap js -->
+      <script src="js/bootstrap.min.js"></script>
+      <!-- fontawesome -->
+      <script src="js/all.min.js"></script>
+      <!-- custom js -->
+      <script src="js/custom.js" type="module"></script>
+      <!-- customer -->
+      <script src="js/customer.js" type="module"></script>
+      <!-- admin-messages -->
+      <script src="js/adminMessages.js" type="module"></script>
+      <!-- loader -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
+    <script src="loader/dist/loader.js"></script>
+   </body>
+</html>

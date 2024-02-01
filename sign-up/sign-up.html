@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SignUp Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="signUp.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+    <style>
+
+    </style>
+</head>
+</style>
+</head>
+
+<body>
+    <div class="main-w3layouts wrapper">
+        <a id="logo" href="../index.html" style="display: flex; flex-direction: column;">
+            <label for="imges"> home page</label>
+            <img src="../Login/logo.jfif" alt="" srcset="">
+        </a>
+        <div class="main-agileinfo">
+            <div class="agileits-top">
+                <form method="post" class="signupForm">
+                    <h1>SignUp Form</h1>
+
+                    <div class="input-group  Input" style="display: flex;">
+                        <span class="input-group-text" id="basic-addon1"><i class="fas fa-envelope"></i></span>
+                        <input type="email" class="form-control" placeholder="Email" aria-label="Email"
+                            aria-describedby="basic-addon1" name="email" required="">
+
+                    </div>
+                    <p id="emailMessage" class="form-text text-warning"></p>
+
+                    <div class="input-group Input" style="display: flex;">
+                        <span class="input-group-text spanInput" id="basic-addon2"><i class="fas fa-user"></i></span>
+                        <input type="text" class="form-control" placeholder="Username" aria-label="Username"
+                            aria-describedby="basic-addon2" name="username" required="">
+                    </div>
+                    <p id="userNameMessage" class="form-text text-warning"></p>
+
+                    <div class="input-group Input" style="display: flex;">
+                        <span class="input-group-text spanInput"><i class="fas fa-lock text-black"></i></span>
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="password"
+                            required="">
+                        <span class="input-group-text">
+                            <i class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+                        </span>
+                    </div>
+                    <p id="passwordMessage" class="form-text text-warning"></p>
+
+                    <div class="input-group mb-3" style="display: flex;">
+                        <span class="input-group-text spanInput"><i class="fas fa-lock text-black"></i></span>
+                        <input type="text" class="form-control" placeholder="Confirm Password" name="confirmPassword"
+                            id="confirmPassword" required="">
+
+                        </span>
+                    </div>
+                    <p id="confirmMessage" class="form-text text-warning"></p>
+
+                    
+                    <div class="input-group mb-3" style="display: flex;">
+                        <!-- <span class="input-group-text spanInput"><i class="fas fa-lock text-white"></i></span> -->
+                        <label class="m-2">
+                            <input type="radio" value="Male" name="gender" checked>Male
+                        </label>
+                        <label class="m-2">
+                            <input type="radio" value="Female" name="gender">Female
+                        </label>
+                    </div>                    
+
+                    <div class="wthree-text">
+                        <label class="anim">
+                            <input type="checkbox" class="checkbox" value="seller" id="sellerBtn">
+                            <span>I want to be a seller</span>
+                        </label>
+                    </div>
+                    <input type="submit" value="SIGNUP" id="submit">
+                </form>
+                <p>Do you have an Account? <a href="../Login/login.html"> Login Now!</a></p>
+            </div>
+        </div>
+        <ul class="colorlib-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="sign-up.js" type="module"></script>
+        <script src="../js/bootstrap.min.js"></script>
+
+    </div>
+</body>
+
+</html>

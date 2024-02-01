@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="images/favicon.png" type="">
+    <title>Product Details</title>
+    <!-- loader -->
+    <link rel="stylesheet" href="loader/dist/loader.css">
+    <!-- bootstrap core css -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <!-- font awesome style -->
+    <link href="css/all.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="css/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+    <!-- start-loader -->
+    <div id="loader">
+        <div class="pl">
+           <div class="pl__outer-ring"></div>
+           <div class="pl__inner-ring"></div>
+           <div class="pl__track-cover"></div>
+           <div class="pl__ball">
+              <div class="pl__ball-texture"></div>
+              <div class="pl__ball-outer-shadow"></div>
+              <div class="pl__ball-inner-shadow"></div>
+              <div class="pl__ball-side-shadows"></div>
+           </div>
+        </div>
+     </div>
+     <!-- end-loader -->
+    <div class="addedSuccess alert-success text-center py-2">
+        Product added successfully <i class="fa-solid fa-check"></i>
+    </div>
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg custom_nav-container ">
+                    <a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class=""> </span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                       <ul class="navbar-nav">
+                          <li class="nav-item active">
+                             <a class="nav-link" href="customer.html" id="homeLink">Home <span class="sr-only">(current)</span></a>
+                          </li>
+                          <li class="nav-item dropdown">
+                             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret" id="loggedInUser"></span></a>
+                             <ul class="dropdown-menu" id="user-DropDown">
+                                <li><a href="profile.html">Profile</a></li>
+                                <li class="nav-item">
+                                   <a class="nav-link" href="orderHistory.html">Orders</a>
+                                </li>
+                                <li><a href="#" id="logOut">Log out</a></li>
+                             </ul>
+                          </li>
+                          <li class="nav-item">
+                             <a class="nav-link" href="product.html">Products</a>
+                          </li>
+                          <li class="nav-item">
+                             <a class="nav-link" href="about.html">About</a>
+                          </li>
+                          <li class="nav-item" id="cartListItem">
+                             <a class="nav-link  cartLogo" href="#">
+                                <svg class="w-[28px] h-[28px] text-gray-800 dark:text-white  " aria-hidden="true"
+                                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                      stroke-width="2.2"
+                                      d="M6 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm0 0h8m-8 0-1-4m9 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-9-4h10l2-7H3m2 7L3 4m0 0-.792-3H1" />
+                                </svg>
+                                <span id="cntOrders">0</span>
+                                <span id="cart-word">cart</span>
+                             </a>
+                          </li>
+                       </ul>
+                    </div>
+                 </nav>
+            </div>
+        </header>
+        <!-- end header section -->
+    </div>
+    <!-- Add to cart  -->
+    <div class="cart-overlay"></div>
+
+    <div class="cart">
+        <div class="cart-header">
+            <a class="arrowBack"><i class="fa-solid fa-arrow-right"></i></a>
+            <h2>Your Cart</h2>
+        </div>
+        <div class="cart-body">
+
+        </div>
+        <div class="cart-footer">
+            <div>
+                <strong>Total</strong>
+                <span class="cart-total">0</span>
+            </div>
+            <button class="cart-clear">Clear Cart</button>
+            <button class="checkout"><a href="checkout.html">Checkout</a></button>
+        </div>
+    </div>
+    <!--  end Add to cart  -->
+    <!-- inner page section -->
+    <section>
+        <div class="container">
+            <div class="card" style="margin: 3%;">
+                <div class="row">
+                    <div class="col">
+                        <div class="row" style="align-items: center">
+                            <div id="imglist"
+                                class="col-lg-3 col-md-4 col-sm-5 col-5 d-flex flex-row flex-lg-column  align-items-start  imageList "
+                                style="margin: 2%;">
+                            </div>
+
+                            <div class="col-lg-8 col-md-9 " id="mainimg">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" style="margin:2% ; ">
+                        <h3 class="product-title"></h3>
+                        <p class="seller" style="color: #ff9f1a;"></p>
+                        <p class="catigory"></p>
+                        <div class="rating">
+                           <span id="sold-quantity" class="badge badge-success"></span>
+                        </div>
+                        <p class="product-description"></p>
+                        <h4 class="price">current price: <span></span></h4>   
+                        <div class="in-stock">
+                           <h6>Color :</h6>
+                           <select class="form-control color">
+
+                           </select>
+                           <br>
+                           <h6>Quantity : <span class="badge bg-warning" id="max-quantity"> </span></h6>
+                           <input type="number" class="quantity form-control text-center w-100" value="1" min="1" id="quantity">
+                           <br>
+                           <span class="btnIconAddToCart iconAddToCart"><i class="fa-solid fa-cart-shopping"></i> </span>
+                        </div>
+                        
+                        <div class="alert alert-danger text-center" style="display: none;" id="out-stock"><div class="badge badge-light fs-1" style="font-size:18px">Out of stock</div></div>
+                        
+
+                        
+                        <!-- <button type="button" class="form-control btn btn-warning fa fa-shopping-cart iconAddToCart">Add to card</button> -->
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- end arrival section -->
+    <!-- footer start -->
+ 
+    <footer>
+        <div class="container">
+           <div class="row">
+              <div class="col-md-4">
+                 <div class="full">
+                    <div class="logo_footer">
+                       <a href="#"><img width="210" src="images/logo.png" alt="#" /></a>
+                    </div>
+                    <div class="information_f">
+                       <p><strong>ADDRESS:</strong> 28 White tower, Street Name New York City, USA</p>
+                       <p><strong>TELEPHONE:</strong> +91 987 654 3210</p>
+                       <p><strong>EMAIL:</strong> yourmain@gmail.com</p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-md-8">
+                 <div class="row">
+                    <div class="col-md-5">
+                       <div class="row">
+                          <div class="col-md-12">
+                             <div class="widget_menu">
+                                <h3>Menu</h3>
+                                <ul>
+                                   <li><a href="index.html">Home</a></li>
+                                   <li><a href="about.html">About</a></li>
+                                   <li><a href="product.html">Products</a></li>
+                                   <li><a href="about.html">About</a></li>
+                                </ul>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="col-md-7">
+                       <div class="widget_menu">
+                          <h3>Reach us on social media</h3>
+  
+                          <div class="footer_social">
+                             <a href="">
+                                <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+                             </a>
+                             <a href="">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                             </a>
+                             <a href="">
+                                <i class="fa fa-linkedin" aria-hidden="true"></i>
+                             </a>
+                             <a href="">
+                                <i class="fa fa-instagram" aria-hidden="true"></i>
+                             </a>
+                             <a href="">
+                                <i class="fa fa-pinterest" aria-hidden="true"></i>
+                             </a>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </footer>
+     <!-- footer end -->  
+    <!-- jQery -->
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <!-- popper js -->
+    <script src="js/popper.min.js"></script>
+    <!-- bootstrap js -->
+    <script src="js/bootstrap.js"></script>
+    <!-- fontawesome -->
+    <script src="js/all.min.js"></script>
+    <!-- custom js -->
+    <script src="js/productDetail.js" type="module"></script>
+    <!-- addtocart -->
+    <script src="js/addtoCart.js" type="module"></script>
+    <!-- loader -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
+    <script src="loader/dist/loader.js"></script>
+</body>
+
+</html>
