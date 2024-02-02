@@ -12,209 +12,23 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <link rel="shortcut icon" href="images/favicon.png" type="">
-    <title>E-commerce HTML</title>
+    <title>E-commerce</title>
+    <!-- loader -->
+    <link rel="stylesheet" href="loader/dist/loader.css">
     <!-- bootstrap core css -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <!-- font awesome style -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="css/all.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet" />
+ 
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
+       <!--checkout style   -->
+       <link rel="stylesheet" href="css/checkout.css">
     <!-- loader -->
     <link rel="stylesheet" href="loader/dist/loader.css">
-    <style>
-        :root {
-            --color1: #ab4e68;
-            --color2: #b07156;
-            --color3: #533745;
-            --color4: #9d9171;
-            --color5: #c4a287;
-            --color6: #4a646c;
-            --color7: #333;
-            --color8: #fff;
-            --transition: all 0.3s ease-in-out;
-        }
 
-        body {
-            font-family: Arial;
-            font-size: 17px;
-            padding: 8px;
-            background-color: #f1f1f2;
-
-        }
-
-        * {
-            box-sizing: border-box;
-            padding: 0;
-            margin: 0;
-        }
-
-
-        .sideForm {
-            background-color: white;
-            margin-top: 15px;
-            padding: 31px 5px;
-        }
-
-        .header_section {
-            background-color: white;
-            /* position: sticky; */
-        }
-
-        .row {
-            margin-bottom: 50px;
-        }
-
-        /* .cart {
-            position: fixed;
-            inset-block: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-            max-width: 420px;
-            padding: 20px;
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            transform: translateX(100%);
-            transition: var(--transition);
-            background: var(--color8);
-        } */
-
-
-        .cart-header {
-            position: relative;
-            text-align: center;
-            padding-block: 10px;
-            border-bottom: 1px solid #ddd;
-            display: flex;
-            align-items: center;
-        }
-
-
-
-        .cart-header h2 {
-            margin: 0px auto;
-            width: 50%;
-            font-size: 2.2rem;
-        }
-
-        .ordersBody {
-            display: grid;
-            align-content: start;
-            gap: 20px;
-            padding-block: 20px;
-            overflow: auto;
-        }
-
-        .orderItem {
-            background-color: #f0f8ff52;
-            display: flex;
-            border-bottom: 1px solid #edd2d2;
-        }
-
-
-        .error {
-            color: red;
-        }
-        .invalid-input {
-            border: 1px solid red;
-        }
-
-
-        .orderItem-detail h3 {
-            font-size: 1.5rem;
-            color: var(--color4);
-        }
-
-        .orderItem-detail h5 {
-            color: var(--color6);
-        }
-
-        /* .cart-item-amount {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.25rem;
-        } */
-
-
-
-
-        .orderItem-amount .qty {
-            width: 2rem;
-            text-align: center;
-        }
-
-
-
-        .cart-footer {
-            border-top: 1px solid #ddd;
-            padding-block: 10px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
-
-        .cart-footer div {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 1.25rem;
-        }
-
-        .cart-footer strong {
-            font-weight: 500;
-            color: var(--color4);
-        }
-
-        .cart-footer button {
-            padding-block: 10px;
-            text-transform: uppercase;
-        }
-
-
-
-        .checkout {
-            background-color: var(--color1);
-            color: var(--color8);
-            grid-column: span 2;
-        }
-
-        .checkout a {
-            color: white;
-
-        }
-
-        .orders {
-            background-color: white;
-            max-width: 100%;
-            margin-top: 15px;
-            margin-bottom: 20px;
-            /* margin-left: 30px; */
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-        }
-
-        .orderItem img {
-            width: 35%;
-            height: 200px;
-            object-fit: contain;
-        }
-
-        #addressForm {
-            margin-left: 0px !important;
-            margin-right: 0px !important;
-        }
-
-        .orderItem-detail {
-            font-size: 1.5rem;
-            width: 72%;
-            background-color: beige;
-        }
-    </style>
 </head>
 
 <body>
@@ -222,15 +36,15 @@
         <!-- start-loader -->
         <div id="loader">
             <div class="pl">
-            <div class="pl__outer-ring"></div>
-            <div class="pl__inner-ring"></div>
-            <div class="pl__track-cover"></div>
-            <div class="pl__ball">
-                <div class="pl__ball-texture"></div>
-                <div class="pl__ball-outer-shadow"></div>
-                <div class="pl__ball-inner-shadow"></div>
-                <div class="pl__ball-side-shadows"></div>
-            </div>
+                <div class="pl__outer-ring"></div>
+                <div class="pl__inner-ring"></div>
+                <div class="pl__track-cover"></div>
+                <div class="pl__ball">
+                    <div class="pl__ball-texture"></div>
+                    <div class="pl__ball-outer-shadow"></div>
+                    <div class="pl__ball-inner-shadow"></div>
+                    <div class="pl__ball-side-shadows"></div>
+                </div>
             </div>
         </div>
         <!-- end-loader -->
@@ -254,68 +68,69 @@
     <div class="container ">
         <!-- <div class="row row-cols-6"> -->
 
-            <form id="addressForm" class="row  needs-validation col-12 sideForm bg-opacity-25 rounded-corners">
-                <div class="col-md-6">
-                    <label for="phone" class="form-label">phone Number</label>
-                    <input type="text" class="form-control" id="phone" name="phone" required>
-                    <div id="phoneError" class="error"></div>
+        <form id="addressForm" class="row  needs-validation col-12 sideForm bg-opacity-25 rounded-corners">
+            <div class="col-md-6">
+                <label for="phone" class="form-label">phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+                <div id="phoneError" class="error"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="additionalphone" class="form-label">Additional Number</label>
+                <input type="text" class="form-control" id="additionalphone" name="additionalphone" required>
+                <div id="AdditionalPhoneError" class="error"></div>
+            </div>
+            <div class="col-md-12">
+                <label for="adreess" class="form-label ">Address</label>
+                <input type="text" class="form-control" id="address" name="address" required>
+                <div id="addressError" class="error"></div>
+            </div>
+            <div class="col-md-12">
+                <label for="info" class="form-label">Additional Information</label>
+                <input type="text" class="form-control" id="info" name="info" required>
+                <div id="infoError" class="error"></div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="region" class="form-label">Region</label>
+                <select class="form-select form-control" id="region" name="region">
+                    <option selected disabled value="">Cairo</option>
+                    <option>Aswan</option>
+                    <option>Egypt</option>
+                    <option>Alex</option>
+                    <option>Mansoura</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid state.
                 </div>
-                <div class="col-md-6">
-                    <label for="additionalphone" class="form-label">Additional Number</label>
-                    <input type="text" class="form-control" id="additionalphone" name="additionalphone" required>
-                    <div id="AdditionalPhoneError" class="error"></div>
+            </div>
+            <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <select class="form-select form-control" id="city" name="city">
+                    <option selected disabled value="">Cairo</option>
+                    <option>Aswan</option>
+                    <option>Egypt</option>
+                    <option>Alex</option>
+                    <option>Mansoura</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a valid state.
                 </div>
-                <div class="col-md-12">
-                    <label for="adreess" class="form-label ">Address</label>
-                    <input type="text" class="form-control" id="address" name="address" required>
-                    <div id="addressError" class="error"></div>
-                </div>
-                <div class="col-md-12">
-                    <label for="info" class="form-label">Additional Information</label>
-                    <input type="text" class="form-control" id="info" name="info" required>
-                    <div id="infoError" class="error"></div>
-                </div>
-            
-                <div class="col-md-6">
-                    <label for="region" class="form-label">Region</label>
-                    <select class="form-select form-control" id="region" name="region" >
-                        <option selected disabled value="">Cairo</option>
-                        <option>Aswan</option>
-                        <option>Egypt</option>
-                        <option>Alex</option>
-                        <option>Mansoura</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please select a valid state.
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <label for="city" class="form-label">City</label>
-                    <select class="form-select form-control" id="city" name="city" >
-                        <option selected disabled value="">Cairo</option>
-                        <option>Aswan</option>
-                        <option>Egypt</option>
-                        <option>Alex</option>
-                        <option>Mansoura</option>
-                    </select>
-                    <div class="invalid-feedback">
-                        Please select a valid state.
-                    </div>
-                </div>
-                <div class="row col-12 mt-3">
-                    <!-- <div class="col-6 ml-auto">
+            </div>
+            <div class="row col-12 mt-3">
+                <!-- <div class="col-6 ml-auto">
                         <button class="btn btn-light" type="submit">cancel</button>
                     </div> -->
-                    <div class="col-6">
-                        <button class="btn btn-primary" type="submit">Save</button>
-                    </div>
+                <div class="col-6">
+                    <button class="btn btn-primary" type="submit">Save</button>
                 </div>
-            </form>
-            
+            </div>
+        </form>
+
 
         <div class=" col-12 orders">
             <div class="cart-header">
-                <h2>orders</h2>
+               
+                <h2> <i class="fa-brands fa-shopify"></i>orders</h2>
             </div>
 
             <div class="ordersBody">
@@ -326,7 +141,7 @@
                     <strong>Total</strong>
                     <span class="cart-total">0</span>
                 </div>
-                <button class="checkout confirm"  >CONFIRM ORDER</button>
+                <button class="checkout confirm">CONFIRM ORDER</button>
 
             </div>
 
@@ -407,26 +222,19 @@
 
         </p>
     </div>
-    <!-- jQery -->
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <!-- popper js -->
-    <script src="js/popper.min.js"></script>
-    <!-- bootstrap js -->
-    <script src="js/bootstrap.js"></script>
-    <script src="js/checkout.js" type="module"></script>
-
-    <!-- custom js -->
-    <script>
-        // var form = document.forms[0];
-        // form.addEventListener("submit", function (e) {
-        //     e.preventDefault();
-        // })
-
-
-    </script>
-    <!-- loader -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
-    <script src="loader/dist/loader.js"></script>
+   <!-- jQery -->
+   <script src="js/jquery-3.4.1.min.js"></script>
+   <!-- popper js -->
+   <script src="js/popper.min.js"></script>
+   <!-- bootstrap js -->
+   <script src="js/bootstrap.js"></script>
+   <!-- fontawesome -->
+   <script src="js/all.min.js"></script>
+   <!-- checkout js -->
+   <script src="js/checkout.js" type="module" defer></script>
+   <!-- loader -->
+   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
+   <script src="loader/dist/loader.js"></script>
 
 </body>
 

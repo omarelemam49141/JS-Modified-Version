@@ -700,20 +700,13 @@ a:focus {
     margin: 3%;
     padding: 0.5%;
 }
-
-.card .row .col:first-of-type {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
  .imageList{
   margin-top: 2%;
   margin-bottom: 2%;
   margin-left: 3%;
  }
 
- /* .imageList img {
+ .imageList img {
   width: 100px;
   height: 130px; 
 }
@@ -723,7 +716,7 @@ a:focus {
   width: 300px;
   height: 371px;
   
- } */
+ }
 
 
 .view_img {
@@ -1499,8 +1492,13 @@ form input[type="submit"]:focus {
 /* iconDeleted */
 .deleteItem{
   padding: 10px;
-  color: #eb3f3f;
+  color:
+   #eb3f3f;
 }
+.deleteItem:hover{
+  cursor: pointer;
+}
+
 /*end products page*/
 .arrowBack {
   cursor: pointer;
@@ -1684,4 +1682,16 @@ display: none;
 .checkedInput input[type=checkbox] {
   flex-basis: 20%;
   margin: 0;
+}
+
+/* style sweet alert  */
+.swal2-modal{
+  color: red;
+}
+.swal2-popup{
+  background-color: white;
+}
+#swal2-html-container{
+  color: white;
+  text-align: center;
 }

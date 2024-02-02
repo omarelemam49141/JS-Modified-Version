@@ -10,6 +10,15 @@ import {Product} from "./classes.js"
 //Product class function
 let products = [];
 if(!JSON.parse(localStorage.getItem("products"))||JSON.parse(localStorage.getItem("products")).length == 0) {
+   products = [
+      new Product (1, "Men's Shirt", "Jewellery", "Omar1", 100, 50, ["../images/1.jpeg"], 200, "any descroiption", ["Black", "Red", "White"]),
+      new Product (2, "Women's Shirt", "Jewellery", "Omar1", 100, 50, ["../images/2.jpeg"], 300, "any descroiption", ["Black", "Red", "White"]),
+      new Product (3, "Men's Shoes", "Accessories", "Omar1", 25, 25, ["../images/3.jpeg"], 320, "any descroiption", ["Black", "Red", "White"]),
+      new Product (4, "Women's Shoes", "Accessories", "Omar1", 30, 0, ["../images/1.jpeg"], 120, "any descroiption", ["Black", "Red", "White"]),
+      new Product (5, "Men's Accessories", "Artwork", "Omar1", 60, 40, ["../images/2.jpeg"], 140, "any descroiption", ["Black", "Red", "White"]),
+      new Product (6, "Women's Accessories", "Accessories", "Omar1", 30, 1, ["../images/3.jpeg"], 155, "any descroiption", ["Black", "Red", "White"]),
+      new Product (7, "Men's Watch", "Artwork", "Omar1", 25, 14, ["../images/4.jpeg"], 500, "any descroiption", ["Black", "Red", "White"]),
+   ];
    localStorage.setItem("products", JSON.stringify(products));
 } else {
    products = JSON.parse(localStorage.getItem("products"));
@@ -110,8 +119,8 @@ function GetProducts(maxNumber, productsList) {
           </div>`;
          }
       } else { //if the product is out of stock we will remove the add to cart button and add the out of stock butto
-         console.log(i)
-         console.log(products[i])
+         // console.log(i)
+         // console.log(product0s[i])
          if(products[i].quantity == 0)
          {
             productCards +=

@@ -191,6 +191,7 @@ window.addEventListener("load", function () {
         var product_Id;
         // window.addEventListener("load", function () {
             var addCartLink = document.querySelectorAll(".addCart");
+            console.log(addCartLink);
             for (var i = 0; i < addCartLink.length; i++) {
                 addCartLink[i].addEventListener("click", function (event) {
                     event.preventDefault();

@@ -31,7 +31,8 @@ window.addEventListener("load", function () {
 
     var total = 0;
     cart.forEach(order => {
-        total = products[order["product_id"] - 1].price * order["quantity"];
+        let positionItemInProduct = products.findIndex((value) => value.productId == order.product_id);
+        total = products[positionItemInProduct].price * order["quantity"];
         containerOreders.innerHTML += '';
         var orderItem = this.document.createElement("div");
         orderItem.classList.add("order");
@@ -39,14 +40,14 @@ window.addEventListener("load", function () {
         orderItem.innerHTML = `
 
             <div class="orderItem" data-id="${order["product_id"]}">
-            <img src="${products[order["product_id"] - 1].images[0]}"/>
+            <img src="${products[positionItemInProduct].images[0]}"/>
             <div class="orderItem-detail">
-                <h3 class="name" >Name: ${products[order["product_id"] - 1].productName}</h3>
-                <h3 class="seller">seller: ${order["seller"]}</h3>
+                <h3 class="name" >Name: <span>${products[positionItemInProduct].productName}</span></h3>
+                <h4 class="seller"> seller: <span> ${order["seller"]}</span></h4>
                 <h5 class="quantity">quantity:  ${order["quantity"]}</h5>
                 <h5 class="color">color:  ${order["colorOptions"]}</h5>
                     <span class="orderItem-price">
-                    price:  ${products[order["product_id"] - 1].price * order["quantity"]} $
+                    price:  ${products[positionItemInProduct].price * order["quantity"]} $
                     </span>
             </div>
             </div>  `
@@ -197,8 +198,10 @@ btnCheckout.addEventListener("click", function (e) {
     event.preventDefault();
 
     cart.forEach((v) => {
-        products[v.product_id - 1].quantity_sold = parseInt(products[v.product_id - 1].quantity_sold) + parseInt(v.quantity) + "";
-        products[v.product_id - 1].quantity = parseInt(products[v.product_id - 1].quantity) - parseInt(v.quantity) + "";
+        let positionItemInProduct = products.findIndex((value) => value.productId == v.product_id);
+
+        products[positionItemInProduct].quantity_sold = parseInt(products[positionItemInProduct].quantity_sold) + parseInt(v.quantity) + "";
+        products[positionItemInProduct].quantity = parseInt(products[positionItemInProduct].quantity) - parseInt(v.quantity) + "";
         //add modifiy countity to cart 
         localStorage.setItem('products', JSON.stringify(products));
 

@@ -1,5 +1,5 @@
-import { Product, categories } from "./classes.js";
-import{LogOut} from "./general-methods.js"
+import { categories } from "./classes.js";
+import { LogOut } from "./general-methods.js"
 ///////////// selectors///////////////
 
 var tbody = document.querySelector("tbody")
@@ -17,7 +17,6 @@ var _sellerName = document.getElementById("sellerName");
 var description = document.getElementById("description");
 var category = document.getElementById("category");
 var img1 = document.getElementById("productImage");
-var img2 = document.getElementById("productImage2");
 var checkboxes = document.querySelectorAll('.color-checkbox');
 //////////
 var submitButton = document.getElementById('submitButton');
@@ -87,32 +86,32 @@ window.addEventListener("load", function () {
                 handleViewClick(e.target.dataset.id);
             }
         })
-        };
-        function handleEditClick(productId) {
-            let productData = arrOfproduct.find(product => product.productId == productId);
-            populateFormWithProductData(productData);
-        }
-        
-        function handleViewClick(productId) {
-            displayProduct(productId);
-        }
-        
-        function handleSubmitButtonClick(event) {
-            event.preventDefault();
-            let editedProduct = getEditedValues();
-                updateProductData(editedProduct);
-                
-               location.reload();
-            
-        }
-    })
+    };
+    function handleEditClick(productId) {
+        let productData = arrOfproduct.find(product => product.productId == productId);
+        populateFormWithProductData(productData);
+    }
+
+    function handleViewClick(productId) {
+        displayProduct(productId);
+    }
+
+    function handleSubmitButtonClick(event) {
+        event.preventDefault();
+        let editedProduct = getEditedValues();
+        updateProductData(editedProduct);
+
+        location.reload();
+
+    }
+})
 
 window.addEventListener("load", function () {
     if (localStorage.getItem("products")) {
         arrOfproduct = JSON.parse(localStorage.getItem("products"));
-    }else{
-    
-        arrOfproduct=[];
+    } else {
+
+        arrOfproduct = [];
     }
     // Iterate through each category in the 'categories' array and  Set the 'value' attribute of the <option> to the current category
     categories.forEach((category) => {
@@ -225,8 +224,8 @@ function deleteProduct(idDeleProduct) {
         if (result.isConfirmed) {
 
             positionThisProductInCart = cart.findIndex((value) => {
-                
-                return value.product_id ==idDeleProduct;
+
+                return value.product_id == idDeleProduct;
             }
             );
             console.log(positionThisProductInCart);
@@ -245,12 +244,12 @@ function deleteProduct(idDeleProduct) {
                 // console.log(arrOfproduct);
                 localStorage.setItem("cart", JSON.stringify(cart));
                 // sweet alert
-            } 
+            }
 
-                arrOfproduct.splice(positionThisProductInProduct, 1);
-                localStorage.setItem("products", JSON.stringify(arrOfproduct));
-                location.reload();
-            
+            arrOfproduct.splice(positionThisProductInProduct, 1);
+            localStorage.setItem("products", JSON.stringify(arrOfproduct));
+            location.reload();
+
 
             swalWithBootstrapButtons.fire({
                 title: "Deleted!",
@@ -275,35 +274,45 @@ function deleteProduct(idDeleProduct) {
 
 
 function Add() {
-        var selectedValues = [];
-        // Add a change event listener to each checkbox
-        var checkedFlag = false;
-        checkboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                checkedFlag = true;
-                selectedValues.push(checkbox.value);
-            }
-        });
+    var selectedValues = [];
+    // Add a change event listener to each checkbox
+    var checkedFlag = false;
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            checkedFlag = true;
+            selectedValues.push(checkbox.value);
+        }
+    });
 
-        if (!checkedFlag) 
-            {
-                selectedValues.push(checkboxes[0].value);
-            }
-        var imgesInput = [];// arr of imges
-    
-        var lastIndex = img1.value.lastIndexOf("\\");
-        img1 = img1.value.slice(lastIndex + 1);
-        img1 = `images/${img1}` // concat src
-        imgesInput.push(img1)
-    
-      
-        var lastID = Math.max(...arrOfproduct.map(product => product.productId), 0); // to get max id 
-    
-        let newProduct = new Product(lastID+1,  _ProductName.value, select.value, sellerName, Number(_Quntity.value), 0, imgesInput, Number(_price.value), description.value, selectedValues);
-        arrOfproduct.push(newProduct);
-        updateLocalStorage(arrOfproduct);
-        location.reload();
+    if (!checkedFlag) {
+        selectedValues.push(checkboxes[0].value);
     }
+    var imgesInput = [];// arr of imges
+
+    var lastIndex = img1.value.lastIndexOf("\\");
+    img1 = img1.value.slice(lastIndex + 1);
+    img1 = `images/${img1}` // concat src
+    imgesInput.push(img1)
+
+
+    var lastID = Math.max(...arrOfproduct.map(product => product.productId), 0); // to get max id 
+
+    var newProduct = {
+        productId: lastID + 1,
+        productName: _ProductName.value,
+        category: select.value,
+        sellerName: sellerName,
+        quantity: Number(_Quntity.value),
+        quantity_sold: 0,
+        images: imgesInput,
+        price: Number(_price.value),
+        description: description.value,
+        options: selectedValues,
+    };
+    arrOfproduct.push(newProduct);
+    updateLocalStorage(arrOfproduct);
+    location.reload();
+}
 
 // open modal
 btnAdd.addEventListener("click", function () {
@@ -322,7 +331,7 @@ function populateFormWithProductData(data) {
     const modalFields = document.querySelector('.modal-fields');
     //save the old data in the updatedProductData object
 
-    modalFields.innerHTML =  `
+    modalFields.innerHTML = `
     <div class="form-group">
         <label>Product ID</label>
         <small id="productIdMessage" class="form-text  text-danger"></small>
@@ -333,15 +342,12 @@ function populateFormWithProductData(data) {
         <small id="categoryMessage" class="form-text  text-danger"></small>
         <select class="form-select form-select-sm"
         aria-label=".form-select-sm example" id="category" value="${data.category}">    
-        ${
-            categories.map(element => 
-            {
-                if(element.toLowerCase() == data.category.toLowerCase())
-                {
-                    return `<option value="${element}" selected>${element}</option>`
-                } 
-                return `<option value="${element}">${element}</option>`
-            }).join('')
+        ${categories.map(element => {
+        if (element.toLowerCase() == data.category.toLowerCase()) {
+            return `<option value="${element}" selected>${element}</option>`
+        }
+        return `<option value="${element}">${element}</option>`
+    }).join('')
         }
     <!-- span invalid input -->
         <span class="is-invalid"> *must choose catigery </span>
@@ -399,11 +405,11 @@ function getEditedValues() {
     let imgInput = editForm.children[3].children[2];
     let oldImg = editForm.children[3].children[3].src;
     let imgSrc;
-    
+
     // Image validation only jpg and jpeg
     if (imgInput.value && !/\.(jpg|jpeg)$/i.test(imgInput.value)) {
         document.querySelector("#imagesMessage").textContent = "Image must be a .jpg or .jpeg file.";
-        return null; 
+        return null;
     }
 
     if (imgInput.value) {
@@ -417,7 +423,7 @@ function getEditedValues() {
     if (!/^[a-zA-Z\s]+$/.test(productName)) {
         document.querySelector("#nameMessage").textContent = "Product Name should only contain characters.";
 
-        return null; 
+        return null;
     }
 
     // Price validation number and decimal point
@@ -425,7 +431,7 @@ function getEditedValues() {
     if (isNaN(price) || price <= 0) {
         document.querySelector("#priceMessage").textContent = "Price must be more than zero.";
 
-        return null; 
+        return null;
     }
 
     // Return the edited values
@@ -492,32 +498,59 @@ function handleSearch(e) {
 
 
 function creatTableofData() {
+
+
+
     sellerArr = arrOfproduct.filter((product) => product.sellerName == sellerName)
-    for (let index = arrOfproduct.length-1; index >= 0; index--) {
-        var element = arrOfproduct[index];
+
+    tbody.innerHTML = ''
+    sellerArr.forEach(product => {
         tbody.innerHTML += `
           <tr>
-          <td>${element.productId}</td>
-          <td>${element.productName}</td>
-          <td><img src="${element["images"][0]}"/></td>
-          <td>${element.sellerName}</td>
-          <td>${element.category}</td>
-          <td>${element.price}</td>
+          <td>${product.productId}</td>
+          <td>${product.productName}</td>
+          <td><img src="${product["images"][0]}"/></td>
+          <td>${product.sellerName}</td>
+          <td>${product.category}</td>
+          <td>${product.price}</td>
           <td>
-                      <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
-                      <i class="material-icons edit" data-id="${element.productId}">&#xE254;</i>
-                  </a>
-                  <!-- View Link -->
-                  <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
-                      <i data-id="${element.productId}" class="view material-icons">&#xE417;</i>
-                  </a>
-              <a href="#"  title="Delete"  data-id="${element.productId}" class="delete trigger-btn"><i
+          <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
+            <i class="material-icons edit" data-id="${product.productId}">&#xE254;</i>
+          </a>
+           <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
+             <i data-id="${product.productId}" class="view material-icons">&#xE417;</i>
+             </a>
+            <a href="#"  title="Delete"  data-id="${product.productId}" class="delete trigger-btn"><i
                       class=" material-icons text-danger">&#xE872;</i></a>
           </td>
          </tr>`
 
-    }
-    
+    });
+    // for (let index = arrOfproduct.length-1; index >= 0; index--) {
+    //     var element = arrOfproduct[index];
+    //     tbody.innerHTML += `
+    //       <tr>
+    //       <td>${element.productId}</td>
+    //       <td>${element.productName}</td>
+    //       <td><img src="${element["images"][0]}"/></td>
+    //       <td>${element.sellerName}</td>
+    //       <td>${element.category}</td>
+    //       <td>${element.price}</td>
+    //       <td>
+    //                   <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
+    //                   <i class="material-icons edit" data-id="${element.productId}">&#xE254;</i>
+    //               </a>
+    //               <!-- View Link -->
+    //               <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
+    //                   <i data-id="${element.productId}" class="view material-icons">&#xE417;</i>
+    //               </a>
+    //           <a href="#"  title="Delete"  data-id="${element.productId}" class="delete trigger-btn"><i
+    //                   class=" material-icons text-danger">&#xE872;</i></a>
+    //       </td>
+    //      </tr>`
+
+    // }
+
 }
 
 
@@ -530,8 +563,8 @@ function sortTable(column, sort_asc) {
     [...table_rows].sort((a, b) => {
         let first_row = a.querySelectorAll('td')[column].textContent.toLowerCase(),
             second_row = b.querySelectorAll('td')[column].textContent.toLowerCase();
-       if(first_row==second_row) 
-        return 0;
+        if (first_row == second_row)
+            return 0;
 
 
         return sort_asc ? (first_row < second_row ? 1 : -1) : (first_row < second_row ? -1 : 1);
@@ -539,7 +572,7 @@ function sortTable(column, sort_asc) {
         .map(sorted_row => document.querySelector('tbody').appendChild(sorted_row));
 
 }
- 
+
 LogOut()
 
 close.addEventListener("click", closeModal)
@@ -553,28 +586,28 @@ function closeModal() {
 }
 
 table_rows = document.querySelectorAll('tbody tr'),
-table_headings = document.querySelectorAll('thead th');
-    
-   
-    table_headings.forEach((head, i) => {
+    table_headings = document.querySelectorAll('thead th');
 
-        let sort_asc = true;
-        if (i == 1 || i == 3 || i == 4) {
-            head.onclick = (e) => {
-                // console.log(e.target);
-                table_headings.forEach(head => head.classList.remove('active'));
-                head.classList.add('active');
 
-                document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
-                table_rows.forEach(row => {
-                    row.querySelectorAll('td')[i].classList.add('active');
-                })
+table_headings.forEach((head, i) => {
 
-                head.classList.toggle('asc', sort_asc);
-                sort_asc = head.classList.contains('asc') ? false : true;
+    let sort_asc = true;
+    if (i == 1 || i == 3 || i == 4) {
+        head.onclick = (e) => {
+            // console.log(e.target);
+            table_headings.forEach(head => head.classList.remove('active'));
+            head.classList.add('active');
 
-                sortTable(i, sort_asc);
-            }
-            // console.log(head);
+            document.querySelectorAll('td').forEach(td => td.classList.remove('active'));
+            table_rows.forEach(row => {
+                row.querySelectorAll('td')[i].classList.add('active');
+            })
+
+            head.classList.toggle('asc', sort_asc);
+            sort_asc = head.classList.contains('asc') ? false : true;
+
+            sortTable(i, sort_asc);
         }
-    });
+        // console.log(head);
+    }
+});
