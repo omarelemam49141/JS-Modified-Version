@@ -213,7 +213,6 @@ function filter(e)
             usersFilter = "all";
             break;
         default:
-            
             let userRole = e.target.innerHTML.toLowerCase().substring(0, e.target.innerHTML.length-1);
             //display only the users with the same userRole according to the current pagination page
             let filteredUsers = [];
@@ -226,15 +225,6 @@ function filter(e)
             DisplayUsers(filteredUsers);
             usersFilter = userRole;
             break;
-        // case "Customers"://display only the customers
-            
-        //     DisplayUsers(allUsers.filter(user=>user.userRole=="customer"));
-        //     usersFilter = "customer";
-        //     break;
-        // case "Sellers"://display only the sellers
-        //     DisplayUsers(allUsers.filter(user=>user.userRole=="seller"));
-        //     usersFilter = "seller";
-        //     break;
     }
 }
 

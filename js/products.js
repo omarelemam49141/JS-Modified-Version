@@ -7,6 +7,7 @@ import { categories } from "./classes.js";
 let filter = "All";
 let checkedSellers = [];
 let sellersList; //sellers' names container in products.html
+let allProductsFromLocalStorage = JSON.parse(localStorage.getItem("products"));
 
 //checking authorization (navigate the user *by force* according to his role)
 let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -53,7 +54,7 @@ function filterAll(e)
             //get the checked checkboxes
             let checkedSellersInputs = Array.from(sellersList.querySelectorAll("input:checked"));
             let filteredProducts = [];
-            //check if the no checkbox is checked then display all products
+            //check if there is no checkbox is checked then display all products
             if(checkedSellersInputs.length == 0)
             {
                 if(price!=-1) { //if no seller filter but there is price filter
@@ -132,6 +133,11 @@ window.addEventListener("load", function () {
         //filtering
         let categoryItems = document.getElementById("categories").children;
         document.getElementById("categories").addEventListener("click", function (e) {
+            let allFilterProductsCards;
+            let filteredProducts = [];
+            let price = document.querySelector("#priceContainer").innerHTML;//get the price
+            let checkedSellersInputs = Array.from(sellersList.querySelectorAll("input:checked"));//get the checked sellers input
+            let checkedSellers = checkedSellersInputs.map(input=>input.value.toLowerCase());//get the sellers names
             if (e.target.nodeName == "LI") {
                 filter = e.target.innerHTML;
                 //Removing the active class from all list items
@@ -144,35 +150,55 @@ window.addEventListener("load", function () {
                 //change the category title to the clicked category name
                 document.getElementById("category-title").innerHTML = `Our <span>${e.target.innerHTML}`;
 
-                let allFilteredProducts;
-                //If the user clicked all then display all products
-                if (e.target.innerHTML == "All") {
-                    allFilteredProducts = GetProducts(-1);
-                } else {
-                    //filtering by category name
-                    let filteredProducts = products.filter(product => product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
+                debugger
+                if (e.target.innerHTML == "All") {//no category is selected
+                    if (price != "any" && price != "$$") { //the range price is selected
+                        if(checkedSellers.length != 0) { //the sellers filter is selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName));
+                        } else { //no seller or category is selected (only price)
+                            filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price));
+                        }
+                    } else { // no price or category is selected
+                        if(checkedSellers.length != 0) { //Only the sellers filter is selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product => checkedSellers.includes(product.sellerName));
+                        } else { //no seller or category or price is selected 
+                            filteredProducts = allProductsFromLocalStorage;
+                        }
+                    }
+                } else {//category is selected
+                    if (price != "any" && price != "$$") { //the range price and category are selected
+                        if(checkedSellers.length != 0) { //the sellers filter and the category and the price are selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName) && product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
+                        } else { //category and price are selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
+                        }
+                    } else { // no price is selected
+                        if(checkedSellers.length != 0) { //the sellers filter and the category are selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product => checkedSellers.includes(product.sellerName) && product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
+                        } else { //only the category is selected
+                            filteredProducts = allProductsFromLocalStorage.filter(product => product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
+                        }
+                    }
                     //Making the new products list
-                    allFilteredProducts = GetProducts(filteredProducts.length, filteredProducts);
+                    allFilterProductsCards = GetProducts(filteredProducts.length, filteredProducts);
                     var product_Id;
                     // window.addEventListener("load", function () {
-                        var addCartLink = document.querySelectorAll(".addCart");
-                        console.log(addCartLink);
-                        for (var i = 0; i < addCartLink.length; i++) {
-                            addCartLink[i].addEventListener("click", function (event) {
-                                event.preventDefault();
-                                console.log(event.target);
-                                product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
-                                addToCart(product_Id);
-                
-                            })
-                        }
-                
-                    // })
-
+                    var addCartLink = document.querySelectorAll(".addCart");
+                    console.log(addCartLink);
+                    for (var i = 0; i < addCartLink.length; i++) {
+                        addCartLink[i].addEventListener("click", function (event) {
+                            event.preventDefault();
+                            console.log(event.target);
+                            product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
+                            addToCart(product_Id);
+            
+                        })
+                    }
                 }
 
+                allFilterProductsCards = GetProducts(filteredProducts.length, filteredProducts);//get the fiiltered products
                 //Updating the displayed products with the filtered products
-                document.getElementById("all-products-section").innerHTML = allFilteredProducts;
+                document.getElementById("all-products-section").innerHTML = allFilterProductsCards;
                 var product_Id;
                 // window.addEventListener("load", function () {
                     var addCartLink = document.querySelectorAll(".addCart");
