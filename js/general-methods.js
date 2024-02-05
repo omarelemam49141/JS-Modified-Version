@@ -24,7 +24,7 @@ export function renderingNavBar()
             document.querySelector(".header_section .container").innerHTML = `
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 				<a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span class=""> </span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -33,7 +33,7 @@ export function renderingNavBar()
 						<a class="nav-link" href="admin.html">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret">${loggedInUser.userName}</span></a>
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret">${loggedInUser.userName}</span></a>
 						<ul class="dropdown-menu" id="user-DropDown">
 							<li><a href="profile.html">Profile</a></li>
 							<li><a href="usersCRUD.html">Users</a></li>

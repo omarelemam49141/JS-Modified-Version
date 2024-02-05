@@ -1,4 +1,4 @@
-import {users} from "./classes.js" 
+import {Product, users} from "./classes.js" 
 import {  handleFormSubmit } from "../sign-up/sign-up.js";
 import { isValidEmail, isValidPassword, isValidName } from "./profile.js";
 let allUsers = JSON.parse(localStorage.getItem("users")).filter(user=>user.userRole != "admin");
@@ -230,6 +230,22 @@ function filter(e)
 
 function DeleteRecord()
 {
+    debugger
+    //get the user to delete
+    let userToDelete = allUsers.filter(user => user.userID == selectedUser.userID)[0];
+
+    //check if the user role is seller then delete all his products
+    if (userToDelete.userRole == "seller") {
+        //1- get the products
+        let allProducts = JSON.parse(localStorage.getItem("products"));
+        //2- delete the sellers products
+        //filter the products which seller name is not the seller user name
+        allProducts = allProducts.filter(product => product.sellerName != userToDelete.userName);
+        //update local storage
+        localStorage.setItem("products", JSON.stringify(allProducts));
+    }
+    
+
     allUsers = allUsers.filter(user => user.userID != selectedUser.userID);
     localStorage.setItem("users", JSON.stringify(allUsers));
     location.reload();

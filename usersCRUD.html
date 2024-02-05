@@ -20,7 +20,6 @@
       <link href="css/style.css" rel="stylesheet" />
       <!-- Admin styles for this template -->
       <link href="css/crud.css" rel="stylesheet" />
-      <link rel="stylesheet" href="css/bootstrap.css">
       <!-- fonts -->
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
       <!-- fonts -->
@@ -50,16 +49,16 @@
             <div class="container">
                <nav class="navbar navbar-expand-lg custom_nav-container ">
                   <a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span class=""> </span>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"> </span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarSupportedContent">
                      <ul class="navbar-nav">
                         <li class="nav-item">
                            <a class="nav-link" href="customer.html">Home <span class="sr-only">(current)</span></a>
                         </li>
-                       <li class="nav-item dropdown active">
-                           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret"></span></a>
+                        <li class="nav-item dropdown active">
+                           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret"></span></a>
                            <ul class="dropdown-menu" id="user-DropDown">
                               <li><a href="#">Profile</a></li>
                               <li><a href="usersCRUD.html" >Users</a></li>
@@ -337,12 +336,11 @@
       <script src="js/custom.js" type="module"></script>
       <!-- customer js -->
       <script src="js/customer.js" type="module"></script>
-      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="js/usersCRUD.js" type="module"></script>
       <script>
          $(document).ready(function(){
             // Activate tooltip
-            $('[data-toggle="tooltip"]').tooltip();
+            $('[data-bs-toggle="tooltip"]').tooltip();
             
             // Select/Deselect checkboxes
             var checkbox = $('table tbody input[type="checkbox"]');
@@ -365,7 +363,7 @@
          });
          </script>
          <!-- loader -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
-    <script src="loader/dist/loader.js"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
+      <script src="loader/dist/loader.js"></script>
    </body>
 </html>
