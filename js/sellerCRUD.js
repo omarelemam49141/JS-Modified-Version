@@ -122,21 +122,6 @@ window.addEventListener("load", function () {
     })
 
     creatTableofData();
-    // Select all elements with the class 'delete' and store them in the 'deleteButtons' variable
-    deleteButtons = document.querySelectorAll('.delete');
-    var idProduct;
-
-    deleteButtons.forEach((delBtn) => {
-        // console.log(delBtn);
-        delBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            idProduct = parseInt(e.target.parentElement.dataset.id);
-            deleteProduct(idProduct);
-            // console.log(e.target.parentElement.dataset.id);
-        });
-    })
-
-
     //   ----delete -----
 
     // Select all elements with the class 'delete' and store them in the 'deleteButtons' variable
@@ -271,7 +256,18 @@ function deleteProduct(idDeleProduct) {
 
 }
 
+function validateImage() {
+    console.log(img1);
+    var fileName = img1.value.toLowerCase();
 
+    if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
+        Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
+        inputFile.value = '';
+        return false;
+    } else {
+        return true;
+    }
+}
 
 function Add() {
     var selectedValues = [];

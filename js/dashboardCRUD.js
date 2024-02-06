@@ -262,7 +262,6 @@ function deleteProduct(idDeleProduct) {
         if (result.isConfirmed) {
 
             positionThisProductInCart = cart.findIndex((value) => {
-
                 return value.product_id == idDeleProduct;
             }
             );
@@ -305,6 +304,4 @@ function deleteProduct(idDeleProduct) {
             });
         }
     });
-
-
 }
