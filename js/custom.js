@@ -165,6 +165,9 @@ function GetProducts(maxNumber, productsList) {
                       <a href="#" class="option1 addCart">
                       Add to cart
                       </a>
+                      <a href="#" class="option1 ">
+                      <i class="fa-regular fa-heart iconHeart"></i>
+                      </a>
                       <a href="productDetails.html?productId=${products[i].productId}" class="option2">
                       View Details
                       </a>
