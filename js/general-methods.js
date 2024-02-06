@@ -9,6 +9,7 @@ export function updateLocalStorage(key, value)
 export function LogOut() {
     document.getElementById("user-DropDown").addEventListener("click", function (e) {
         if (e.target.id == "logOut") {
+            debugger
             //make a new variable
             let newusersCarts;
             //get the loggedInUser
@@ -16,9 +17,12 @@ export function LogOut() {
             //Check if the customer made a cart
             if (localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart")).length > 0) {
                 //check if there are carts saved in the local storage
-                if(localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).length > 0) {
+                if(localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).cartsArr.length > 0) {
                     //If yes(there are carts in the local storage), then get them
-                    newusersCarts = new carts(JSON.parse(localStorage.getItem("usersCarts")));
+                    newusersCarts = new carts();
+                    JSON.parse(localStorage.getItem("usersCarts")).cartsArr.forEach(cart => {
+                        newusersCarts.addCart(cart);
+                    });
                 } else {
                     //else(there are no carts in the local storage)), then make a new carts object
                     newusersCarts = new carts();

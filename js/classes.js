@@ -90,7 +90,7 @@ export class cartItem {
 
 export class carts {
     constructor() {
-        this.cartsArr = []
+        this.cartsArr = [];
     }
 }
 
