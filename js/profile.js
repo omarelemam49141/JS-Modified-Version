@@ -9,7 +9,7 @@ window.addEventListener('load', function () {
           history.back();
         })
 
-      let userData = JSON.parse(userDataString);
+      var userData = JSON.parse(userDataString);
       if(userData.userGender == "Male")
       {
           this.document.getElementById("profileImage").src = "images/male.jpeg";
@@ -50,9 +50,9 @@ window.addEventListener('load', function () {
           validationMessage.innerText = '';
 
           const isEmailValid = isValidEmail(updatedUserData.email, emailMessage);
+          const isEmailDuplicated = isDuplicatedEmail(updatedUserData.email,emailMessage);
           const isPasswordValid = isValidPassword(updatedUserData.password, passwordMessage);
-
-          if (!isEmailValid || !isPasswordValid) {
+          if (!isEmailValid || isEmailDuplicated ||!isPasswordValid) {
             document.getElementById('email').value = updatedUserData.email || '';
             document.getElementById('password').value = updatedUserData.password || '';
             setTimeout(() => {
@@ -170,11 +170,32 @@ function isValidEmail(email, messageElement) {
     messageElement.innerText = `Invalid email format. Make sure it contains "@" and a dot (.) after "@" and it accepts only characters and digits(e.g., example@example.com).`;
     return false;
   }
-
   // Validation passed
   return true;
 }
 
+function isDuplicatedEmail(email, messageElement)
+{  
+  var loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"))||'';
+  var usersArray = JSON.parse(localStorage.getItem('users')) || [];
+  var emailExists = usersArray.some(user => {
+        if(user.userID == loggedInUser.userID)
+        {
+          return false;
+        }
+        else
+        {
+          return user.userEmail.toLowerCase() === email.toLowerCase();   
+        }
+  }) ;
+  if(emailExists)
+  {
+    messageElement.innerText = `This email is already exists`;
+    return true;
+  }
+  //email not duplicated
+  return false;
+}
 // Function to validate password
 function isValidPassword(password, messageElement) {
   // Password must be at least eight characters long and at most 20 characters
