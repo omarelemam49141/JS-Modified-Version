@@ -71,7 +71,7 @@ function GetOrders() {
             }
             // for seller
             else if (loggedInUser.userRole == 'seller') {
-                orders = orders.filter(order => order.items.some(item => item.seller == loggedInUser.userName));//get orders dependon the items ofthe seller
+                orders = orders.filter(order => order.items.some(item => item.seller.trim().toLowerCase() == loggedInUser.userName.toLowerCase()));//get orders dependon the items ofthe seller
                 orders.forEach(order => {
                     createdtr = document.createElement("tr");//<tr></tr>
                     createdtr.innerHTML = `                         

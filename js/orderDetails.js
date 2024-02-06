@@ -25,7 +25,7 @@ $(function () {
 
 
         if (loggedInUser.userRole == 'seller') { // if the user is seller display it"s own items in order  else=> display thr order as usual
-            targetItems = order.items.filter(item => item.seller == loggedInUser.userName);// get the items for the seller
+            targetItems = order.items.filter(item => item.seller.trim().toLowerCase() == loggedInUser.userName.toLowerCase());// get the items for the seller
 
             let Completed = true;
             let New = true;

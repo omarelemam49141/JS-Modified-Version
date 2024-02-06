@@ -1,5 +1,5 @@
-import { addToCart, iconCartSpan, arrCart, temmraryDiv } from "./addtoCart.js";
-import { renderingNavBar } from "./general-methods.js";
+import { addToCart, iconCartSpan } from "./addtoCart.js";
+import { renderingNavBar, LogOut } from "./general-methods.js";
 
 // form-control btn btn-warning fa fa-shopping-cart iconAddToCart
 //////////////////////////////////////////////////////////////////////////////////
@@ -14,6 +14,7 @@ if (JSON.parse(localStorage.getItem('cart'))) {
 
 window.addEventListener("load", function () {
     renderingNavBar();
+    LogOut();
 
     const searchParams = new URLSearchParams(window.location.search);
     // Get the value of the 'productId' parameter
@@ -47,6 +48,13 @@ window.addEventListener("load", function () {
         if (quantity.value < 1) {
             quantity.value = 1;
         } else if (quantity.value > product.quantity) {
+            quantity.value = product.quantity;
+        }
+    })
+    quantity.addEventListener("keyup", function () {
+        if (quantity.value < 1) {
+            quantity.value = 1;
+        } else if (Number(quantity.value) > Number(product.quantity)) {
             quantity.value = product.quantity;
         }
     })

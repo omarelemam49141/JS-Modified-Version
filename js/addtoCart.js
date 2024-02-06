@@ -163,8 +163,7 @@ function listCartAsHTML() {
             var label = document.createElement("label");
             if (cntOp == 0) {
                 input.setAttribute('checked', 'true'); // Assuming you want it checked
-                label.setAttribute('class', 'check');
-
+                label.classList.add("check");
             }
 
             // Setting the attributes 
@@ -176,7 +175,7 @@ function listCartAsHTML() {
 
             // Creating the label element
             label.setAttribute('for', `${products[positionItemInProduct].options[cntOp]}-color`);
-            label.setAttribute('class', 'color-radio-btn');
+            label.classList.add("color-radio-btn");
             label.textContent = products[positionItemInProduct].options[cntOp];
             // Appending the input element to the container
 
@@ -237,7 +236,7 @@ function listCartAsHTML() {
 
                 if (parentLabel[j].classList.contains("color-radio-btn") == true) { //filter childern => label only
 
-                    console.log(parentLabel[j].classList);
+                
 
                     parentLabel[j].classList.remove("check");
                 } else {
@@ -264,7 +263,6 @@ function listCartAsHTML() {
         })
     }
     // let allColors = document.querySelectorAll(".color-radio-btn");
-
     for (var i = 0; i < allColors.length; i++) {
         let positionItemInCart = arrCart.findIndex((value) => value.product_id == allColors[i].parentElement.dataset.id);
 
@@ -328,8 +326,6 @@ window.addEventListener("load", function () {
             addToCart(product_Id, productSeller);
         })
     }
-
-
 })
 
 //**   add to cart    / */
@@ -347,9 +343,6 @@ export const addToCart = (product_id, seller, quantity = 1, color = "White") => 
         productSeller = seller;
     }
 
-    console.log(product_id);
-    console.log(AudioProcessingEvent);
-    console.log(product_id);
     if (arrCart.length <= 0) {
         arrCart = [{
             product_id: product_id,

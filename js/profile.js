@@ -104,7 +104,7 @@ window.addEventListener('load', function () {
                   labels: sellerProducts.map((p) => p.productName),
                   datasets: [{
                     label: 'remaining quantities of each product',
-                    data: sellerProducts.map((p)=>p.quantity-p.quantity_sold),
+                    data: sellerProducts.map((p)=>p.quantity),
                     borderWidth: 5
                   }]
                 },
@@ -165,7 +165,7 @@ function isValidName(name, messageElement) {
 // Function to validate email
 function isValidEmail(email, messageElement) {
   // Email must contain @ and a dot after @
-  const emailReg = /^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+\.[a-zA-Z]{2,6}$/;
+  const emailReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (! emailReg.test(email)) {
     messageElement.innerText = `Invalid email format. Make sure it contains "@" and a dot (.) after "@" and it accepts only characters and digits(e.g., example@example.com).`;
     return false;

@@ -1,25 +1,12 @@
-import {Product} from "./classes.js";
-import { products } from "./custom.js";
-import { categories } from "./classes.js";
-import {LogOut} from "../js/general-methods.js";
 
 ///////////// selectors///////////////
 // Selectors
-var tbody = document.querySelector("tbody");
-var submitButton = document.getElementById('submitButton');
-var searchBar = document.getElementById('searchBar');
+let tbody = document.querySelector("tbody");
+let searchBar = document.getElementById('searchBar');
 // Select all elements with the class 'delete' and store them in the 'deleteButtons' variable
- var deleteButtons = document.querySelectorAll('.delete');
- var submit = document.querySelector(".submitLink");
- ////formaddingSelectors
- var _ProductName = document.getElementById("ProductName");
-var _price = document.getElementById("price");
-var _Quntity = document.getElementById("Quntity");
-var description = document.getElementById("description");
-var category = document.getElementById("category");
-var _productImage = document.getElementById("productImage");
- var btnAdd = document.querySelector(".add-new");
- var checkboxes = document.querySelectorAll('.color-checkbox');
+ let deleteButtons = document.querySelectorAll('.delete');
+ let table_headings, table_rows;
+
 
 
 // Data Arrays
@@ -29,12 +16,32 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 // Initialize table and event listeners on window load
 window.addEventListener("load", function () {
-    LogOut();
     creatTableofData();
     attachEventListeners();
-    deleteProduct();
+
+        // Select all elements with the class 'delete' and store them in the 'deleteButtons' variable
+        deleteButtons = document.querySelectorAll('.delete');
+        console.log(deleteButtons);
+        let idProduct;
+    
+        deleteButtons.forEach((delBtn) => {
+            // console.log(delBtn);
+            delBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                idProduct = parseInt(e.target.parentElement.dataset.id);
+                deleteProduct(idProduct);
+                // console.log(e.target.parentElement.dataset.id);
+    
+            });
+        })
+    // deleteProduct();
 
     
+
+
+
+
+
 table_rows = document.querySelectorAll('tbody tr'),
 table_headings = document.querySelectorAll('thead th');
     
@@ -65,124 +72,26 @@ table_headings = document.querySelectorAll('thead th');
 function attachEventListeners() {
     // Edit and View button event listeners
     tbody.addEventListener("click", function (e) {
-        if (e.target.classList.contains("edit")) {
-            handleEditClick(e.target.dataset.id);
-        } else if (e.target.classList.contains("view")) {
+        
+         if (e.target.classList.contains("view")) {
             handleViewClick(e.target.dataset.id);
         }
     });
 
     searchBar.addEventListener('input', handleSearch);
 
-    submitButton.addEventListener("click", handleSubmitButtonClick);
+    
 }
 
-function handleEditClick(productId) {
-    let productData = arrOfproduct.find(product => product.productId == productId);
-    populateFormWithProductData(productData);
-}
+
 
 function handleViewClick(productId) {
     displayProduct(productId);
 }
 
-function handleSubmitButtonClick(event) {
-    event.preventDefault();
-    let editedProduct = getEditedValues();
-        updateProductData(editedProduct);
-        
-       location.reload();
-    
-}
-
-function populateFormWithProductData(data) {
-    const modalFields = document.querySelector('.modal-fields');
-    //save the old data in the updatedProductData object
-
-    modalFields.innerHTML =  `
-    <div class="form-group">
-        <label>Product ID</label>
-        <small id="productIdMessage" class="form-text  text-danger"></small>
-        <input class="form-control" type="text" name="productId" id="productId" value="${data.productId}" readonly>
-    </div>
-    <div class="form-group">
-        <label>Category</label>
-        <small id="categoryMessage" class="form-text  text-danger"></small>
-        <select class="form-select form-select-sm"
-        aria-label=".form-select-sm example" id="category" value="${data.category}">    
-        ${
-            categories.map(element => 
-            {
-                if(element.toLowerCase() == data.category.toLowerCase())
-                {
-                    return `<option value="${element}" selected>${element}</option>`
-                } 
-                return `<option value="${element}">${element}</option>`
-            }).join('')
-        }
-    <!-- span invalid input -->
-        <span class="is-invalid"> *must choose catigery </span>
-        </select> 
-    </div>
-    <div class="form-group">
-        <label>Product Name</label>
-        <small id="nameMessage" class="form-text  text-danger"></small>
-        <input class="form-control" type="text" name="productName"
-            id="productName" value="${data.productName}">
-    </div>
-    <div class="form-group">
-        <label>Images</label>
-        <small id="imagesMessage" class="form-text  text-danger"></small>
-        <input class="form-control" required type="file" name="images" id="images" onchange="console.log(this.value)">
-        <img class="img-fluid" src="${data.images[0]}" alt="">
-    </div>
-
-    <div class="form-group">
-        <label>Seller Name</label>
-        <small id="sellerMessage" class="form-text  text-danger"></small>
-        <input class="form-control" type="text" name="sellerName" value="${data.sellerName}"
-            id="sellerName" disabled>
-    </div>
 
 
-    <div class="form-group">
-        <label>Price</label>
-        <small id="priceMessage" class="form-text  text-danger"></small>
-        <input class="form-control" type="number" name="price" id="price" min="1" oninput="this.value = this.value <= 0 ? 1:this.value" value="${data.price}">
-    </div>
-    </div>`
-}
 
-function validateFormData(originalData) {
-    // Validate Product ID
-    if (document.querySelector("#productId").value !== originalData.productId) {
-        errors.productId = "Product ID cannot be changed.";
-    }
-
-    // Validate Product Name
-    if (!/^[0-9]+$/.test(document.querySelector("#productName").value)) {
-        errors.productName = "Product Name should only contain numbers.";
-    }
-
-    // Validate Images
-    if (!document.querySelector("#images").value.endsWith(".jpg")) {
-        errors.images = "Image must be a .jpg file.";
-    }
-
-    // Validate Seller Name
-    if (document.querySelector("#sellerName").value !== originalData.sellerName) {
-        errors.sellerName = "Seller Name cannot be changed.";
-    }
-
-    // Validate Price
-    if (!/^[0-9]+(\.[0-9]+)?$/.test(document.querySelector("#price").value)) {
-        errors.price = "Price should only contain numbers.";
-    }
-
-    displayErrors(errors);
-
-    return Object.keys(errors).length === 0;
-}
 
 function displayErrors(errors) {
     document.querySelectorAll('.form-text.text-danger').forEach(small => {
@@ -206,44 +115,11 @@ function displayErrors(errors) {
         document.querySelector("#priceMessage").textContent = errors.price;
     }
     // Show or hide the error message box
-    const anyErrorMessagesVisible = [...document.querySelectorAll(`.form-text.text-danger`)].some(m => m.textContent);
-
 
 }
 
-function getEditedValues() {
-    //get the info from the edit form
-    let editForm = document.querySelector("#editForm").children[0].children[0];
-    let img = editForm.children[3].children[2].value, oldImg = editForm.children[3].children[3].src;
-    let imgSrc;
-    console.log(oldImg);
-    if(!img) //if no image is selected then select the old image
-    {
-        imgSrc = `images/${oldImg.substring(oldImg.lastIndexOf("/")+1)}`;
-    } else {
-        imgSrc = `images/${img.substring(img.lastIndexOf("\\")+1)}`;
-    }
-    return {
-        productId: editForm.children[0].children[2].value,
-        productName: editForm.children[2].children[2].value,
-        images: [imgSrc], 
-        sellerName: editForm.children[4].children[2].value,
-        category: editForm.children[1].children[2].value,
-        price: editForm.children[5].children[2].value
-    };
-}
 
-function updateProductData(EditedValues) {
-    const index = arrOfproduct.findIndex(products => products.productId == EditedValues.productId);
-    if (index !== -1) {
-        arrOfproduct[index] = { ...arrOfproduct[index], ...EditedValues };
-        console.log("Updated Product Data", arrOfproduct[index]);
-        updateLocalStorage(arrOfproduct);
-        creatTableofData();
-    } else {
-        console.error("Product not found in array. ID: ", EditedValues.productId);
-    }
-}
+
 
 function displayProduct(productId) {
     let productDetails = arrOfproduct.find(item => item.productId == productId);
@@ -269,7 +145,7 @@ function displayProduct(productId) {
 }
 
 
-function handleSearch(e) {
+function handleSearch() {
     let searchValue = searchBar.value.toLowerCase();
     let allRows = tbody.getElementsByTagName("tr");
     for (let row of allRows) {
@@ -280,13 +156,10 @@ function handleSearch(e) {
 
 
 
-function updateLocalStorage(arrOfproduct) {
-    localStorage.setItem("products", JSON.stringify(arrOfproduct));
-}
 
 function creatTableofData() {
     for (let index = arrOfproduct.length-1; index >= 0; index--) {
-        var element = arrOfproduct[index];
+        let element = arrOfproduct[index];
         if(JSON.parse(localStorage.getItem("loggedInUser")).userRole=="admin") {
             tbody.innerHTML += `
           <tr>
@@ -336,7 +209,6 @@ function creatTableofData() {
 
 // Declare variables for later use; these will be assigned values at runtime
 
-var table_headings, table_rows;
 /////
 
 function sortTable(column, sort_asc) {
@@ -358,145 +230,81 @@ function sortTable(column, sort_asc) {
 if (localStorage.getItem("cart")) {
     cart = JSON.parse(localStorage.getItem("cart"));
 }
-// Event handler for the click event on the "submit" form 
-submit.addEventListener('click',Add)
+});
 
-function Add() {
-    var selectedValues = [];
-    // Add a change event listener to each checkbox
-    checkboxes.forEach(function (checkbox) {
-        if (checkbox.checked) {
-            selectedValues.push(checkbox.value);
-        }
-    });
-    var imgesInput = [];// arr of imges
-    // "images/p12.png"
-    // console.log(_productImage.value);
-    var lastIndex = _productImage.value.lastIndexOf("\\");
-    _productImage = _productImage.value.slice(lastIndex + 1);
-    _productImage = `images/${_productImage}` // concat src
-    imgesInput.push(_productImage)
-    // console.log(_productImage);
-    // console.log(imgesInput);
-    var lastID = Math.max(...arrOfproduct.map(product => product.productId), 0); // to get max id 
+//    /------------------------ delete function --------------/
+function deleteProduct(idDeleProduct) {
 
-    var newProduct = new Product(lastID + 1, _ProductName.value, category.value, JSON.parse(localStorage.getItem("loggedInUser")).userName, _Quntity.value, "0", imgesInput, _price.value, description.value, selectedValues);
-
-    // console.log(newProduct);
-    // console.log(newProduct["images"]);
-    arrOfproduct.push(newProduct);
-
-    updateLocalStorage(arrOfproduct);
-
-    console.log("arr => html", arrOfproduct);
-    // updateLocalStorage(arrOfproduct);
-    location.reload();
-    // creatTableofData();
-   
-
-
-}
-
-// open modal
-// btnAdd.addEventListener("click", function () {
-
-//     $('#myModal2').modal('show');
-
-// })
-
-/*//////////////----Delete--/////////////////*/
-
-
-
-function deleteProduct() {
-    console.log("___________");
-
+    var positionThisProductInProduct;
     var positionThisProductInCart;
-    var bodyMsgConfirm = document.querySelector(".modal-content");
-    var trdeleted;
-    var idProduct;
-    var positionThisProductInProduct;;
-    // Iterate through each delete button and attach a click event listener
+    var actualDeleted = idDeleProduct;
+    console.log("id elem  clicked", idDeleProduct);
+    console.log("actualDeleted clicked", actualDeleted);
 
-    tbody.addEventListener('click', function (e) {// Show the Bootstrap modal when a delete button is clicked
-        e.preventDefault();
-        if (e.target.parentElement.classList.contains("delete")) {
 
-            console.log(e.target.parentElement.dataset.id);
-            idProduct = e.target.parentElement.dataset.id; // id product
-            $('#myModal').modal('show'); // Display the modal to confirm the deletion
-
-        deleteButtons.forEach(function (button) {
-            button.addEventListener('click', function (e) {// Show the Bootstrap modal when a delete button is clicked
-                trdeleted = $(e.target.parentElement).closest('tr');
-                idProduct = e.target.parentElement.dataset.id; // id product
-                $('#myModal').modal('show'); // Display the modal to confirm the deletion
-                // console.log(trdeleted);
-    
-            });
-    
-    
-        });
-            deleteButtons.forEach(function (button) {
-                button.addEventListener('click', function (e) {// Show the Bootstrap modal when a delete button is clicked
-                    trdeleted = $(e.target.parentElement).closest('tr');
-                    idProduct = e.target.parentElement.dataset.id; // id product
-                    $('#myModal').modal('show'); // Display the modal to confirm the deletion
-                    // console.log(trdeleted);
-        
-                });
-        
-        
-            });
-        }
-        // trdeleted = $(e.target.parentElement).closest('tr');
-
-        
+    // ------sweet alert ------
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
     });
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
 
+            positionThisProductInCart = cart.findIndex((value) => {
 
- 
-    // console.log(bodyMsgConfirm);
-
-    // Add a click event listener to the delete confirmation button
-    bodyMsgConfirm.addEventListener('click', function (e) {
-        // Delete the item from the HTML and product array
-        if (e.target.classList.contains("confirmDelete")) {
-            // Find the position of the product in the cart array
-            positionThisProductInCart = cart.findIndex((value) => value.product_id == idProduct);
+                return value.product_id == idDeleProduct;
+            }
+            );
+            console.log(positionThisProductInCart);
 
             // Find the position of the product in the product array
             positionThisProductInProduct = arrOfproduct.findIndex((value) => {
 
-                return idProduct == value.productId;   // return value["productId"] == arrOfproduct[idProduct - 1]["productId"];
+                return idDeleProduct == value.productId;   // return value["productId"] == arrOfproduct[idProduct - 1]["productId"];
             })
-            console.log(positionThisProductInProduct, arrOfproduct[idProduct - 1]);
-            if (positionThisProductInCart == -1) {
-                // Remove the product from the product array
-                arrOfproduct.splice(positionThisProductInProduct, 1);
-                localStorage.setItem("products", JSON.stringify(arrOfproduct));
-                creatTableofData();
-                // Remove the corresponding row from the HTML table
-                $(trdeleted).remove();
-                $('#myModal').removeClass('fade');
-                $('#myModal').modal('hide');
-                location.reload();
+            console.log("index", positionThisProductInProduct, "ele", actualDeleted);
 
-            } else {
-                // If the item is already in the cart, display an alert
-                alert("Item already in cart");
-                // console.log("Item already in cart");
+            if (positionThisProductInCart > -1) {  // check if product extist in cart 
+                // console.log(arrOfproduct);
+                alert("Warning the item is in the Cart");
+                cart.splice(positionThisProductInCart, 1);
+                // console.log(arrOfproduct);
+                localStorage.setItem("cart", JSON.stringify(cart));
+                // sweet alert
             }
-        } else {
-            // Hide the modal after deletion
-            $('#myModal').removeClass('fade');
-            $('#myModal').modal('hide');
+
+            arrOfproduct.splice(positionThisProductInProduct, 1);
+            localStorage.setItem("products", JSON.stringify(arrOfproduct));
+            location.reload();
+
+
+            swalWithBootstrapButtons.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+            });
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your imaginary file is safe :)",
+                icon: "error"
+            });
         }
+    });
 
-
-
-    })
 
 }
-});
-

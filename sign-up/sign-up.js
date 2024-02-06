@@ -6,15 +6,17 @@ window.addEventListener("load", function () {
     let signUpForm = document.querySelector('.signupForm');
     signUpForm.addEventListener('submit', handleFormSubmit);
 
-    document.getElementById('togglePassword').addEventListener('click', function (e) {
-        const password = document.getElementById('password');
-        const confirmPassword=document.getElementById('confirmPassword')
-        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
-        confirmPassword.setAttribute('type', type);
-        
-        this.classList.toggle('fa-eye-slash');
-    })
+    if(this.location.href.includes("sign-up.html")) {
+        document.getElementById('togglePassword').addEventListener('click', function (e) {
+            const password = document.getElementById('password');
+            const confirmPassword=document.getElementById('confirmPassword')
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            confirmPassword.setAttribute('type', type);
+            
+            this.classList.toggle('fa-eye-slash');
+        })
+    }
 });
 
 function showValidationMessages(validationMessages) {
@@ -49,6 +51,7 @@ function handleFormSubmit(event) {
 
     if (emailExists) {
         document.getElementById('emailMessage').innerHTML = "This email is already taken. Please choose a different email.";
+        document.getElementById('emailMessage').style="color: red";
         document.getElementById('emailMessage').style.display = "block";
         document.getElementById('userNameMessage').style.display = "none";
         emailExists = false;

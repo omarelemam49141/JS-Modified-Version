@@ -15,30 +15,27 @@
     <title>E-commerce</title>
 
     <!-- bootstrap core css -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <!-- font awesome style -->
     <link href="css/all.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
     <link href="css/style.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- loader -->
     <link rel="stylesheet" href="loader/dist/loader.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- responsive style -->
     <link href="css/responsive.css" rel="stylesheet" />
-    <style>
-
-    </style>
-    <!-- cart js -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <!-- dashboardAdmin js -->
     <script src="js/dashboardCRUD.js" type="module" defer></script>
-</head>
-
-<link rel="stylesheet" href="/css/dashboard.css">
-
-<!-- custom js -->
-<script src="js/custom.js" type="module" defer></script>
+    <!-- custom js -->
+    <script src="js/custom.js" type="module" defer></script>
+    <!--sweet alert  -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 
 </head>
 
@@ -140,7 +137,7 @@
         <main class="row">
             <!-- leftSide -->
             <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="index.html"><img width="121"
+                <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="admin.html"><img width="121"
                         src="images/logo.png" alt="#" />
                 </a>
                 <hr>
@@ -154,22 +151,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link link-dark">
-                            <svg class="bi me-2" width="16" height="16">
-                                <use xlink:href="#speedometer2" />
-                            </svg>
-                            Dashboard
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link link-dark">
-                            <svg class="bi me-2" width="16" height="16">
-                                <use xlink:href="#grid" />
-                            </svg>
-                            Products
-                        </a>
-                    </li>
-                    <li>
                         <a href="usersCRUD.html" class="nav-link link-dark">
                             <svg class="bi me-2" width="16" height="16">
                                 <use xlink:href="#people-circle" />
@@ -179,21 +160,6 @@
                     </li>
                 </ul>
                 <hr>
-                <div class="dropdown dropdownUser">
-                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
-                        id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong> Admin</strong>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow" id="user-DropDown" aria-labelledby="dropdownUser2">
-
-                        <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#" id="logOut">Sign out</a></li>
-                    </ul>
-                </div>
             </div>
             <!-- main -->
             <!-- <div class="container-xl"> -->
@@ -396,37 +362,8 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" role="dialog" tabindex="-1" id="userFormModal">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Edit Product</h5>
-                                    <button type="button" class="close" data-bs-dismiss="modal"
-                                        onclick="$('.modal-backdrop').hide()">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="py-1">
-                                        <form class="form" novalidate id="editForm">
-                                            <div class="row">
-                                                <div class="col modal-fields">
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col d-flex justify-content-end">
-                                                    <button class="btn btn-primary" id="submitButton">Save
-                                                        Changes</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
+                   
+        
 
                     <!-- view modal -->
                     <div class="modal fade" id="exampleModalLong2" tabindex="-1" aria-labelledby="exampleModalLongTitle"
@@ -442,7 +379,7 @@
                                 <div class="modal-body2">
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
                         </div>
@@ -479,7 +416,7 @@
     <!-- loader -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
     <script src="loader/dist/loader.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 
 </body>

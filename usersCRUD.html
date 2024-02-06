@@ -81,7 +81,29 @@
 
       <div class="container-fluid">
          <div class="row">
-            <div class="col-9">
+
+            <!--sidebar-->
+            <div class="col-12 col-md-3">
+               <div class="filter-section">
+                  <!-- search -->
+                  <div class="search-section d-flex align-items-center justify-content-center p-3">
+                     <div class="form-group my-0">
+                        <div class="input-group my-0">
+                           <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
+                           <input type="search" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                     </div>
+                  </div>
+                  <!-- end search -->
+                  <div class="filter-category bg-dark">
+                     <button class="btn btn-primary form-control">All</button>
+                     <button class="btn btn-secondary form-control">Customers</button>
+                     <button class="btn btn-secondary btn-primary form-control">Sellers</button>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-12 col-md-9">
                <div class="table-responsive my-0">
                   <div class="table-wrapper">
                      <div class="table-title">
@@ -115,27 +137,6 @@
                      </div>
                   </div>
                </div>   
-            </div>
-
-            <!--sidebar-->
-            <div class="col-3">
-               <div class="filter-section">
-                  <!-- search -->
-                  <div class="search-section d-flex align-items-center justify-content-center p-3">
-                     <div class="form-group my-0">
-                        <div class="input-group my-0">
-                           <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
-                           <input type="search" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
-                        </div>
-                     </div>
-                  </div>
-                  <!-- end search -->
-                  <div class="filter-category bg-dark">
-                     <button class="btn btn-primary form-control">All</button>
-                     <button class="btn btn-secondary form-control">Customers</button>
-                     <button class="btn btn-secondary btn-primary form-control">Sellers</button>
-                  </div>
-               </div>
             </div>
            
          </div>
@@ -171,6 +172,16 @@
                         <input class="text w3lpass form-control" type="password" name="confirmPassword" id="confirmPassword" required="">
                         <small id="passwordConfirmMessage" class="form-text text-danger"></small>
                      </div>
+
+                     <div class="input-group mb-3" style="display: flex;">
+                        <!-- <span class="input-group-text spanInput"><i class="fas fa-lock text-white"></i></span> -->
+                        <label class="m-2">
+                            <input type="radio" value="Male" name="gender" checked>Male
+                        </label>
+                        <label class="m-2">
+                            <input type="radio" value="Female" name="gender">Female
+                        </label>
+                    </div>    
                      
                      <div class="wthree-text">
                         <div class="checkedInput">

@@ -78,6 +78,36 @@ export class users
     }
 }
 
+export class cartItem {
+    constructor(color_options, item_id, item_quantity, item_quantity_sold, seller) {
+        this.color_options = color_options,
+        this.item_id = item_id,
+        this.item_quantity = item_quantity,
+        this.item_quantity_sold = item_quantity_sold,
+        this.seller = seller
+    }
+}
+
+export class carts {
+    constructor() {
+        this.cartsArr = []
+    }
+}
+
+carts.prototype.addCart = function(cartObj) {
+    this.cartsArr.push({
+        customerID: cartObj.customerID,
+        cart: cartObj.cart
+    });
+}
+
+export class userCart {
+    constructor(customerID, cart) {
+        this.customerID = customerID,
+        this.cart = cart
+    }
+}
+
 export const StatusEnum = {
     New: 'New',
     InProgress: 'In progress',

@@ -1,5 +1,5 @@
 import { LogOut } from "./general-methods.js";
-import { renderingNavBar } from "./general-methods.js";
+import { renderingNavBar, loadCustomerCart } from "./general-methods.js";
 
 let loggedInUser = localStorage.getItem("loggedInUser");
 //if the user is not logged in then go back to index.html
@@ -10,6 +10,7 @@ if(loggedInUser == null){
     if (JSON.parse(loggedInUser).userRole == "customer") {
         document.getElementById("cartListItem").style.display = "block";
         document.getElementById("btnCS").style.display = "block";
+        loadCustomerCart();
     }
 }
 

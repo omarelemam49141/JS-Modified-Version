@@ -16,7 +16,7 @@ if (loggedInUser) {
     {
         location.replace("../dashboardAdmin.html");
     } else if (loggedInUser.userRole == "seller") {
-        location.replace("../dashboardSeller.html");
+        location.replace("../productSeller.html");
     }
 }
 
@@ -61,6 +61,19 @@ function filterAll(e)
                     filteredProducts = products.filter(product=>product.price < price);
                 } else {
                     document.getElementById("all-products-section").innerHTML = GetProducts(-1);
+                    var product_Id;
+                    // window.addEventListener("load", function () {
+                    var addCartLink = document.querySelectorAll(".addCart");
+                    console.log(addCartLink);
+                    for (var i = 0; i < addCartLink.length; i++) {
+                        addCartLink[i].addEventListener("click", function (event) {
+                            event.preventDefault();
+                            console.log(event.target);
+                            product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
+                            addToCart(product_Id);
+            
+                        })
+                    }
                     return;
                 }
             } else { //seller selected
@@ -84,7 +97,21 @@ function filterAll(e)
             }
             //display the products according to the filtered products (category + price + seller)
             document.getElementById("all-products-section").innerHTML = GetProducts(filteredProducts.length, filteredProducts);
+            var product_Id;
+            // window.addEventListener("load", function () {
+            var addCartLink = document.querySelectorAll(".addCart");
+            console.log(addCartLink);
+            for (var i = 0; i < addCartLink.length; i++) {
+                addCartLink[i].addEventListener("click", function (event) {
+                    event.preventDefault();
+                    console.log(event.target);
+                    product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
+                    addToCart(product_Id);
+    
+                })
+            }
         }
+        
 }
 
 function searchProductsByName(productName) {
@@ -114,6 +141,19 @@ function searchProductsByName(productName) {
     });
     //update the products display with the searched array
     document.getElementById("all-products-section").innerHTML = GetProducts(searchedArr.length, searchedArr);
+    var product_Id;
+    // window.addEventListener("load", function () {
+    var addCartLink = document.querySelectorAll(".addCart");
+    console.log(addCartLink);
+    for (var i = 0; i < addCartLink.length; i++) {
+        addCartLink[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            console.log(event.target);
+            product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
+            addToCart(product_Id);
+
+        })
+    }
 }
 
 window.addEventListener("load", function () {
@@ -150,7 +190,6 @@ window.addEventListener("load", function () {
                 //change the category title to the clicked category name
                 document.getElementById("category-title").innerHTML = `Our <span>${e.target.innerHTML}`;
 
-                debugger
                 if (e.target.innerHTML == "All") {//no category is selected
                     if (price != "any" && price != "$$") { //the range price is selected
                         if(checkedSellers.length != 0) { //the sellers filter is selected
@@ -181,7 +220,9 @@ window.addEventListener("load", function () {
                     }
                     //Making the new products list
                     allFilterProductsCards = GetProducts(filteredProducts.length, filteredProducts);
-                    var product_Id;
+                }
+
+                var product_Id;
                     // window.addEventListener("load", function () {
                     var addCartLink = document.querySelectorAll(".addCart");
                     console.log(addCartLink);
@@ -194,7 +235,6 @@ window.addEventListener("load", function () {
             
                         })
                     }
-                }
 
                 allFilterProductsCards = GetProducts(filteredProducts.length, filteredProducts);//get the fiiltered products
                 //Updating the displayed products with the filtered products

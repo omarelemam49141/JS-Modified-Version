@@ -201,7 +201,7 @@ function filter(e)
         e.target.classList.add("btn-primary");
         e.target.classList.remove("btn-secondary");
         //reset the pagination
-        start=0;
+        start = 0;
         end = numberOfUsersPerPage;
         pageNumber = 1;
     }
@@ -230,7 +230,6 @@ function filter(e)
 
 function DeleteRecord()
 {
-    debugger
     //get the user to delete
     let userToDelete = allUsers.filter(user => user.userID == selectedUser.userID)[0];
 
@@ -272,7 +271,6 @@ function saveEditing()
     let role = document.querySelector('input[name="userType"]:checked').value;
 
     //validate the data
-
     //the containers in which the data will be displayed
     const firstNameMessage = document.getElementById('nameMessage');
     const emailMessage = document.getElementById('editEmailMessage');

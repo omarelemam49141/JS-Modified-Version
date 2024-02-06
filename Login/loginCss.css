@@ -366,5 +366,6 @@ h2{
 #togglePassword{
   position: absolute;
   right: 1px;
+  top: -9px;
   color: #000000;
 }

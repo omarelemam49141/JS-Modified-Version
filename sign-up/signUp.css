@@ -160,6 +160,8 @@ i {
     background-size: cover;
     background-attachment: fixed;
     font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    height: 100vh;
   }
   
   h1 {

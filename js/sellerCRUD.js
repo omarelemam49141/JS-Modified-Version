@@ -321,11 +321,6 @@ btnAdd.addEventListener("click", function () {
 
 })
 
-
-
-
-
-
 /////hussien
 function populateFormWithProductData(data) {
     const modalFields = document.querySelector('.modal-fields');
@@ -394,9 +389,23 @@ $('#addressForm').submit(function (event) {
     // Prevent the default form submission
     event.preventDefault();
     // Check the validity of the data using the vaildData() function
-    closeModal();
-    Add();
+    if(validateImage()){
+        closeModal();
+        Add();
+    }
 });
+
+function validateImage() {
+    var fileName = img1.value.toLowerCase();
+
+    if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
+        Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
+        img1.value = '';
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 
@@ -420,7 +429,7 @@ function getEditedValues() {
 
     // Product Name validation Only char
     let productName = editForm.children[2].children[2].value;
-    if (!/^[a-zA-Z\s]+$/.test(productName)) {
+    if (!/^[a-zA-Z0-9\s]+$/.test(productName)) {
         document.querySelector("#nameMessage").textContent = "Product Name should only contain characters.";
 
         return null;

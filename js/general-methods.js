@@ -1,3 +1,4 @@
+import { carts, userCart } from "./classes.js";
 //general method
 export function updateLocalStorage(key, value)
 {
@@ -8,10 +9,53 @@ export function updateLocalStorage(key, value)
 export function LogOut() {
     document.getElementById("user-DropDown").addEventListener("click", function (e) {
         if (e.target.id == "logOut") {
+            //make a new variable
+            let newusersCarts;
+            //get the loggedInUser
+            let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            //Check if the customer made a cart
+            if (localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart")).length > 0) {
+                //check if there are carts saved in the local storage
+                if(localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).length > 0) {
+                    //If yes(there are carts in the local storage), then get them
+                    newusersCarts = new carts(JSON.parse(localStorage.getItem("usersCarts")));
+                } else {
+                    //else(there are no carts in the local storage)), then make a new carts object
+                    newusersCarts = new carts();
+                }
+                //Make a new userCart object with a value of the made cart
+                let customerCart = new userCart(loggedInUser.userID, JSON.parse(localStorage.getItem("cart")));
+
+                //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
+                if(newusersCarts.cartsArr.length > 0) {
+                    newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj=>cartObj.customerID!=loggedInUser.userID);
+                } 
+                //add the new cart
+                newusersCarts.addCart(customerCart);
+                //update the local storage
+                localStorage.setItem("usersCarts", JSON.stringify(newusersCarts));
+            }
+
+            //delete the cart from the customer local storage
+            localStorage.removeItem("cart");
+
+            //log out
             localStorage.removeItem("loggedInUser");
             window.location.href = "index.html";
         }
     })
+}
+
+export function loadCustomerCart() {
+    let loggedInUserId = JSON.parse(localStorage.getItem("loggedInUser")).userID;
+    //get all users' carts
+    let usersCarts = JSON.parse(localStorage.getItem("usersCarts")) || [];
+    //get the loggedInUser cart if it exists
+    let loggedInUserCart = usersCarts.cartsArr.filter(cart=>cart.customerID == loggedInUserId)[0];
+    //set the cart in the local storage with the loggedInUserCart
+    if(loggedInUserCart) {
+        localStorage.setItem("cart", JSON.stringify(loggedInUserCart.cart));
+    }
 }
 
 //Rendering the navbar according to the user role (customer, seller or admin)
