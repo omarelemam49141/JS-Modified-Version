@@ -32,7 +32,7 @@ if (localStorage.getItem("products")) {
     arrOfproduct = JSON.parse(localStorage.getItem("products"));
 }
 let sellerName = JSON.parse(localStorage.getItem("loggedInUser")).userName;
-
+console.log(sellerName);
 let sellerArr = arrOfproduct.filter((product) => product.sellerName == sellerName
 )
 
@@ -262,7 +262,7 @@ function validateImage() {
 
     if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
         Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
-        inputFile.value = '';
+        img1.value = '';
         return false;
     } else {
         return true;
@@ -391,17 +391,17 @@ $('#addressForm').submit(function (event) {
     }
 });
 
-function validateImage() {
-    var fileName = img1.value.toLowerCase();
+// function validateImage() {
+//     var fileName = img1.value.toLowerCase();
 
-    if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
-        Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
-        img1.value = '';
-        return false;
-    } else {
-        return true;
-    }
-}
+//     if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
+//         Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
+//         img1.value = '';
+//         return false;
+//     } else {
+//         return true;
+//     }
+// }
 
 
 
