@@ -141,7 +141,57 @@ window.addEventListener('load', function () {
               });
               this.document.getElementById("mychartlabel2").innerText = "Number of sold products in each category";
           }
-        }
+        else if(userData.userRole == "admin")
+          {
+              let totalProducts = JSON.parse(this.localStorage.getItem('products'))
+                                      .filter((product) => product.quantity > 0);
+
+              
+             let totalProductsOutOfStocks = JSON.parse(this.localStorage.getItem('products'))
+                                               .filter((product) => product.quantity == 0);
+
+              // this.document.getElementById("adminCard1").innerText = totalProducts.length;
+              // this.document.getElementById("adminCard1-header").innerText = "total products";
+              
+              // this.document.getElementById("adminCard2").innerText = totalProductsOutOfStocks.length;
+              // this.document.getElementById("adminCard2-header").innerText = "total outofstocs";
+
+              var SoldProductsInEachCategory=[];
+              var colors=[];
+              for(var i=0; i<categories.length; i++)
+              {
+                SoldProductsInEachCategory[i]=0;
+                colors[i] = `rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`;
+                totalProducts.forEach(product =>
+                {
+                    if(product.category == categories[i])
+                      SoldProductsInEachCategory[i]+=product.quantity_sold;
+                });  
+              }
+
+              const createdChart1 = document.getElementById("myChart2");
+              new Chart(createdChart1, {type: 'pie',
+                data: {
+                  labels: categories,
+                  datasets: [{
+                    label: 'Number of sold products in each category',
+                    data: SoldProductsInEachCategory,
+                    backgroundColor:colors,
+                    hoverOffset: 4
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+              this.document.getElementById("mychartlabel2").innerText = "Number of sold products in each category";
+          }
+        }//end of admin charts
  });//end of load
 
 // Function to validate first name and last name
