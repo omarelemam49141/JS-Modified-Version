@@ -141,8 +141,8 @@ window.addEventListener('load', function () {
               });
               this.document.getElementById("mychartlabel2").innerText = "Number of sold products in each category";
           }
-        else if(userData.userRole == "admin")
-          {
+        else if(userData.userRole == "admin") {
+
               let totalProducts = JSON.parse(this.localStorage.getItem('products'))
                                       .filter((product) => product.quantity > 0);
 
