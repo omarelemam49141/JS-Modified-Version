@@ -43,6 +43,19 @@
           font-weight:bold ;
 
         }
+        .adminCards{
+            width: 200px; /* Adjust the width as needed */
+            text-align: center;
+            padding: 20px;
+            margin: 20px auto; /* Center the card */
+            background-color: #f8f9fa; /* Change the background color as needed */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .adminCards .card-body {
+            font-size: 24px; /* Adjust the font size as needed */
+        }
+        
     </style>
   </style>
   <script src="js/profile.js" type="module"></script>
@@ -88,7 +101,23 @@
                         <a class="btn btn-outline-primary" id="backBtn">Back</a> 
                     </div>
                 </div>
+
+                
         </form>
+        <!-- <div class="card adminCards col-6 justify-content-center">
+          <div class="card-header" id="adminCard1-header">
+          </div>
+          <div class="card-body" id="adminCard1">
+          </div>
+        </div>
+        
+        <div class="card adminCards col-5 justify-content-center">
+          <div class="card-header" id="adminCard2-header">
+          </div>
+          <div class="card-body" id="adminCard2">
+          </div>
+        </div>
+         -->
         <div class="my-2 justify-content-center col-12 col-md-8">
           <canvas id="myChart1"></canvas>
           <label id="mychartlabel1"></label>

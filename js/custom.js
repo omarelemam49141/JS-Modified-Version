@@ -9,6 +9,7 @@ import {Product} from "./classes.js"
 // getYear();
 //Product class function
 let products = [];
+// if(!JSON.parse(localStorage.getItem("products"))||JSON.parse(localStorage.getItem("products")).length == 0) {
 if(!JSON.parse(localStorage.getItem("products"))||JSON.parse(localStorage.getItem("products")).length == 0) {
    products = [
       new Product (1, "Men's Shirt", "Jewellery", "Omar1", 100, 50, ["../images/1.jpeg"], 200, "any descroiption", ["Black", "Red", "White"]),

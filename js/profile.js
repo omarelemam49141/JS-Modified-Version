@@ -9,7 +9,7 @@ window.addEventListener('load', function () {
           history.back();
         })
 
-      let userData = JSON.parse(userDataString);
+      var userData = JSON.parse(userDataString);
       if(userData.userGender == "Male")
       {
           this.document.getElementById("profileImage").src = "images/male.jpeg";
@@ -50,9 +50,9 @@ window.addEventListener('load', function () {
           validationMessage.innerText = '';
 
           const isEmailValid = isValidEmail(updatedUserData.email, emailMessage);
+          const isEmailDuplicated = isDuplicatedEmail(updatedUserData.email,emailMessage);
           const isPasswordValid = isValidPassword(updatedUserData.password, passwordMessage);
-
-          if (!isEmailValid || !isPasswordValid) {
+          if (!isEmailValid || isEmailDuplicated ||!isPasswordValid) {
             document.getElementById('email').value = updatedUserData.email || '';
             document.getElementById('password').value = updatedUserData.password || '';
             setTimeout(() => {
@@ -141,7 +141,57 @@ window.addEventListener('load', function () {
               });
               this.document.getElementById("mychartlabel2").innerText = "Number of sold products in each category";
           }
-        }
+        else if(userData.userRole == "admin") {
+
+              let totalProducts = JSON.parse(this.localStorage.getItem('products'))
+                                      .filter((product) => product.quantity > 0);
+
+              
+             let totalProductsOutOfStocks = JSON.parse(this.localStorage.getItem('products'))
+                                               .filter((product) => product.quantity == 0);
+
+              // this.document.getElementById("adminCard1").innerText = totalProducts.length;
+              // this.document.getElementById("adminCard1-header").innerText = "total products";
+              
+              // this.document.getElementById("adminCard2").innerText = totalProductsOutOfStocks.length;
+              // this.document.getElementById("adminCard2-header").innerText = "total outofstocs";
+
+              var SoldProductsInEachCategory=[];
+              var colors=[];
+              for(var i=0; i<categories.length; i++)
+              {
+                SoldProductsInEachCategory[i]=0;
+                colors[i] = `rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`;
+                totalProducts.forEach(product =>
+                {
+                    if(product.category == categories[i])
+                      SoldProductsInEachCategory[i]+=product.quantity_sold;
+                });  
+              }
+
+              const createdChart1 = document.getElementById("myChart2");
+              new Chart(createdChart1, {type: 'pie',
+                data: {
+                  labels: categories,
+                  datasets: [{
+                    label: 'Number of sold products in each category',
+                    data: SoldProductsInEachCategory,
+                    backgroundColor:colors,
+                    hoverOffset: 4
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+              this.document.getElementById("mychartlabel2").innerText = "Number of sold products in each category";
+          }
+        }//end of admin charts
  });//end of load
 
 // Function to validate first name and last name
@@ -170,11 +220,32 @@ function isValidEmail(email, messageElement) {
     messageElement.innerText = `Invalid email format. Make sure it contains "@" and a dot (.) after "@" and it accepts only characters and digits(e.g., example@example.com).`;
     return false;
   }
-
   // Validation passed
   return true;
 }
 
+function isDuplicatedEmail(email, messageElement)
+{  
+  var loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"))||'';
+  var usersArray = JSON.parse(localStorage.getItem('users')) || [];
+  var emailExists = usersArray.some(user => {
+        if(user.userID == loggedInUser.userID)
+        {
+          return false;
+        }
+        else
+        {
+          return user.userEmail.toLowerCase() === email.toLowerCase();   
+        }
+  }) ;
+  if(emailExists)
+  {
+    messageElement.innerText = `This email is already exists`;
+    return true;
+  }
+  //email not duplicated
+  return false;
+}
 // Function to validate password
 function isValidPassword(password, messageElement) {
   // Password must be at least eight characters long and at most 20 characters
