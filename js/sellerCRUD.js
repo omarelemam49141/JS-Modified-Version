@@ -391,17 +391,7 @@ $('#addressForm').submit(function (event) {
     }
 });
 
-// function validateImage() {
-//     var fileName = img1.value.toLowerCase();
 
-//     if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
-//         Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
-//         img1.value = '';
-//         return false;
-//     } else {
-//         return true;
-//     }
-// }
 
 
 
