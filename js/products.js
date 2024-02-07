@@ -57,6 +57,21 @@ function filterAll(e)
             //check if there is no checkbox is checked then display all products
             if(checkedSellersInputs.length == 0)
             {
+                //filter the products to get the products which seller exists within the checkedSellers array
+                if (filter != "All") { //category selected + seller selected
+                    if(price != -1) { //category selected + price selected 
+                        filteredProducts = products.filter(product => product.category == filter && products.price < price);
+                    } else { //category selected
+                        filteredProducts = products.filter(product => product.category == filter);
+                    }
+                } else { //seller selected
+                    if(price != -1) { //price selected + seller selected
+                        filteredProducts = products.filter(product => product.price < price);
+                    } else { //no filter
+                        filteredProducts = products;
+                    }
+                    
+                }
                 if(price!=-1) { //if no seller filter but there is price filter
                     filteredProducts = products.filter(product=>product.price < price);
                 } else {
@@ -192,6 +207,7 @@ window.addEventListener("load", function () {
 
                 if (e.target.innerHTML == "All") {//no category is selected
                     if (price != "any" && price != "$$") { //the range price is selected
+                        price = Number(price.substring(0, price.indexOf("$")-1));
                         if(checkedSellers.length != 0) { //the sellers filter is selected
                             filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName));
                         } else { //no seller or category is selected (only price)
@@ -206,6 +222,7 @@ window.addEventListener("load", function () {
                     }
                 } else {//category is selected
                     if (price != "any" && price != "$$") { //the range price and category are selected
+                        price = Number(price.substring(0, price.indexOf("$")-1));
                         if(checkedSellers.length != 0) { //the sellers filter and the category and the price are selected
                             filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName) && product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
                         } else { //category and price are selected
@@ -218,8 +235,6 @@ window.addEventListener("load", function () {
                             filteredProducts = allProductsFromLocalStorage.filter(product => product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
                         }
                     }
-                    //Making the new products list
-                    allFilterProductsCards = GetProducts(filteredProducts.length, filteredProducts);
                 }
 
                 var product_Id;
@@ -229,7 +244,6 @@ window.addEventListener("load", function () {
                     for (var i = 0; i < addCartLink.length; i++) {
                         addCartLink[i].addEventListener("click", function (event) {
                             event.preventDefault();
-                            console.log(event.target);
                             product_Id = parseInt(event.target.parentElement.parentElement.parentElement.parentElement.classList[3].split('=')[1]);
                             addToCart(product_Id);
             
