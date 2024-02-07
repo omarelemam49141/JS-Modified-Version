@@ -131,7 +131,6 @@ function filterAll(e)
 
 function searchProductsByName(productName) {
     //filter the array according to the name
-
     let searchedArr = products.filter(function (product) {
         if (filter != "All") {
             //if the user checked the checkboxes then filter the products by seller name and category and the searched input
@@ -207,7 +206,8 @@ window.addEventListener("load", function () {
 
                 if (e.target.innerHTML == "All") {//no category is selected
                     if (price != "any" && price != "$$") { //the range price is selected
-                        price = Number(price.substring(0, price.indexOf("$")-1));
+                        price = Number(price.substring(0, price.indexOf("$")));
+                        
                         if(checkedSellers.length != 0) { //the sellers filter is selected
                             filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName));
                         } else { //no seller or category is selected (only price)
@@ -222,7 +222,8 @@ window.addEventListener("load", function () {
                     }
                 } else {//category is selected
                     if (price != "any" && price != "$$") { //the range price and category are selected
-                        price = Number(price.substring(0, price.indexOf("$")-1));
+                        price = Number(price.substring(0, price.indexOf("$")));
+                        console.log(price);
                         if(checkedSellers.length != 0) { //the sellers filter and the category and the price are selected
                             filteredProducts = allProductsFromLocalStorage.filter(product=>product.price < Number(price) && checkedSellers.includes(product.sellerName) && product.category.toLowerCase() == e.target.innerHTML.toLowerCase());
                         } else { //category and price are selected

@@ -1,17 +1,16 @@
 import { addToCart, iconCartSpan } from "./addtoCart.js";
 import { renderingNavBar, LogOut } from "./general-methods.js";
 let iconAddToCart;
-    let cart;
+let cart;
 
 // form-control btn btn-warning fa fa-shopping-cart iconAddToCart
 //////////////////////////////////////////////////////////////////////////////////
 if(!localStorage.getItem("loggedInUser") || (localStorage.getItem("loggedInUser") && JSON.parse(localStorage.getItem("loggedInUser")).userRole == "customer")) {
-    iconAddToCart = document.querySelectorAll(".iconAddToCart ");
-    console.log(iconAddToCart);
+    iconAddToCart = document.querySelectorAll(".iconAddToCart");
     if (JSON.parse(localStorage.getItem('cart'))) {
         cart = JSON.parse(localStorage.getItem('cart'));
     } else {
-        iconCartSpan.innerText = cart.length;
+        iconCartSpan.innerText = 0;
     }
 } 
 

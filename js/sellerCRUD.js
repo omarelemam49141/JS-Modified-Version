@@ -61,6 +61,8 @@ var table_headings, table_rows;
 let cart;
 if (localStorage.getItem("cart")) {
     cart = JSON.parse(localStorage.getItem("cart"));
+} else {
+    cart = [];
 }
 // Function to update local storage with an array of products
 function updateLocalStorage(arrOfproduct) {
@@ -354,7 +356,7 @@ function populateFormWithProductData(data) {
         <label>Images</label>
         <small id="imagesMessage" class="form-text  text-danger"></small>
         <input class="form-control" required type="file" name="images" id="images" onchange="console.log(this.value)">
-        <img class="img-fluid" src="${data.images[0]}" alt="">
+        <img class="img-fluid w-25 " src="${data.images[0]}" alt="">
     </div>
 
     <div class="form-group">
@@ -390,18 +392,6 @@ $('#addressForm').submit(function (event) {
         Add();
     }
 });
-
-function validateImage() {
-    var fileName = img1.value.toLowerCase();
-
-    if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
-        Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
-        img1.value = '';
-        return false;
-    } else {
-        return true;
-    }
-}
 
 
 

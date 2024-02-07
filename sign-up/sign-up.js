@@ -21,7 +21,10 @@ window.addEventListener("load", function () {
 
 function showValidationMessages(validationMessages) {
     validationMessages.forEach(mssg => {
-        console.log(mssg)
+        console.log(mssg);
+        if(mssg == "Passwords do not match.") {
+            document.querySelector("#confirmMessage").innerHTML = mssg;
+        }
     });
 }
 
