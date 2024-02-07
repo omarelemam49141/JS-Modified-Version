@@ -3,13 +3,17 @@ import { renderingNavBar, LogOut } from "./general-methods.js";
 
 // form-control btn btn-warning fa fa-shopping-cart iconAddToCart
 //////////////////////////////////////////////////////////////////////////////////
-let iconAddToCart = document.querySelectorAll(".iconAddToCart ");
-console.log(iconAddToCart);
-if (JSON.parse(localStorage.getItem('cart'))) {
-    let cart = JSON.parse(localStorage.getItem('cart'));
-} else {
-    iconCartSpan.innerText = cart.length;
-}
+if(!localStorage.getItem("loggedInUser") || (localStorage.getItem("loggedInUser") && JSON.parse(localStorage.getItem("loggedInUser")).userRole == "customer")) {
+    let iconAddToCart = document.querySelectorAll(".iconAddToCart ");
+    let cart;
+    console.log(iconAddToCart);
+    if (JSON.parse(localStorage.getItem('cart'))) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    } else {
+        iconCartSpan.innerText = cart.length;
+    }
+} 
+
 
 
 window.addEventListener("load", function () {

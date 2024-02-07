@@ -9,7 +9,6 @@ export function updateLocalStorage(key, value)
 export function LogOut() {
     document.getElementById("user-DropDown").addEventListener("click", function (e) {
         if (e.target.id == "logOut") {
-            debugger
             //make a new variable
             let newusersCarts;
             //get the loggedInUser
