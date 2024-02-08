@@ -64,10 +64,20 @@ window.addEventListener("load", function () {
                 createOrder(userAddress);
                 clearCart();
             } else {
-                alert('Please Fill the Address and Save it');
+                swal({
+                    title: "Warning!",
+                    text: "Please Fill the Address and Save it",
+                    icon: "warning",
+                    button: "Ok"
+                });
             }
         } else {
-            alert('Please Write a valid Number');
+            swal({
+                title: "Warning!",
+                text: "Please Write a valid Number",
+                icon: "warning",
+                button: "Ok"
+            });
         }
     })
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +145,12 @@ window.addEventListener("load", function () {
 
             localStorage.setItem("address", JSON.stringify(address));
         } else {
-            alert('Please Write a valid Number');
+            swal({
+                title: "Warning!",
+                text: "Please Write a valid Number",
+                icon: "warning",
+                button: "Ok"
+            });
         }
     });
 
