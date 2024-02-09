@@ -54,7 +54,8 @@ export function loadCustomerCart() {
     //get all users' carts
     let usersCarts = JSON.parse(localStorage.getItem("usersCarts")) || [];
     //get the loggedInUser cart if it exists
-    let loggedInUserCart = usersCarts.cartsArr.filter(cart=>cart.customerID == loggedInUserId)[0];
+    let usersCartsArray = usersCarts.cartsArr || [];
+    let loggedInUserCart = usersCartsArray.filter(cart=>cart.customerID == loggedInUserId)[0];
     //set the cart in the local storage with the loggedInUserCart
     if(loggedInUserCart) {
         localStorage.setItem("cart", JSON.stringify(loggedInUserCart.cart));
