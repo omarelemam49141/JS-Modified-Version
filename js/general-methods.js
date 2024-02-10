@@ -72,7 +72,9 @@ export function getUserOrder() {
                 if(ele.product_id!=usercar[0].cart[i].product_id){
                     usercar[0].cart.push(ele);
                 }
+                while(usercar[0].cart[i+1]){
                 i++;
+            }
             })
         }
 
