@@ -66,10 +66,14 @@ window.addEventListener("load", function () {
     containerDivCartIsEmpty.append(btnStratShopping);
 
 
-    if (localStorage.getItem("cart") != null) {
+    if (localStorage.getItem("cart") != null || localStorage.getItem("noUserCart") != null) {
         //check if the loggedinuser is the admin or seller so don't perform the following
         if (!(loggedInUser && (loggedInUser.userRole == "admin" || loggedInUser.userRole == "seller"))) {
-            arrCart = JSON.parse(localStorage.getItem("cart"));
+            if (loggedInUser) {
+                arrCart = JSON.parse(localStorage.getItem("cart")) || [];
+            } else {
+                arrCart = JSON.parse(localStorage.getItem("noUserCart")) || [];
+            }
             listCartAsHTML();
         }
     }
@@ -135,7 +139,6 @@ if (localStorage.getItem("loggedInUser")) {
 }
 
 function listCartAsHTML() {
-
     let totalQuantity = 0;
     let total = 0;
     totalPrice.innerHTML = "0"
@@ -307,15 +310,18 @@ function hideCart() {
 }
 
 export function clearCart() {
+
     arrCart = [];
-    // newusersCarts = new carts();
-    let allOrders = JSON.parse(localStorage.getItem("usersCarts")) || [];
-    let indexOfcar = allOrders["cartsArr"].findIndex((ele) => {
-        return ele["customerID"] == loggedInUser.userID;
-    })
-    allOrders["cartsArr"].splice(indexOfcar, 1);
-    let x={cartsArr:allOrders["cartsArr"]}
-    localStorage.setItem("usersCarts",JSON.stringify(x))
+    if (loggedInUser) {
+        let allOrders = JSON.parse(localStorage.getItem("usersCarts")) || [];
+        let indexOfcar = allOrders["cartsArr"].findIndex((ele) => {
+            return ele["customerID"] == loggedInUser.userID;
+        })
+        allOrders["cartsArr"].splice(indexOfcar, 1);
+        let x = { cartsArr: allOrders["cartsArr"] }
+        localStorage.setItem("usersCarts", JSON.stringify(x))
+
+    }
 
 
     totalPrice.innerHTML = "0"
@@ -352,7 +358,6 @@ window.addEventListener("load", function () {
 
 var cnt = 0;
 export const addToCart = (product_id, seller, quantity = 1, color = "White") => {
-
     //findindex fun return index of ele if it extist in arr else if rturn -1;
     let positionThisProductInCart = arrCart.findIndex((value) => value.product_id == product_id);
     let productSeller;
@@ -403,9 +408,18 @@ export const addToCart = (product_id, seller, quantity = 1, color = "White") => 
 }
 
 export const addCartToMemory = () => {
-    localStorage.setItem('cart', JSON.stringify(arrCart));
+
+    if (loggedInUser) {
+
+        localStorage.setItem('cart', JSON.stringify(arrCart));
+    } else {
+        localStorage.setItem('noUserCart', JSON.stringify(arrCart));
+
+    }
 }
 const addCartToHTML = () => {
+
+
     listCartHTML.innerHTML = '';
 
     if (arrCart.length > 0) {
@@ -471,7 +485,6 @@ const changeQuantityCart = (product_id, type) => {
 // fun delete&update 
 const updateCart = (itemDeleted) => {
     let positionItemInProduct = products.findIndex((value) => value.productId == itemDeleted);
-
     var containerDeletedItem = document.querySelectorAll(".cart-item");
     Swal.fire({
         title: `Do you really want to remove  ${products[positionItemInProduct].productName} from cart? `,

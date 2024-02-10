@@ -1,4 +1,5 @@
 import { users } from "../js/classes.js";
+import { getUserOrder } from "../js/general-methods.js";
 
 let usersArray = [];
 
@@ -57,9 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
             let user = checkCredentials(userEmail.value, password.value);
             if (user) {
-
                 localStorage.setItem("loggedInUser",JSON.stringify(user));
-                    
+                getUserOrder();
                 window.location.assign(`../${user.userRole}.html`);           
             }
             else 
