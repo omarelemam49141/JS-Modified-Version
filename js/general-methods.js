@@ -67,12 +67,14 @@ export function getUserOrder() {
         })
         let NoUserCart = JSON.parse(localStorage.getItem("noUserCart"));
         let i=0;
-        NoUserCart.forEach((ele) => {
-            if(ele.product_id!=usercar[0].cart[i].product_id){
-                usercar[0].cart.push(ele);
-            }
-            i++;
-             })
+        if (NoUserCart) {
+            NoUserCart.forEach((ele) => {
+                if(ele.product_id!=usercar[0].cart[i].product_id){
+                    usercar[0].cart.push(ele);
+                }
+                i++;
+            })
+        }
 
         let customerCart = new userCart(loggedInUser.userID,usercar[0].cart);
 
