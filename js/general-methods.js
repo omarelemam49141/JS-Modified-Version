@@ -71,7 +71,9 @@ export function getUserOrder() {
             if(ele.product_id!=usercar[0].cart[i].product_id){
                 usercar[0].cart.push(ele);
             }
-            i++;
+            while(usercar[0].cart[i+1]){
+                i++;
+            }
              })
 
         let customerCart = new userCart(loggedInUser.userID,usercar[0].cart);
