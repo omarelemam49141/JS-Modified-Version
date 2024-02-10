@@ -143,18 +143,41 @@ window.addEventListener('load', function () {
           }
         else if(userData.userRole == "admin") {
 
-              let totalProducts = JSON.parse(this.localStorage.getItem('products'))
-                                      .filter((product) => product.quantity > 0);
+              let products = JSON.parse(localStorage.getItem('products'));
+              let sellers = JSON.parse(localStorage.getItem('users'))
+                                .filter(user => user.yserRole == "seller");
+                                
+              let sellersVSproductsNo = [];
 
-              
-             let totalProductsOutOfStocks = JSON.parse(this.localStorage.getItem('products'))
-                                               .filter((product) => product.quantity == 0);
+              for(let i=0; i<sellers.length;i++)
+              {
+                sellersVSproductsNo[i]=0;
+                for(let j=0; i<products.length; j++)
+                {
+                  if(products[i].sellerName == sellers[i])
+                      sellersVSproductsNo[i] += products[i].quantity_sold;
+                }
+              }
 
-              // this.document.getElementById("adminCard1").innerText = totalProducts.length;
-              // this.document.getElementById("adminCard1-header").innerText = "total products";
-              
-              // this.document.getElementById("adminCard2").innerText = totalProductsOutOfStocks.length;
-              // this.document.getElementById("adminCard2-header").innerText = "total outofstocs";
+              const createdChart1 = document.getElementById("myChart1");
+              new Chart(createdChart1, {type: 'bar',
+                data: {
+                  labels:sellers.slice(0,10),
+                  datasets: [{
+                    label: 'Best Sellers',
+                    data: sellersVSproductsNo.slice(0,10),
+                    borderWidth: 5
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
 
               var SoldProductsInEachCategory=[];
               var colors=[];
@@ -162,15 +185,15 @@ window.addEventListener('load', function () {
               {
                 SoldProductsInEachCategory[i]=0;
                 colors[i] = `rgb(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)})`;
-                totalProducts.forEach(product =>
+                products.forEach(product =>
                 {
                     if(product.category == categories[i])
                       SoldProductsInEachCategory[i]+=product.quantity_sold;
                 });  
               }
 
-              const createdChart1 = document.getElementById("myChart2");
-              new Chart(createdChart1, {type: 'pie',
+              const createdChart2 = document.getElementById("myChart2");
+              new Chart(createdChart2, {type: 'pie',
                 data: {
                   labels: categories,
                   datasets: [{
