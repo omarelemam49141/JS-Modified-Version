@@ -7,6 +7,7 @@ export function updateLocalStorage(key, value)
 
 //logout
 export function LogOut() {
+    
     document.getElementById("user-DropDown").addEventListener("click", function (e) {
         if (e.target.id == "logOut") {
             //make a new variable
