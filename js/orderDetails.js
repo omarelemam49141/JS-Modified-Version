@@ -15,6 +15,8 @@ $(function () {
     const orders = JSON.parse(localStorage.getItem("orders"));
     const order = orders.find(x => x.id == orderId);//get the order depend on the id in search bar
 
+    const products = JSON.parse(localStorage.getItem("products"))
+
     var userCheck = localStorage.getItem("loggedInUser");// to check who is in 
 
     if (userCheck != null || userCheck != undefined) {
@@ -51,13 +53,51 @@ $(function () {
 
         }
 
-       //order information
+        else if (loggedInUser.userRole == 'customer') {
+
+            if (order.orderStatus == StatusEnum.New) {
+                document.querySelector("#deleteOrder").style.display = "block";
+            }
+            document.querySelector("#deleteOrder").addEventListener("click", function () {
+
+                swal({
+                    title: "Warning!",
+                    text: "the order will be deleted ",
+                    icon: "warning",
+                    button: "Ok"
+
+                }).then(()=> window.location.href = "orderHistory.html");
+                order.items.forEach(item => {
+                    products.forEach(pro => {
+                        if (pro.productId == item.productId) {
+                            pro.quantity = Number(pro.quantity) + Number(item.quantity);
+
+                        }
+                    })
+                })
+                localStorage.setItem("products", JSON.stringify(products));
+                //to find the index of order
+                let orderIndex = orders.findIndex(ord => Number(orderId) == Number(ord.id));
+                orders.splice(orderIndex, 1);
+                localStorage.setItem("orders", JSON.stringify(orders));
+               // $("section")[0].innerHTML = '';
+                
+                  //history.back();
+            });
+
+        }
+
+
+
+
+        //order information
+
         $('#id').text('#' + order.id);
         $('#date').text('Date: ' + order.date);
         $("#status").text(finalOrderStatus);
         $("#seller").text('Seller:  ' + order.seller);
 
-       // items information         
+        // items information         
         targetItems.forEach(item => {
             var createdtr = document.createElement("tr");//<tr>
             createdtr.innerHTML =
@@ -82,7 +122,7 @@ $(function () {
 
         $("#shipping").text(order.shipping + '$');// it is the same 
 
-     // get total price of items for the seller  
+        // get total price of items for the seller  
         if (loggedInUser.userRole == 'seller') {
             var orderSubTotalPrice = 0;
             targetItems.forEach(item => { // get the price from each item in seller"s order
@@ -98,7 +138,7 @@ $(function () {
             $("#total").text(order.totalPrice + '$');// total price for the order from checkout
             $("#subtotal").text((order.totalPrice - order.shipping) + '$');
         }
-          // information about the client address
+        // information about the client address
         const completeAddress = `${order.clientName}<br>${order.clientAddress.address}<br>${order.clientAddress.additionalInformation ? order.clientAddress.additionalInformation + "<br>" : ""}${order.clientAddress.region}<br>Phone: ${order.clientAddress.phoneNumber}`;
         $("#address").html(completeAddress);
 
