@@ -1,4 +1,5 @@
 import { users } from "../js/classes.js";
+import { getUserOrder } from "../js/general-methods.js";
 
 let usersArray = [];
 
@@ -57,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         
             let user = checkCredentials(userEmail.value, password.value);
             if (user) {
-
                 localStorage.setItem("loggedInUser",JSON.stringify(user));
+                getUserOrder();
                 // handel wishlist
                 let wishlists = JSON.parse(localStorage.getItem("wishlists"));
                 let loggedInWishlist;
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     loggedInWishlist = {"userID" : user.userID ,"products":[] };
             
 
-                let userWishlist = JSON.parse(localStorage.getItem("userWishlist"));
+                let userWishlist = JSON.parse(sessionStorage.getItem("userWishlist"));
                 if(loggedInWishlist["products"].length != 0)
                 {
 
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 wishlists[wishlists.length] = loggedInWishlist;
                 localStorage.setItem("wishlists",JSON.stringify(wishlists));
                 
-                localStorage.setItem("userWishlist",JSON.stringify([]));
+                // sessionStorage.setItem("userWishlist",JSON.stringify([]));
                 window.location.assign(`../${user.userRole}.html`);           
             }
             else 

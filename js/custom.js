@@ -29,11 +29,11 @@ if(!JSON.parse(localStorage.getItem("products"))||JSON.parse(localStorage.getIte
 
 
 // Check if the array already exists in local storage
-let userWishlist = JSON.parse(localStorage.getItem('userWishlist'));
+let userWishlist = JSON.parse(sessionStorage.getItem('userWishlist'));
 // If the array doesn't exist, create an empty array
 if (!userWishlist || !Array.isArray(userWishlist)) {
     userWishlist = [];
-    localStorage.setItem('userWishlist', JSON.stringify(userWishlist));
+    sessionStorage.setItem('userWishlist', JSON.stringify(userWishlist));
 }
 
 let wishlists = JSON.parse(localStorage.getItem('wishlists'));    

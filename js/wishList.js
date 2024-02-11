@@ -1,20 +1,28 @@
 window.addEventListener('load',function(){
 
-    console.log(this.document.getElementsByClassName("iconHeart"));
-
-    var hearts = this.document.getElementsByClassName("iconHeart");
-    
-    for(let i=1 ; i<hearts.length; i++)
+    // console.log(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
+    if(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
     {
-        console.log(hearts[i].parentElement);
-        hearts[i].parentElement.addEventListener("click",function(event){
-            event.preventDefault();
-            const productId = document.getElementsByClassName("iconHeart")[i].parentElement.getAttribute("data-id");
-            console.log(productId);
-            AddToWishlist(productId);
-         });
+        // wishlist page
+
+        // render products
+        let wishlistProducts = GetProducts(); 
+        
+        // remove instead heart
+
     }
-})
+    else{
+        var hearts = this.document.getElementsByClassName("iconHeart");
+        for(let i=1 ; i<hearts.length; i++)
+        {
+                hearts[i].parentElement.addEventListener("click",function(event){
+                event.preventDefault();
+                const productId = document.getElementsByClassName("iconHeart")[i].parentElement.getAttribute("data-id");
+                AddToWishlist(productId);
+            });
+        }
+    // }
+}});
 
 
 
@@ -23,20 +31,17 @@ export function AddToWishlist(productId)
     console.log("add to wishlist");
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser")); 
     let Wishlists = JSON.parse(localStorage.getItem("wishlists"));
-    let userWishlist = JSON.parse(localStorage.getItem('userWishlist'));
-    console.log(new Boolean(loggedInUser));
-    console.log(loggedInUser)
+    let userWishlist = JSON.parse(sessionStorage.getItem('userWishlist'));
     if(!loggedInUser)
     {
-        let productExists = JSON.parse(localStorage.getItem("userWishlist")).some((PID) => PID == productId);
+        let productExists = userWishlist.some((PID) => PID == productId);
         
         if(!productExists)
         {        
             // Add the number to the array
-            console.log(productId);
             userWishlist.push(productId);    
             // Update the array in local storage
-            localStorage.setItem('userWishlist', JSON.stringify(userWishlist));
+            sessionStorage.setItem('userWishlist', JSON.stringify(userWishlist));
         }
     }
     else if(loggedInUser.userRole == "customer")
@@ -44,47 +49,46 @@ export function AddToWishlist(productId)
 
         let loggedInWishlist = JSON.parse(localStorage.getItem("wishlists"))
                                 .filter((wl) => wl["userID"] == loggedInUser.userID)[0];
-        console.log(loggedInWishlist["products"]);
+        
         let indexOfProduct = loggedInWishlist["products"].indexOf(productId);
-        console.log(indexOfProduct);
         if(indexOfProduct == -1)
         {
             loggedInWishlist["products"][loggedInWishlist["products"].length] = productId;
             // loggedInWishlist.push(productId);
-            console.log(loggedInWishlist["products"]);
             Wishlists.splice(Wishlists.indexOf((wl) => wl["userID"] == loggedInUser.userID) ,1,loggedInWishlist);
-            console.log(Wishlists)
             localStorage.setItem("wishlists",JSON.stringify(Wishlists));   
         }
     }
-    console.log("wish list products" + getWishlistProducts());
+    console.log(getWishlistProducts())
 }
 
 export function removeFromWishlist(productId)
 {
     console.log("remove from wishlist");
-    const loggedInUser = JSON.parse(localStorage.getItem("LoggedInUser")); 
-    const sessionWishlist =JSON.parse(sessionStorage.getItem("sessionWishlist"));
-    const Wishlists = JSON.parse(localStorage.setItem("wishlists"));
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser")); 
+    let Wishlists = JSON.parse(localStorage.getItem("wishlists"));
+    let userWishlist = JSON.parse(sessionStorage.getItem('userWishlist'));
 
     if(! loggedInUser)
     {
-        let productExists = sessionWishlist.some((PID) => PID == productId);
+        let productExists = userWishlist.some((PID) => PID == productId);
         if(productExists)
-        {
-            sessionWishlist = sessionWishlist.filter(PID => PID != productId);
-            sessionStorage.setItem("sessionWishlist",sessionWishlist);
+        { 
+            userWishlist = userWishlist.filter(PID => PID !=productId);
+            sessionStorage.setItem("userWishlist",userWishlist);
         }
     }
     else if(loggedInUser.userRole == "customer")
     {
-        Wishlist = Wishlists.filter((wl) => wl.customerID == loggedInUser.userID)[0];
-        productExists = Wishlist.filter((PID) => PID == productId);
-        if(productExists)
+
+        let loggedInWishlist = JSON.parse(localStorage.getItem("wishlists"))
+                                .filter((wl) => wl["userID"] == loggedInUser.userID)[0];
+        let indexOfProduct = loggedInWishlist["products"].indexOf(productId);
+        if(indexOfProduct != -1)
         {
-            Wishlist.filter(PID => PID != productId);
-            Wishlists.splice(Wishlists.indexOf((wl) => wl.customerID == loggedInUser.userID) ,1,Wishlist);
-            localStorage.setItem("Wishlists",Wishlists);   
+            loggedInWishlist["products"] = loggedInWishlist["products"].filter(PID => PID != productId);
+            Wishlists.splice(Wishlists.indexOf((wl) => wl["userID"] == loggedInUser.userID) ,1,loggedInWishlist);
+            localStorage.setItem("wishlists",JSON.stringify(Wishlists));   
         }
     }
 }
@@ -92,16 +96,21 @@ export function removeFromWishlist(productId)
 export function getWishlistProducts()
 {
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    console.log(loggedInUser);
     let wishlists = JSON.parse(localStorage.getItem("wishlists"));
-    console.log(wishlists);
-    let userWishlist =JSON.parse(localStorage.getItem("userWishlist"));
-    console.log(userWishlist);
+    let userWishlist =JSON.parse(sessionStorage.getItem("userWishlist"));
+    let products = JSON.parse(localStorage.getItem("products"));
+    let wishlistProducts;
+    
+
     if(loggedInUser)
     {
-        let loggedInWihslist = wishlists.filter((wl) => wl["userID"] == loggedInUser.userID);
-        return loggedInWihslist["products"];
-    }else{
-        return userWishlist;
+        let productsID = wishlists.filter((wl) => wl["userID"] == loggedInUser.userID)[0]["products"];
+        wishlistProducts = products.filter(product => productsID.indexOf(product.productId.toString()) != -1);
+        return wishlistProducts
+    }
+    else
+    {
+        wishlistProducts = products.filter(product => userWishlist.indexOf(product.productId.toString()) != -1);
+        return wishlistProducts;
     }
 }
