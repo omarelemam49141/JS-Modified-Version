@@ -91,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 wishlists[wishlists.length] = loggedInWishlist;
                 localStorage.setItem("wishlists",JSON.stringify(wishlists));
                 
-                // sessionStorage.setItem("userWishlist",JSON.stringify([]));
                 window.location.assign(`../${user.userRole}.html`);           
             }
             else 
