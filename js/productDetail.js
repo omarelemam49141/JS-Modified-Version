@@ -10,7 +10,9 @@ if(!localStorage.getItem("loggedInUser") || (localStorage.getItem("loggedInUser"
     if (JSON.parse(localStorage.getItem('cart'))) {
         cart = JSON.parse(localStorage.getItem('cart'));
     } else {
-        iconCartSpan.innerText = 0;
+        if (iconCartSpan) {
+            iconCartSpan.innerText = 0;
+        }
     }
 } 
 
@@ -29,7 +31,7 @@ window.addEventListener("load", function () {
 
 
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if(loggedInUser.userRole !='customer'){
+    if(loggedInUser && loggedInUser.userRole !='customer'){
         document.querySelector(".in-stock").style.display = "none";     
     }
 
