@@ -1,28 +1,46 @@
+import { GetProducts } from "./custom.js";
+
 window.addEventListener('load',function(){
 
-    // console.log(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
     if(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
     {
-        // wishlist page
-
-        // render products
-        let wishlistProducts = GetProducts(); 
-        
-        // remove instead heart
+        let products = getWishlistProducts();
+        this.document.getElementById("products-Landing").innerHTML =  GetProducts(products.length,products);
+        var links = this.document.querySelectorAll("a[data-id]");
+        for(let i=0 ; i<links.length; i++)
+        {
+                links[i].setAttribute("href",this.location.href);
+                links[i].innerHTML = "Remove";
+                links[i].addEventListener("click",function(event){
+                    const productId =links[i].getAttribute("data-id");
+                    console.log(productId);
+                    removeFromWishlist(productId);
+            });
+        }
 
     }
     else{
-        var hearts = this.document.getElementsByClassName("iconHeart");
-        for(let i=1 ; i<hearts.length; i++)
+        var links = this.document.querySelectorAll("a[data-id]");
+        for(let i=0 ; i<links.length; i++)
         {
-                hearts[i].parentElement.addEventListener("click",function(event){
-                event.preventDefault();
-                const productId = document.getElementsByClassName("iconHeart")[i].parentElement.getAttribute("data-id");
-                AddToWishlist(productId);
+                links[i].addEventListener("click",function(event){
+                    event.preventDefault();
+                    const productId = links[i].getAttribute("data-id");
+                    AddToWishlist(productId);
             });
         }
-    // }
-}});
+
+        // var hearts = this.document.getElementsByClassName("iconHeart");
+        // for(let i=1 ; i<hearts.length; i++)
+        // {
+        //         hearts[i].parentElement.addEventListener("click",function(event){
+        //         event.preventDefault();
+        //         const productId = document.getElementsByClassName("iconHeart")[i].parentElement.getAttribute("data-id");
+        //         AddToWishlist(productId);
+        //     });
+        // }
+     }
+});
 
 
 
@@ -38,10 +56,12 @@ export function AddToWishlist(productId)
         
         if(!productExists)
         {        
-            // Add the number to the array
             userWishlist.push(productId);    
-            // Update the array in local storage
             sessionStorage.setItem('userWishlist', JSON.stringify(userWishlist));
+            // sweat laert
+        }
+        else{
+            //sweat alert
         }
     }
     else if(loggedInUser.userRole == "customer")
@@ -54,12 +74,14 @@ export function AddToWishlist(productId)
         if(indexOfProduct == -1)
         {
             loggedInWishlist["products"][loggedInWishlist["products"].length] = productId;
-            // loggedInWishlist.push(productId);
             Wishlists.splice(Wishlists.indexOf((wl) => wl["userID"] == loggedInUser.userID) ,1,loggedInWishlist);
             localStorage.setItem("wishlists",JSON.stringify(Wishlists));   
+            // sweat alert
+        }
+        else{
+            //sweat alert
         }
     }
-    console.log(getWishlistProducts())
 }
 
 export function removeFromWishlist(productId)
@@ -71,11 +93,12 @@ export function removeFromWishlist(productId)
 
     if(! loggedInUser)
     {
+        console.log("not logged in");
         let productExists = userWishlist.some((PID) => PID == productId);
         if(productExists)
         { 
             userWishlist = userWishlist.filter(PID => PID !=productId);
-            sessionStorage.setItem("userWishlist",userWishlist);
+            sessionStorage.setItem("userWishlist",JSON.stringify(userWishlist));
         }
     }
     else if(loggedInUser.userRole == "customer")
