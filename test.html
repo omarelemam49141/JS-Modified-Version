@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+// Function to initialize or retrieve the array from local storage
+function initializeArray() {
+    // Check if the array already exists in local storage
+    let arr = JSON.parse(localStorage.getItem('myArray'));
+    
+    // If the array doesn't exist, create an empty array
+    if (!arr || !Array.isArray(arr)) {
+        arr = [];
+        localStorage.setItem('myArray', JSON.stringify(arr));
+    }
+    return arr;
+}
+// Function to add a number to the array and update local storage
+function addNumberToStorage(number) {
+    let arr = initializeArray();
+
+    // Add the number to the array
+    arr.push(number);
+    
+    // Update the array in local storage
+    localStorage.setItem('myArray', JSON.stringify(arr));
+}
+// Example usage
+addNumberToStorage(5); // Add number 5 to the array and store it in local storage
+addNumberToStorage(10); // Add number 10 to the array and store it in local storage
+addNumberToStorage(15); // Add number 15 to the array and store it in local storage
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
+

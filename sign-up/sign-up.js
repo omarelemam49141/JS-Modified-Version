@@ -88,7 +88,16 @@ function handleFormSubmit(event) {
 
         localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-      
+        // new wishlist
+        let loggedInUserWishlist = {"userID" :user.userID ,"products" :[]};    
+        let userWishlist = JSON.parse(sessionStorage.getItem("userWishlist"));
+        loggedInUserWishlist["products"] = userWishlist;
+
+        let wishlists = JSON.parse(localStorage.getItem("wishlists"));
+        wishlists[wishlists.length] = loggedInUserWishlist;
+                
+        localStorage.setItem("wishlists",JSON.stringify(wishlists));
+        //////
         getNewUserOrder();
         window.location.href = (`../${role}.html`);
 
