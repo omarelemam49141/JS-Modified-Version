@@ -41,7 +41,6 @@ export function getNewUserOrder() {
     localStorage.removeItem("noUserCart");
 }
 export function getUserOrder() {
-    debugger;
     //make a new variable
     let newusersCarts;
     //get the loggedInUser
@@ -156,7 +155,7 @@ export function loadCustomerCart() {
 //Rendering the navbar according to the user role (customer, seller or admin)
 export function renderingNavBar() {
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (loggedInUser != null) {
+    if (loggedInUser) {
         if (loggedInUser.userRole == "admin") {
             document.querySelector(".header_section .container").innerHTML = `
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -170,7 +169,7 @@ export function renderingNavBar() {
 						<a class="nav-link" href="admin.html">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret">${loggedInUser.userName}</span></a>
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret" id="loggedInUser">${loggedInUser.userName}</span></a>
 						<ul class="dropdown-menu" id="user-DropDown">
 							<li><a href="profile.html">Profile</a></li>
 							<li><a href="usersCRUD.html">Users</a></li>
@@ -224,9 +223,6 @@ export function renderingNavBar() {
         <li><a href="sign-up/sign-up.html">Sign up</a></li>
         <li><a href="Login/login.html">Log in</a></li>
         `;
-
-
-
         //change the a href to the index page
         document.getElementById("homeLink").setAttribute("href", "index.html");
     }

@@ -1,7 +1,11 @@
 import { GetProducts } from "./custom.js";
+import { LogOut, renderingNavBar } from "./general-methods.js";
 
 window.addEventListener('load',function(){
-
+    
+        renderingNavBar();
+        LogOut();
+    
     if(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
     {
         let products = getWishlistProducts();
