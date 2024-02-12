@@ -181,7 +181,7 @@ function createOrder(userAddress) {
         const quantity = parseInt(item.find('.quantity').text().replace('quantity: ', ''), 10);
         const totalPrice = parseFloat(item.find('.orderItem-price').text().replace('price: ', '').replace('$', ''));
         const price = totalPrice / quantity;
-        const seller = item.find('.seller').text().replace('seller: ', '');
+        const seller = item.find('.seller').text().replace('seller: ', '').trim();
 
         items.push(new Item(productId, productName, image, option, quantity, price, totalPrice, seller, "New"));
     })

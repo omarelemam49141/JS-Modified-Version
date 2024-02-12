@@ -97,10 +97,13 @@
             <div class="card mb-4" style="margin: 3%;">
                 <div class="card-body">
                     <div class="mb-3 d-flex justify-content-between">
-                        <div>
+                        <div class="row">
+                           <div>
                             <span id="id" class="me-3"></span> &nbsp;&nbsp;
                             <span id="date" class="me-3"></span>&nbsp;&nbsp;
                             <span id="status" class="badge rounded-pill bg-info"></span>&nbsp;&nbsp;
+                           </div>
+                            <button type="button" class="btn btn-danger" id="deleteOrder" style=" display: none; margin-left: 30px; height:35px ; "> Delete</button></span>&nbsp;&nbsp;
                         </div>
                     </div>
                     <table class="table table-borderless">
@@ -240,6 +243,7 @@
     <!-- fontawesome -->
     <script src="js/all.min.js"></script>
     <!-- loader -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LLWL5N9CSM"></script>
     <script src="loader/dist/loader.js"></script>
 </body>

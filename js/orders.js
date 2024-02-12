@@ -1,5 +1,5 @@
 import { renderingNavBar, LogOut } from "./general-methods.js";
-import { Address ,Item ,Order , StatusEnum} from "./classes.js";
+import { Address, Item, Order, StatusEnum } from "./classes.js";
 
 let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 if (!loggedInUser) {
@@ -15,8 +15,8 @@ $(function () {
     GetOrders();
 });
 
+var orders;
 function GetOrders() {
-    var orders;
     var createdtr;
     var loggedInUser;
     var userCheck;
@@ -71,8 +71,8 @@ function GetOrders() {
             }
             // for seller
             else if (loggedInUser.userRole == 'seller') {
-                orders = orders.filter(order => order.items.some(item => item.seller.trim().toLowerCase() == loggedInUser.userName.toLowerCase()));//get orders dependon the items ofthe seller
-                orders.forEach(order => {
+                let sellerOrders = orders.filter(order => order.items.some(item => item.seller.trim().toLowerCase() == loggedInUser.userName.toLowerCase()));//get orders dependon the items ofthe seller
+                sellerOrders.forEach(order => {
                     createdtr = document.createElement("tr");//<tr></tr>
                     createdtr.innerHTML = `                         
                 <td>${order.id}</td>
@@ -80,7 +80,7 @@ function GetOrders() {
                 <td>${order.totalPrice}</td>
                 <td>
                 <select class="form-control status" data-ordid="${order.id}" >
-                 <option selected hidden >Choose Status</option>
+                 <option selected hidden >${order.orderStatus}</option>
                  <option>${StatusEnum.New}</option>
                  <option>${StatusEnum.InProgress}</option>
                  <option>${StatusEnum.Completed}</option>
@@ -88,42 +88,41 @@ function GetOrders() {
                 </td>
                 <td> <a href="orderDetails.html?orderId=${order.id}">View Details</a></td>`
                     $("tbody")[0].appendChild(createdtr);
+
+
+
                 });
 
-                // event on status changing 
-                $(".status").on("change", function () {
-                    const selectedStatus = this.value;
-                    let Completed = true;
-                    let New =true;
-                    const orderId = $(this).data("ordid");
-                    orders.forEach(order => {
-                        if (order.id === orderId) {
-                            order.items.forEach(item => {
-                                if (item.seller == loggedInUser.userName) {
-                                    item.itemStatus = selectedStatus;
-                                }
-                                
-                                if (item.itemStatus != StatusEnum.Completed) {
-                                    Completed = false;
-                                }
-                                if (item.itemStatus != StatusEnum.New){
-                                    New = false;
-                                }
-                            })
+                $('#search-div2').removeAttr('hidden');
+                // data depend on the Event
+                $('#input2').on('keyup', function () {
+                    // console.log(this.value);
+                    $("tbody")[0].innerHTML = '';
 
-                            if(Completed){
-                                order.orderStatus = StatusEnum.Completed;
-                            }else if(New){
-                                order.orderStatus = StatusEnum.New;
-                            }else{
-                                order.orderStatus = StatusEnum.InProgress;
-                            }
+                    sellerOrders.forEach(order => {
+                        if (order.orderStatus.toLowerCase().includes(this.value.toLowerCase()) || this.value == '') {
+                            createdtr = document.createElement("tr");//<tr>
+                            createdtr.innerHTML = `                         
+                                                <td>${order.id}</td>
+                                                <td>${order.date}</td>
+                                                <td>${order.totalPrice}</td>
+                                                <td>
+                                                    <select class="form-control status" data-ordid="${order.id}" >
+                                                    <option selected hidden >${order.orderStatus}</option>
+                                                    <option>${StatusEnum.New}</option>
+                                                    <option>${StatusEnum.InProgress}</option>
+                                                    <option>${StatusEnum.Completed}</option>
+                                                    </select>
+                                                    </td>
+                                                <td> <a href="orderDetails.html?orderId=${order.id}">View Details</a></td>`
+                            $("tbody")[0].appendChild(createdtr);
+
                         }
-                    });
-                    localStorage.setItem("orders", JSON.stringify(orders));
+                    })
 
+                    regestorOnClick(sellerOrders);
                 })
-
+                regestorOnClick(sellerOrders);
             }
         } else {
             $("tbody")[0].innerHTML = '<div><h2>No Data Yet</h2></div>';
@@ -132,4 +131,48 @@ function GetOrders() {
     else
         window.location.href = "Login/login.html";
 
+}
+
+function regestorOnClick(sellerOrders) {
+    // event on status changing 
+    $(".status").on("change", function () {
+        const selectedStatus = this.value;
+        let Completed = true;
+        let New = true;
+        const orderId = $(this).data("ordid");
+        sellerOrders.forEach(order => {
+            if (order.id === orderId) {
+                order.items.forEach(item => {
+                    if (item.seller == loggedInUser.userName) {
+                        item.itemStatus = selectedStatus;
+                    }
+
+                    if (item.itemStatus != StatusEnum.Completed) {
+                        Completed = false;
+                    }
+                    if (item.itemStatus != StatusEnum.New) {
+                        New = false;
+                    }
+                })
+
+                if (Completed) {
+                    order.orderStatus = StatusEnum.Completed;
+                } else if (New) {
+                    order.orderStatus = StatusEnum.New;
+                } else {
+                    order.orderStatus = StatusEnum.InProgress;
+                }
+            }
+        });
+
+        orders = orders.map(order => {
+            const sellerOrder = sellerOrders.find(sellerOrder => sellerOrder.id == order.id);
+            if (sellerOrder != null)
+                return sellerOrder;
+            else
+                return order;
+        })
+        localStorage.setItem("orders", JSON.stringify(orders));
+
+    })
 }
