@@ -95,7 +95,7 @@ export function getUserOrder() {
     }
 
     //delete the cart from the customer local storage
-    localStorage.removeItem("noUserCart");
+    // localStorage.removeItem("noUserCart");
 
 }
 
@@ -152,8 +152,10 @@ export function loadCustomerCart() {
     let usersCartsArray = usersCarts.cartsArr || [];
     let loggedInUserCart = usersCartsArray.filter(cart => cart.customerID == loggedInUserId)[0];
     //set the cart in the local storage with the loggedInUserCart
-    if (loggedInUserCart && loggedInUserCart.length > 0) {
+    if (loggedInUserCart) {
         localStorage.setItem("cart", JSON.stringify(loggedInUserCart.cart));
+    } else if(localStorage.getItem("noUserCart")) {
+        localStorage.setItem("cart", localStorage.getItem("noUserCart"))
     }
 }
 
