@@ -164,6 +164,7 @@ function regestorOnClick(sellerOrders) {
                 }
             }
         });
+        //
 
         orders = orders.map(order => {
             const sellerOrder = sellerOrders.find(sellerOrder => sellerOrder.id == order.id);
