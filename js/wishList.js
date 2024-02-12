@@ -4,8 +4,27 @@ import { LogOut, renderingNavBar } from "./general-methods.js";
 window.addEventListener('load',function(){
     
         renderingNavBar();
-        LogOut();
-    
+        LogOut();    
+
+    let loggedInUser = JSON.parse(this.localStorage.getItem("loggedInUser"));
+    // this.document.getElementById("wishlistCounter").style.backgroundColor = "red";
+    // this.document.getElementById("wishlistCounter").style.color = "white";
+    // this.document.getElementById("wishlistCounter").style.width = "10px";
+    // this.document.getElementById("wishlistCounter").style.height = "10px";
+    // this.document.getElementById("wishlistCounter").style.borderRadious = '50%';
+    if(!loggedInUser)
+    {
+        let userWishlist = JSON.parse(this.sessionStorage.getItem("userWishlist"))
+        this.document.getElementById("wishlistCounter").innerText = userWishlist.length;
+    }
+    else if(loggedInUser.userRole =="customer")
+    {
+        let wishlists = JSON.parse(this.localStorage.getItem("wishlists"));
+        let loggedInWishlist =wishlists .filter((wl) => wl["userID"] == loggedInUser.userID)[0]["products"];
+        this.document.getElementById("wishlistCounter").innerText = loggedInWishlist.length || 0;
+    }
+
+
     if(location.href.substr(location.href.lastIndexOf('/')+1) =="wishList.html")
     {
         let products = getWishlistProducts();
@@ -33,16 +52,6 @@ window.addEventListener('load',function(){
                     AddToWishlist(productId);
             });
         }
-
-        // var hearts = this.document.getElementsByClassName("iconHeart");
-        // for(let i=1 ; i<hearts.length; i++)
-        // {
-        //         hearts[i].parentElement.addEventListener("click",function(event){
-        //         event.preventDefault();
-        //         const productId = document.getElementsByClassName("iconHeart")[i].parentElement.getAttribute("data-id");
-        //         AddToWishlist(productId);
-        //     });
-        // }
      }
 });
 
@@ -63,9 +72,20 @@ export function AddToWishlist(productId)
             userWishlist.push(productId);    
             sessionStorage.setItem('userWishlist', JSON.stringify(userWishlist));
             // sweat laert
+            document.getElementsByClassName("addedSuccess")[0].style.display ='block';
+            setTimeout(function(){
+                document.getElementsByClassName("addedSuccess")[0].style.display ='none';
+            },2000);
+            document.getElementById("wishlistCounter").innerText =  userWishlist.length;
+        
         }
         else{
-            //sweat alert
+            document.getElementsByClassName("addedSuccess")[0].innerText ='Added Already!';
+            document.getElementsByClassName("addedSuccess")[0].style.display ='block';
+            setTimeout(function(){
+                document.getElementsByClassName("addedSuccess")[0].style.display ='none';
+            document.getElementsByClassName("addedSuccess")[0].innerText ='Product added successfully';
+            },2000)
         }
     }
     else if(loggedInUser.userRole == "customer")
@@ -81,11 +101,25 @@ export function AddToWishlist(productId)
             Wishlists.splice(Wishlists.indexOf((wl) => wl["userID"] == loggedInUser.userID) ,1,loggedInWishlist);
             localStorage.setItem("wishlists",JSON.stringify(Wishlists));   
             // sweat alert
+            document.getElementsByClassName("addedSuccess")[0].style.display ='block';
+            setTimeout(function(){
+                document.getElementsByClassName("addedSuccess")[0].style.display ='none';
+            },2000)
+            console.log(loggedInWishlist.length);
+            document.getElementById("wishlistCounter").innerText = loggedInWishlist["products"].length || 0;
         }
         else{
             //sweat alert
+            document.getElementsByClassName("addedSuccess")[0].innerText ='Added Already!';
+            document.getElementsByClassName("addedSuccess")[0].style.display ='block';
+            setTimeout(function(){
+                document.getElementsByClassName("addedSuccess")[0].style.display ='none';
+            document.getElementsByClassName("addedSuccess")[0].innerText ='Product added successfully';
+            },2000)
+        
         }
     }
+    let counter = document.getElementsBcla
 }
 
 export function removeFromWishlist(productId)
@@ -117,6 +151,8 @@ export function removeFromWishlist(productId)
             Wishlists.splice(Wishlists.indexOf((wl) => wl["userID"] == loggedInUser.userID) ,1,loggedInWishlist);
             localStorage.setItem("wishlists",JSON.stringify(Wishlists));   
         }
+    }else{
+        return;
     }
 }
 
