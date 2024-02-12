@@ -84,11 +84,11 @@ window.addEventListener("load", function () {
     //validation phone Number 
     var phoneInput = document.getElementById('phone');
     var phoneError = document.getElementById('phoneError');
-    var phoneRegex = /^(010|015|012)\d{8}$/;
+    var phoneRegex = /^(010|015|012|011)\d{8}$/;
 
     phoneInput.addEventListener('blur', function () {
         if (!phoneRegex.test(phoneInput.value))
-            phoneError.textContent = 'please Enter 11 number start with 010 or 012 or 015';
+            phoneError.textContent = 'please Enter 11 number start with 010 or 012 or 015 or 011';
         else
             phoneError.textContent = '';
     });
@@ -101,7 +101,7 @@ window.addEventListener("load", function () {
 
         // Check if additional phone number matches the required format
         if (!phoneRegex.test(additionalPhoneInput.value))
-            AdditionalPhoneError.textContent = 'please Enter 11 number start with 010 or 012 or 015';
+            AdditionalPhoneError.textContent = 'please Enter 11 number start with 010 or 012 or 015 or 011';
         else
             AdditionalPhoneError.textContent = '';
     });
