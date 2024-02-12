@@ -81,51 +81,58 @@ window.addEventListener("load", function () {
     //cart events
     //check if the loggedinuser is the admin or seller so don't perform the following
     if (!(loggedInUser && (loggedInUser.userRole == "admin" || loggedInUser.userRole == "seller"))) {
-        iconCart.addEventListener("click", showCart);
-        arrowBack.addEventListener("click", hideCart);
-        closeCart.addEventListener("click", clearCart);
-        // Add a click event listener to the button
-        checkOut.addEventListener('click', function () {
-            // Redirect to the checkout page
-            window.location.href = 'checkout.html';
-        });
+        if (!location.href.includes("checkout")) {
+            iconCart.addEventListener("click", showCart);
+            arrowBack.addEventListener("click", hideCart);
+            closeCart.addEventListener("click", clearCart);
+            // Add a click event listener to the button
+            checkOut.addEventListener('click', function () {
+                // Redirect to the checkout page
+                window.location.href = 'checkout.html';
+            });
+        }
     }
 
     //check if the loggedinuser is the admin or seller so don't perform the following
     if (!(loggedInUser && (loggedInUser.userRole == "admin" || loggedInUser.userRole == "seller"))) {
-        listCartHTML.addEventListener('click', (event) => {
-            let positionClick = event.target;
-            // debugger;
-            //console.log(event.target.dataset.btn);
-            if (positionClick.dataset.btn == "decr" || positionClick.dataset.btn == "incr") {
-                let product_id = parseInt(positionClick.parentElement.parentElement.parentElement.dataset.id);
-                console.log(product_id);
-                let type = 'decr';
-                if (event.target.dataset.btn == "incr") {
-                    type = 'incr';
+        if (!location.href.includes("checkout")) {
+            listCartHTML.addEventListener('click', (event) => {
+                let positionClick = event.target;
+                // debugger;
+                //console.log(event.target.dataset.btn);
+                if (positionClick.dataset.btn == "decr" || positionClick.dataset.btn == "incr") {
+                    let product_id = parseInt(positionClick.parentElement.parentElement.parentElement.dataset.id);
+                    console.log(product_id);
+                    let type = 'decr';
+                    if (event.target.dataset.btn == "incr") {
+                        type = 'incr';
+                    }
+                    changeQuantityCart(product_id, type);
                 }
-                changeQuantityCart(product_id, type);
-            }
 
-        })
+            })
+        }
     }
 
     //check if the loggedinuser is the admin or seller so don't perform the following
     if (!(loggedInUser && (loggedInUser.userRole == "admin" || loggedInUser.userRole == "seller"))) {
-        listCartHTML.addEventListener('dblclick', (event) => {
-            let positionClick = event.target;
-            //console.log(event.target.dataset.btn);
-            if (positionClick.dataset.btn == "decr" || positionClick.dataset.btn == "incr") {
-                let product_id = parseInt(positionClick.parentElement.parentElement.parentElement.dataset.id);
-                // console.log(product_Id);
-                let type = 'decr';
-                if (event.target.dataset.btn == "incr") {
-                    type = 'incr';
+        if (!location.href.includes("checkout")) {
+            listCartHTML.addEventListener('dblclick', (event) => {
+                let positionClick = event.target;
+                //console.log(event.target.dataset.btn);
+                if (positionClick.dataset.btn == "decr" || positionClick.dataset.btn == "incr") {
+                    let product_id = parseInt(positionClick.parentElement.parentElement.parentElement.dataset.id);
+                    // console.log(product_Id);
+                    let type = 'decr';
+                    if (event.target.dataset.btn == "incr") {
+                        type = 'incr';
+                    }
+                    changeQuantityCart(product_id, type);
                 }
-                changeQuantityCart(product_id, type);
-            }
-
-        })
+    
+            })
+        }
+        
     }
     var addCartLink = document.querySelectorAll(".addCart");
     // console.log(addCartLink);
@@ -142,151 +149,156 @@ function listCartAsHTML() {
     let totalQuantity = 0;
     let total = 0;
     totalPrice.innerHTML = "0"
-    iconCartSpan.innerHTML = arrCart.length;
-    arrCart.forEach(item => {
-        let positionItemInProduct = products.findIndex((value) => value.productId == item.product_id);
+    if(!location.href.includes("checkout"))
+    {
 
-        if (positionItemInProduct > -1) {
-            totalQuantity = totalQuantity + item.quantity;
-            // console.log("item in cart ", item.product_id);
-            // console.log("item in product", products[positionItemInProduct]);
-            // console.log("index in product", positionItemInProduct);
-
-            total = item.quantity * products[positionItemInProduct].price;
-            let newItem = document.createElement('div');
-            newItem.classList.add('item');
-
-            totalPrice.innerHTML = parseInt(totalPrice.innerHTML) + products[positionItemInProduct].price * item.quantity + "$";
-
-            listCartHTML.appendChild(newItem);
-
-            var container_div = document.createElement("div");
-            // console.log(products[positionItemInProduct].options);
-            for (var cntOp = 0; cntOp < products[positionItemInProduct].options.length; cntOp++) {
-
-                var input = document.createElement("input");
-                var label = document.createElement("label");
-                if (cntOp == 0) {
-                    input.setAttribute('checked', 'true'); // Assuming you want it checked
-                    label.classList.add("check");
-                }
-
-                // Setting the attributes 
-                input.setAttribute('type', 'radio');
-                input.setAttribute('name', 'color');
-                input.setAttribute('id', `${products[positionItemInProduct].options[cntOp]}-color`); 'w-color'
-                input.setAttribute('hidden', 'true');
-                input.setAttribute('value', products[positionItemInProduct].options[cntOp]);
-
-                // Creating the label element
-                label.setAttribute('for', `${products[positionItemInProduct].options[cntOp]}-color`);
-                label.classList.add("color-radio-btn");
-                label.textContent = products[positionItemInProduct].options[cntOp];
-                // Appending the input element to the container
-
-                container_div.appendChild(input);
-                container_div.appendChild(label);
-
-            }
-
-
-            newItem.innerHTML =
-                `
-                <div class="cart-item" data-id="${item.product_id}">
-                <img src="${products[positionItemInProduct].images[0]}"/>
-                <div class="cart-item-detail">
-                  <h3>${products[positionItemInProduct].productName}</h3>
-                  <h5>${products[positionItemInProduct].price}$</h5>
-                  <div class="cart-item-amount">
-                  <i class="fa-solid fa-minus bi "data-btn="decr"></i>
-                  <span class="qty">${item.quantity}</span>
-                  <i class="fa-solid fa-plus bi"data-btn="incr"></i>
-      
-                    <span class="cart-item-price">
-                      ${products[positionItemInProduct].price * item.quantity}$
-                    </span>
-                    <i class="fa-solid fa-trash-can deleteItem"></i>
-                  </div>
-              
-                  <p class="cart-item-color">Select Color: </p>
-                  <div class="options-color" data-id="${item.product_id}">
-                  ${container_div.innerHTML} <!-- Append the container_div HTML -->
-                  </div>
-                </div>
-              </div>
-              `;
-
-            // console.log(products[item.product_id - 1].price * item.quantity);
-        } else {
-            clearCart();
-        }
-
-
-
-    })
-    //delete clicked item 
-    let itemsFromCart = document.querySelectorAll(".cart-item-detail");
-    for (var i = 0; i < itemsFromCart.length; i++) {
-        itemsFromCart[i].addEventListener("click", function (e) {
-            if (e.target.classList.contains("deleteItem")) {
-                var itemDeleted = parseInt(e.target.parentElement.parentElement.parentElement.dataset.id);
-                updateCart(itemDeleted);
-            }
-        })
-    }
-    //color options
-    let allColors = document.querySelectorAll(".color-radio-btn");
-
-    for (var i = 0; i < allColors.length; i++) {
-        // console.log(allColors);
-        // var idLabel;
-        allColors[i].addEventListener("click", function (e) {
-            var parentLabel = e.target.parentElement.children;
-            for (let j = 0; j < parentLabel.length; j++) {  //all childern (label+input)
-
-                if (parentLabel[j].classList.contains("color-radio-btn") == true) { //filter childern => label only
-
-
-
-                    parentLabel[j].classList.remove("check");
-                } else {
-                    if (parentLabel[j].getAttribute("id") == e.target.getAttribute('for')) { //to get input of label ex => <label for="x"><input id="x" value ="" name=""> to get value of name & value
-                        console.log(parentLabel[j]);
-                        console.log("key", parentLabel[j].name, "value ", parentLabel[j].value);  // input 
-                        let parentOption = e.target.parentElement.dataset.id; // To know who the parent of option. 
-                        let positionItemInCart = arrCart.findIndex((value) => value.product_id == parentOption);
-                        arrCart[positionItemInCart].colorOptions = parentLabel[j].value; // add color to arrCart
-                        addCartToMemory();
-
-                        // console.log(arrCart);
-                        // console.log(parentOption);
-
-
+        iconCartSpan.innerHTML = arrCart.length;
+        arrCart.forEach(item => {
+            let positionItemInProduct = products.findIndex((value) => value.productId == item.product_id);
+    
+            if (positionItemInProduct > -1) {
+                totalQuantity = totalQuantity + item.quantity;
+                // console.log("item in cart ", item.product_id);
+                // console.log("item in product", products[positionItemInProduct]);
+                // console.log("index in product", positionItemInProduct);
+    
+                total = item.quantity * products[positionItemInProduct].price;
+                let newItem = document.createElement('div');
+                newItem.classList.add('item');
+    
+                totalPrice.innerHTML = parseInt(totalPrice.innerHTML) + products[positionItemInProduct].price * item.quantity + "$";
+    
+                listCartHTML.appendChild(newItem);
+    
+                var container_div = document.createElement("div");
+                // console.log(products[positionItemInProduct].options);
+                for (var cntOp = 0; cntOp < products[positionItemInProduct].options.length; cntOp++) {
+    
+                    var input = document.createElement("input");
+                    var label = document.createElement("label");
+                    if (cntOp == 0) {
+                        input.setAttribute('checked', 'true'); // Assuming you want it checked
+                        label.classList.add("check");
                     }
-
+    
+                    // Setting the attributes 
+                    input.setAttribute('type', 'radio');
+                    input.setAttribute('name', 'color');
+                    input.setAttribute('id', `${products[positionItemInProduct].options[cntOp]}-color`); 'w-color'
+                    input.setAttribute('hidden', 'true');
+                    input.setAttribute('value', products[positionItemInProduct].options[cntOp]);
+    
+                    // Creating the label element
+                    label.setAttribute('for', `${products[positionItemInProduct].options[cntOp]}-color`);
+                    label.classList.add("color-radio-btn");
+                    label.textContent = products[positionItemInProduct].options[cntOp];
+                    // Appending the input element to the container
+    
+                    container_div.appendChild(input);
+                    container_div.appendChild(label);
+    
                 }
+    
+    
+                newItem.innerHTML =
+                    `
+                    <div class="cart-item" data-id="${item.product_id}">
+                    <img src="${products[positionItemInProduct].images[0]}"/>
+                    <div class="cart-item-detail">
+                      <h3>${products[positionItemInProduct].productName}</h3>
+                      <h5>${products[positionItemInProduct].price}$</h5>
+                      <div class="cart-item-amount">
+                      <i class="fa-solid fa-minus bi "data-btn="decr"></i>
+                      <span class="qty">${item.quantity}</span>
+                      <i class="fa-solid fa-plus bi"data-btn="incr"></i>
+          
+                        <span class="cart-item-price">
+                          ${products[positionItemInProduct].price * item.quantity}$
+                        </span>
+                        <i class="fa-solid fa-trash-can deleteItem"></i>
+                      </div>
+                  
+                      <p class="cart-item-color">Select Color: </p>
+                      <div class="options-color" data-id="${item.product_id}">
+                      ${container_div.innerHTML} <!-- Append the container_div HTML -->
+                      </div>
+                    </div>
+                  </div>
+                  `;
+    
+                // console.log(products[item.product_id - 1].price * item.quantity);
+            } else {
+                clearCart();
             }
-            e.target.classList.add("check");
-            // console.log( e.target.getAttribute('for'));
-            // idLabel= e.target.getAttribute('for')
-
+    
+    
+    
         })
-    }
-    // let allColors = document.querySelectorAll(".color-radio-btn");
-    for (var i = 0; i < allColors.length; i++) {
-        let positionItemInCart = arrCart.findIndex((value) => value.product_id == allColors[i].parentElement.dataset.id);
-
-        if (arrCart[positionItemInCart].colorOptions == allColors[i].innerHTML) {
-
-            // console.log(true);
-            var allchildern = allColors[i].parentElement.children;
-            for (let k = 0; k < allchildern.length; k++) {
-                allchildern[k].classList.remove("check");
-            }
-            allColors[i].classList.add("check");
+        //delete clicked item 
+        let itemsFromCart = document.querySelectorAll(".cart-item-detail");
+        for (var i = 0; i < itemsFromCart.length; i++) {
+            itemsFromCart[i].addEventListener("click", function (e) {
+                if (e.target.classList.contains("deleteItem")) {
+                    var itemDeleted = parseInt(e.target.parentElement.parentElement.parentElement.dataset.id);
+                    updateCart(itemDeleted);
+                }
+            })
         }
-
+        //color options
+        let allColors = document.querySelectorAll(".color-radio-btn");
+    
+        for (var i = 0; i < allColors.length; i++) {
+            // console.log(allColors);
+            // var idLabel;
+            allColors[i].addEventListener("click", function (e) {
+                var parentLabel = e.target.parentElement.children;
+                for (let j = 0; j < parentLabel.length; j++) {  //all childern (label+input)
+    
+                    if (parentLabel[j].classList.contains("color-radio-btn") == true) { //filter childern => label only
+    
+    
+    
+                        parentLabel[j].classList.remove("check");
+                    } else {
+                        if (parentLabel[j].getAttribute("id") == e.target.getAttribute('for')) { //to get input of label ex => <label for="x"><input id="x" value ="" name=""> to get value of name & value
+                            console.log(parentLabel[j]);
+                            console.log("key", parentLabel[j].name, "value ", parentLabel[j].value);  // input 
+                            let parentOption = e.target.parentElement.dataset.id; // To know who the parent of option. 
+                            let positionItemInCart = arrCart.findIndex((value) => value.product_id == parentOption);
+                            arrCart[positionItemInCart].colorOptions = parentLabel[j].value; // add color to arrCart
+                            addCartToMemory();
+    
+                            // console.log(arrCart);
+                            // console.log(parentOption);
+    
+    
+                        }
+    
+                    }
+                }
+                e.target.classList.add("check");
+                // console.log( e.target.getAttribute('for'));
+                // idLabel= e.target.getAttribute('for')
+    
+            })
+        }
+        // let allColors = document.querySelectorAll(".color-radio-btn");
+        for (var i = 0; i < allColors.length; i++) {
+            let positionItemInCart = arrCart.findIndex((value) => value.product_id == allColors[i].parentElement.dataset.id);
+    
+            if (arrCart[positionItemInCart].colorOptions == allColors[i].innerHTML) {
+    
+                // console.log(true);
+                var allchildern = allColors[i].parentElement.children;
+                for (let k = 0; k < allchildern.length; k++) {
+                    allchildern[k].classList.remove("check");
+                }
+                allColors[i].classList.add("check");
+            }
+    
+        }
     }
+    
 
 }
 
@@ -484,6 +496,7 @@ const changeQuantityCart = (product_id, type) => {
 
 // fun delete&update 
 const updateCart = (itemDeleted) => {
+    debugger
     let positionItemInProduct = products.findIndex((value) => value.productId == itemDeleted);
     var containerDeletedItem = document.querySelectorAll(".cart-item");
     Swal.fire({
@@ -500,7 +513,10 @@ const updateCart = (itemDeleted) => {
             let positionItemInCart = arrCart.findIndex((item) => item.product_id == itemDeleted);
             totalPrice.innerHTML = parseInt(totalPrice.innerHTML) - products[positionItemInProduct].price * arrCart[positionItemInCart].quantity + "$";
             //delete from arrCart
-            console.log(arrCart);
+            if(arrCart.length == 1) {
+                clearCart();
+                return;
+            }
             arrCart = arrCart.filter((x) => x.product_id !== itemDeleted);
             console.log(arrCart);
 
@@ -528,4 +544,4 @@ const updateCart = (itemDeleted) => {
 
 }
 
-export * from './addtoCart.js';  // This exports everything from addtoCart.js
+

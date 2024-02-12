@@ -66,7 +66,7 @@ export function getUserOrder() {
         })
         let NoUserCart = JSON.parse(localStorage.getItem("noUserCart"));
         let i=0;
-        if (NoUserCart) {
+        if (NoUserCart && !location.href.includes("login")) {
             NoUserCart.forEach((ele) => {
                 if(ele.product_id!=usercar[0].cart[i].product_id){
                     usercar[0].cart.push(ele);
@@ -77,9 +77,11 @@ export function getUserOrder() {
             })
         }
 
-        let customerCart = new userCart(loggedInUser.userID,usercar[0].cart);
+        let customerCart;
 
-        //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
+        if(!location.href.includes("login")) {
+            customerCart = new userCart(loggedInUser.userID,usercar[0].cart);
+            //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
         if (newusersCarts.cartsArr.length > 0) {
             newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj => cartObj.customerID != loggedInUser.userID);
         }
@@ -87,6 +89,9 @@ export function getUserOrder() {
         newusersCarts.addCart(customerCart);
         //update the local storage
         localStorage.setItem("usersCarts", JSON.stringify(newusersCarts));
+        }
+
+        
     }
 
     //delete the cart from the customer local storage
@@ -198,9 +203,14 @@ export function renderingNavBar() {
             //change the a href to the customer page
             document.getElementById("homeLink").setAttribute("href", "customer.html");
             document.getElementById("loggedInUser").innerHTML = "Welcome, " + JSON.parse(localStorage.getItem("loggedInUser")).userName;
+           
+           
             if (loggedInUser.userRole == "customer") {
                 document.querySelector("#orderHistory").style.display = "block";
-                document.querySelector("#cartListItem").style.display = "block";
+                if(document.querySelector("#cartListItem")) {
+                    document.querySelector("#cartListItem").style.display = "block";
+                }
+                
             }
 
         }
