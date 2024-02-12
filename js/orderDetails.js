@@ -71,7 +71,7 @@ $(function () {
                     products.forEach(pro => {
                         if (pro.productId == item.productId) {
                             pro.quantity = Number(pro.quantity) + Number(item.quantity);
-
+                            pro.quantity_sold=Number(pro.quantity_sold) - 1;
                         }
                     })
                 })
@@ -144,7 +144,7 @@ $(function () {
 
 
 
-    }
+    }//new
     else
         window.location.href = "Login/login.html";
 })

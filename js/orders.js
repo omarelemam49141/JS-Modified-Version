@@ -134,6 +134,7 @@ function GetOrders() {
 }
 
 function regestorOnClick(sellerOrders) {
+    debugger
     // event on status changing 
     $(".status").on("change", function () {
         const selectedStatus = this.value;
@@ -164,6 +165,7 @@ function regestorOnClick(sellerOrders) {
                 }
             }
         });
+        //
 
         orders = orders.map(order => {
             const sellerOrder = sellerOrders.find(sellerOrder => sellerOrder.id == order.id);
