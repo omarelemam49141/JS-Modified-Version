@@ -147,37 +147,37 @@ window.addEventListener('load', function () {
               let sellers = JSON.parse(localStorage.getItem('users'))
                                 .filter(user => user.yserRole == "seller");
                                 
-              let sellersVSproductsNo = [];
+             let sellersVSproductsNo = [];
 
-              for(let i=0; i<sellers.length;i++)
-              {
-                sellersVSproductsNo[i]=0;
-                for(let j=0; i<products.length; j++)
-                {
-                  if(products[i].sellerName == sellers[i])
-                      sellersVSproductsNo[i] += products[i].quantity_sold;
-                }
-              }
+              // for(let i=0; i<sellers.length;i++)
+              // {
+              //   sellersVSproductsNo[i]=0;
+              //   for(let j=0; i<products.length; j++)
+              //   {
+              //     if(products[i].sellerName == sellers[i])
+              //         sellersVSproductsNo[i] += products[i].quantity_sold;
+              //   }
+              // }
 
-              const createdChart1 = document.getElementById("myChart1");
-              new Chart(createdChart1, {type: 'bar',
-                data: {
-                  labels:sellers.slice(0,10),
-                  datasets: [{
-                    label: 'Best Sellers',
-                    data: sellersVSproductsNo.slice(0,10),
-                    borderWidth: 5
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  scales: {
-                    y: {
-                      beginAtZero: true
-                    }
-                  }
-                }
-              });
+              // const createdChart1 = document.getElementById("myChart1");
+              // new Chart(createdChart1, {type: 'bar',
+              //   data: {
+              //     labels:sellers.slice(0,10),
+              //     datasets: [{
+              //       label: 'Best Sellers',
+              //       data: sellersVSproductsNo.slice(0,10),
+              //       borderWidth: 5
+              //     }]
+              //   },
+              //   options: {
+              //     responsive: true,
+              //     scales: {
+              //       y: {
+              //         beginAtZero: true
+              //       }
+              //     }
+              //   }
+              // });
 
               var SoldProductsInEachCategory=[];
               var colors=[];
