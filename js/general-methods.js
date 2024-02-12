@@ -152,7 +152,7 @@ export function loadCustomerCart() {
     let usersCartsArray = usersCarts.cartsArr || [];
     let loggedInUserCart = usersCartsArray.filter(cart => cart.customerID == loggedInUserId)[0];
     //set the cart in the local storage with the loggedInUserCart
-    if (loggedInUserCart) {
+    if (loggedInUserCart && loggedInUserCart.length > 0) {
         localStorage.setItem("cart", JSON.stringify(loggedInUserCart.cart));
     }
 }

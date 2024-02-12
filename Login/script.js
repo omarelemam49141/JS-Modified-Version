@@ -8,7 +8,7 @@ if(localStorage.getItem("users") != null)
     usersArray = JSON.parse(localStorage.getItem("users"));
     //check if no admin in the user array then add one admin account
     let admins = usersArray.filter(user=>{
-       return user.userName=="admin";
+        return user.userName=="admin";
     })
 
 
