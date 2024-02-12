@@ -144,7 +144,7 @@ $(function () {
 
 
 
-    }
+    }//new
     else
         window.location.href = "Login/login.html";
 })
