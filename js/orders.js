@@ -134,6 +134,7 @@ function GetOrders() {
 }
 
 function regestorOnClick(sellerOrders) {
+    debugger
     // event on status changing 
     $(".status").on("change", function () {
         const selectedStatus = this.value;
