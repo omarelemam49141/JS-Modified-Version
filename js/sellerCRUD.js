@@ -254,7 +254,7 @@ function deleteProduct(idDeleProduct) {
             if (positionThisProductInCart > -1) {  // check if product extist in cart 
                 // console.log(arrOfproduct);
                 cart.splice(positionThisProductInCart, 1);
-
+                
                 // console.log(arrOfproduct);
                 localStorage.setItem("cart", JSON.stringify(cart));
                 // sweet alert
