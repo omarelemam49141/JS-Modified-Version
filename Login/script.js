@@ -1,4 +1,5 @@
 import { users } from "../js/classes.js";
+import { getUserOrder } from "../js/general-methods.js";
 
 let usersArray = [];
 
@@ -47,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let userEmail = document.getElementById("email");
             let password = document.getElementById("Password");
             
-
+            
             let emailError = document.getElementById("emailError");
             let passwordError = document.getElementById("passwordError");
             let validationPopup = document.getElementById("validationPopup");
@@ -57,9 +58,39 @@ document.addEventListener("DOMContentLoaded", function () {
         
             let user = checkCredentials(userEmail.value, password.value);
             if (user) {
-
                 localStorage.setItem("loggedInUser",JSON.stringify(user));
-                    
+                getUserOrder();
+                // handel wishlist
+                let wishlists = JSON.parse(localStorage.getItem("wishlists"));
+                let loggedInWishlist;
+                
+                if(wishlists.length != 0)
+                {
+                    loggedInWishlist = wishlists.filter(wl => wl["userID"] === user.userID)[0];
+                    if(! loggedInWishlist)
+                        loggedInWishlist = {"userID" : user.userID ,"products":[] };
+                }
+                else
+                    loggedInWishlist = {"userID" : user.userID ,"products":[] };
+            
+
+                let userWishlist = JSON.parse(sessionStorage.getItem("userWishlist"));
+                if(loggedInWishlist["products"].length != 0)
+                {
+
+                    userWishlist.forEach(PID => {
+                        let productExits = loggedInWishlist["products"].some(productID => productID === PID);
+                        if(!productExits)
+                            loggedInWishlist["products"].push(PID); 
+                    });
+                }
+                else{
+                    loggedInWishlist["products"] = userWishlist;
+                }
+                wishlists = wishlists.filter(wl => wl["userID"] != user.userID);
+                wishlists[wishlists.length] = loggedInWishlist;
+                localStorage.setItem("wishlists",JSON.stringify(wishlists));
+                
                 window.location.assign(`../${user.userRole}.html`);           
             }
             else 

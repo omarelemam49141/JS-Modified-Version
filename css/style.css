@@ -1695,3 +1695,11 @@ display: none;
   color: white;
   text-align: center;
 }
+/* style  wishlist icon*/
+.iconHeart{
+  display: inline-block;
+  padding: 0px 12px;
+}
+.iconHeart:hover{
+color: #ff424d;
+}

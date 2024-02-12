@@ -1,3 +1,4 @@
+import { carts, userCart } from "./classes.js";
 let products = JSON.parse(localStorage.getItem("products"));
 let listProductHtml;
 var listCartHTML;
@@ -65,11 +66,14 @@ window.addEventListener("load", function () {
     containerDivCartIsEmpty.append(btnStratShopping);
 
 
-    if (localStorage.getItem("cart") != null) {
+    if (localStorage.getItem("cart") != null || localStorage.getItem("noUserCart") != null) {
         //check if the loggedinuser is the admin or seller so don't perform the following
         if (!(loggedInUser && (loggedInUser.userRole == "admin" || loggedInUser.userRole == "seller"))) {
-            arrCart = JSON.parse(localStorage.getItem("cart"));
-
+            if (loggedInUser) {
+                arrCart = JSON.parse(localStorage.getItem("cart")) || [];
+            } else {
+                arrCart = JSON.parse(localStorage.getItem("noUserCart")) || [];
+            }
             listCartAsHTML();
         }
     }
@@ -135,58 +139,59 @@ if (localStorage.getItem("loggedInUser")) {
 }
 
 function listCartAsHTML() {
-
     let totalQuantity = 0;
     let total = 0;
     totalPrice.innerHTML = "0"
     iconCartSpan.innerHTML = arrCart.length;
     arrCart.forEach(item => {
         let positionItemInProduct = products.findIndex((value) => value.productId == item.product_id);
-        totalQuantity = totalQuantity + item.quantity;
-        // console.log("item in cart ", item.product_id);
-        // console.log("item in product", products[positionItemInProduct]);
-        // console.log("index in product", positionItemInProduct);
 
-        total = item.quantity * products[positionItemInProduct].price;
-        let newItem = document.createElement('div');
-        newItem.classList.add('item');
+        if (positionItemInProduct > -1) {
+            totalQuantity = totalQuantity + item.quantity;
+            // console.log("item in cart ", item.product_id);
+            // console.log("item in product", products[positionItemInProduct]);
+            // console.log("index in product", positionItemInProduct);
 
-        totalPrice.innerHTML = parseInt(totalPrice.innerHTML) + products[positionItemInProduct].price * item.quantity + "$";
+            total = item.quantity * products[positionItemInProduct].price;
+            let newItem = document.createElement('div');
+            newItem.classList.add('item');
 
-        listCartHTML.appendChild(newItem);
+            totalPrice.innerHTML = parseInt(totalPrice.innerHTML) + products[positionItemInProduct].price * item.quantity + "$";
 
-        var container_div = document.createElement("div");
-        console.log(products[positionItemInProduct].options);
-        for (var cntOp = 0; cntOp < products[positionItemInProduct].options.length; cntOp++) {
+            listCartHTML.appendChild(newItem);
 
-            var input = document.createElement("input");
-            var label = document.createElement("label");
-            if (cntOp == 0) {
-                input.setAttribute('checked', 'true'); // Assuming you want it checked
-                label.classList.add("check");
+            var container_div = document.createElement("div");
+            // console.log(products[positionItemInProduct].options);
+            for (var cntOp = 0; cntOp < products[positionItemInProduct].options.length; cntOp++) {
+
+                var input = document.createElement("input");
+                var label = document.createElement("label");
+                if (cntOp == 0) {
+                    input.setAttribute('checked', 'true'); // Assuming you want it checked
+                    label.classList.add("check");
+                }
+
+                // Setting the attributes 
+                input.setAttribute('type', 'radio');
+                input.setAttribute('name', 'color');
+                input.setAttribute('id', `${products[positionItemInProduct].options[cntOp]}-color`); 'w-color'
+                input.setAttribute('hidden', 'true');
+                input.setAttribute('value', products[positionItemInProduct].options[cntOp]);
+
+                // Creating the label element
+                label.setAttribute('for', `${products[positionItemInProduct].options[cntOp]}-color`);
+                label.classList.add("color-radio-btn");
+                label.textContent = products[positionItemInProduct].options[cntOp];
+                // Appending the input element to the container
+
+                container_div.appendChild(input);
+                container_div.appendChild(label);
+
             }
 
-            // Setting the attributes 
-            input.setAttribute('type', 'radio');
-            input.setAttribute('name', 'color');
-            input.setAttribute('id', `${products[positionItemInProduct].options[cntOp]}-color`); 'w-color'
-            input.setAttribute('hidden', 'true');
-            input.setAttribute('value', products[positionItemInProduct].options[cntOp]);
 
-            // Creating the label element
-            label.setAttribute('for', `${products[positionItemInProduct].options[cntOp]}-color`);
-            label.classList.add("color-radio-btn");
-            label.textContent = products[positionItemInProduct].options[cntOp];
-            // Appending the input element to the container
-
-            container_div.appendChild(input);
-            container_div.appendChild(label);
-
-        }
-
-
-        newItem.innerHTML =
-            `
+            newItem.innerHTML =
+                `
                 <div class="cart-item" data-id="${item.product_id}">
                 <img src="${products[positionItemInProduct].images[0]}"/>
                 <div class="cart-item-detail">
@@ -211,7 +216,12 @@ function listCartAsHTML() {
               </div>
               `;
 
-        // console.log(products[item.product_id - 1].price * item.quantity);
+            // console.log(products[item.product_id - 1].price * item.quantity);
+        } else {
+            clearCart();
+        }
+
+
 
     })
     //delete clicked item 
@@ -236,7 +246,7 @@ function listCartAsHTML() {
 
                 if (parentLabel[j].classList.contains("color-radio-btn") == true) { //filter childern => label only
 
-                
+
 
                     parentLabel[j].classList.remove("check");
                 } else {
@@ -298,8 +308,22 @@ function hideCart() {
     lyercartOverlay.classList.remove("show");
     cart.classList.remove("show");
 }
-export function clearCart(e) {
+
+export function clearCart() {
+
     arrCart = [];
+    if (loggedInUser) {
+        let allOrders = JSON.parse(localStorage.getItem("usersCarts")) || [];
+        let indexOfcar = allOrders["cartsArr"].findIndex((ele) => {
+            return ele["customerID"] == loggedInUser.userID;
+        })
+        allOrders["cartsArr"].splice(indexOfcar, 1);
+        let x = { cartsArr: allOrders["cartsArr"] }
+        localStorage.setItem("usersCarts", JSON.stringify(x))
+
+    }
+
+
     totalPrice.innerHTML = "0"
     try {
         addCartToMemory();
@@ -308,7 +332,9 @@ export function clearCart(e) {
     finally {
         listCartHTML.prepend(containerDivCartIsEmpty);
         footerCart.style.display = "none";
+
     }
+
 
 };
 
@@ -332,7 +358,6 @@ window.addEventListener("load", function () {
 
 var cnt = 0;
 export const addToCart = (product_id, seller, quantity = 1, color = "White") => {
-
     //findindex fun return index of ele if it extist in arr else if rturn -1;
     let positionThisProductInCart = arrCart.findIndex((value) => value.product_id == product_id);
     let productSeller;
@@ -349,7 +374,7 @@ export const addToCart = (product_id, seller, quantity = 1, color = "White") => 
             quantity: quantity,
             seller: productSeller,
             quantity_sold: 0,
-            colorOptions: color
+            colorOptions: color,
         }];
         temmraryDiv.style.display = "block";
         setTimeout(function () {
@@ -373,7 +398,6 @@ export const addToCart = (product_id, seller, quantity = 1, color = "White") => 
     } else {
         Swal.fire({
             title: "Item is already in cart",
-            // text: "That thing is still around?",
             icon: "warning"
         });
 
@@ -384,9 +408,18 @@ export const addToCart = (product_id, seller, quantity = 1, color = "White") => 
 }
 
 export const addCartToMemory = () => {
-    localStorage.setItem('cart', JSON.stringify(arrCart));
+
+    if (loggedInUser) {
+
+        localStorage.setItem('cart', JSON.stringify(arrCart));
+    } else {
+        localStorage.setItem('noUserCart', JSON.stringify(arrCart));
+
+    }
 }
 const addCartToHTML = () => {
+
+
     listCartHTML.innerHTML = '';
 
     if (arrCart.length > 0) {
@@ -396,7 +429,10 @@ const addCartToHTML = () => {
         let items = document.querySelectorAll(".item");
         cnt = 0
         iconCartSpan.innerText = cnt;
-        listCartHTML.removeChild(items);
+        // Loop through each item and remove it from the list
+        items.forEach(item => {
+            listCartHTML.removeChild(item);
+        });
     }
 }
 
@@ -449,7 +485,6 @@ const changeQuantityCart = (product_id, type) => {
 // fun delete&update 
 const updateCart = (itemDeleted) => {
     let positionItemInProduct = products.findIndex((value) => value.productId == itemDeleted);
-
     var containerDeletedItem = document.querySelectorAll(".cart-item");
     Swal.fire({
         title: `Do you really want to remove  ${products[positionItemInProduct].productName} from cart? `,

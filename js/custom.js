@@ -1,4 +1,5 @@
 import {Product} from "./classes.js"
+
 // to get current year
 // function getYear() {
 //     var currentDate = new Date();
@@ -23,6 +24,23 @@ if(!JSON.parse(localStorage.getItem("products"))||JSON.parse(localStorage.getIte
    localStorage.setItem("products", JSON.stringify(products));
 } else {
    products = JSON.parse(localStorage.getItem("products"));
+}
+
+
+
+// Check if the array already exists in local storage
+let userWishlist = JSON.parse(sessionStorage.getItem('userWishlist'));
+// If the array doesn't exist, create an empty array
+if (!userWishlist || !Array.isArray(userWishlist)) {
+    userWishlist = [];
+    sessionStorage.setItem('userWishlist', JSON.stringify(userWishlist));
+}
+
+let wishlists = JSON.parse(localStorage.getItem('wishlists'));    
+// If the array doesn't exist, create an empty array
+if (!wishlists || !Array.isArray(wishlists)) {
+      wishlists = [];
+      localStorage.setItem('wishlists', JSON.stringify(wishlists));
 }
 
 //get the loggedInUser
@@ -65,7 +83,7 @@ function GetProducts(maxNumber, productsList) {
 
            <div class="box">
               <div class="option_container">
-                   <div class="options">
+                   <div  href="#" class="options">
                       <a href="productDetails.html?productId=${products[i].productId}" class="option2">
                       View Details
                       </a>
@@ -165,6 +183,9 @@ function GetProducts(maxNumber, productsList) {
                    <div class="options">
                       <a href="#" class="option1 addCart">
                       Add to cart
+                      </a>
+                      <a href="" class="option1" data-id=${products[i].productId}>
+                        <i class="fa-regular fa-heart iconHeart"></i>
                       </a>
                       <a href="productDetails.html?productId=${products[i].productId}" class="option2">
                       View Details

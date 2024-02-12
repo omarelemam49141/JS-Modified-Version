@@ -32,7 +32,7 @@ if (localStorage.getItem("products")) {
     arrOfproduct = JSON.parse(localStorage.getItem("products"));
 }
 let sellerName = JSON.parse(localStorage.getItem("loggedInUser")).userName;
-
+console.log(sellerName);
 let sellerArr = arrOfproduct.filter((product) => product.sellerName == sellerName
 )
 
@@ -55,7 +55,7 @@ var deleteButtons;
 var table_headings, table_rows;
 /////
 
-
+document.addEventListener('DOMContentLoaded', function() {
 
 
 let cart;
@@ -106,6 +106,13 @@ window.addEventListener("load", function () {
         location.reload();
 
     }
+
+    //register the pagination event
+    document.querySelector("#paginationContainer").addEventListener("click", function(e){
+        if(isFinite(e.target.innerHTML)) {
+            selectPage(Number(e.target.innerHTML));
+        }
+    })
 })
 
 window.addEventListener("load", function () {
@@ -123,8 +130,8 @@ window.addEventListener("load", function () {
         select.add(option);
     })
 
-    creatTableofData();
-    //   ----delete -----
+    createTableOfData();   
+     //   ----delete -----
 
     // Select all elements with the class 'delete' and store them in the 'deleteButtons' variable
     deleteButtons = document.querySelectorAll('.delete');
@@ -180,6 +187,26 @@ window.addEventListener("load", function () {
         `<img src="images/favicon.png" alt="" width="32" height="32" class="rounded-circle me-2">
          <strong> ${sellerName}</strong> 
         `
+
+
+        document.querySelector('body').addEventListener('click', function(e) {
+            if (e.target.matches('.page-link')) {
+                e.preventDefault(); // Prevent the default anchor action
+    
+                const action = e.target.getAttribute('aria-label');
+    
+                if (action === 'Previous') {
+                    changePage(-1);
+                } else if (action === 'Next') {
+                    changePage(1);
+                } else if (e.target.textContent) {
+                    const pageNum = parseInt(e.target.textContent);
+                    if (!isNaN(pageNum)) {
+                        selectPage(pageNum);
+                    }
+                }
+            }
+        });
 
 
 })
@@ -264,7 +291,7 @@ function validateImage() {
 
     if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
         Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
-        inputFile.value = '';
+        img1.value = '';
         return false;
     } else {
         return true;
@@ -356,7 +383,7 @@ function populateFormWithProductData(data) {
         <label>Images</label>
         <small id="imagesMessage" class="form-text  text-danger"></small>
         <input class="form-control" required type="file" name="images" id="images" onchange="console.log(this.value)">
-        <img class="img-fluid w-25 " src="${data.images[0]}" alt="">
+        <img class="img-fluid w-25 " src="${data.images[0]}" alt="..." loading="lazy">
     </div>
 
     <div class="form-group">
@@ -392,6 +419,18 @@ $('#addressForm').submit(function (event) {
         Add();
     }
 });
+
+function validateImage() {
+    var fileName = img1.value.toLowerCase();
+
+    if (!fileName.endsWith('.jpg') && !fileName.endsWith('.jpeg') && !fileName.endsWith('.png')) {
+        Swal.fire("Please upload an image file with a valid extension (.jpg, .jpeg, .png).");
+        img1.value = '';
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 
@@ -492,61 +531,81 @@ function handleSearch(e) {
 
 
 
-function creatTableofData() {
+let currentPage = 1;
+const itemsPerPage = 5; // Change this to how many items you want per page
 
+function createTableOfData() {
+    const sellerArr = arrOfproduct.filter((product) => product.sellerName == sellerName);
 
+    // Calculate the number of pages needed
+    const numPages = Math.ceil(sellerArr.length / itemsPerPage);
 
-    sellerArr = arrOfproduct.filter((product) => product.sellerName == sellerName)
+    // Determine the slice of the array to display based on the current page
+    const paginatedItems = sellerArr.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    tbody.innerHTML = ''
-    sellerArr.forEach(product => {
+    // Reset and fill the table body with the current page's items
+    tbody.innerHTML = '';
+    paginatedItems.forEach(product => {
         tbody.innerHTML += `
-          <tr>
-          <td>${product.productId}</td>
-          <td>${product.productName}</td>
-          <td><img src="${product["images"][0]}"/></td>
-          <td>${product.sellerName}</td>
-          <td>${product.category}</td>
-          <td>${product.price}</td>
-          <td>
-          <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
-            <i class="material-icons edit" data-id="${product.productId}">&#xE254;</i>
-          </a>
-           <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
-             <i data-id="${product.productId}" class="view material-icons">&#xE417;</i>
-             </a>
-            <a href="#"  title="Delete"  data-id="${product.productId}" class="delete trigger-btn"><i
-                      class=" material-icons text-danger">&#xE872;</i></a>
-          </td>
-         </tr>`
-
+            <tr>
+            <td>${product.productId}</td>
+            <td>${product.productName}</td>
+            <td>
+            <img src="${product["images"][0]}" ></img>
+            </td>
+            <td>${product.sellerName}</td>
+            <td>${product.category}</td>
+            <td>${product.price}</td>
+            <td>
+            <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
+                <i class="material-icons edit" data-id="${product.productId}">&#xE254;</i>
+            </a>
+            <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
+                <i data-id="${product.productId}" class="view material-icons">&#xE417;</i>
+                </a>
+            <a href="#" title="Delete" data-id="${product.productId}" class="delete trigger-btn"><i
+                        class="material-icons text-danger">&#xE872;</i></a>
+            </td>
+            </tr>`;
     });
-    // for (let index = arrOfproduct.length-1; index >= 0; index--) {
-    //     var element = arrOfproduct[index];
-    //     tbody.innerHTML += `
-    //       <tr>
-    //       <td>${element.productId}</td>
-    //       <td>${element.productName}</td>
-    //       <td><img src="${element["images"][0]}"/></td>
-    //       <td>${element.sellerName}</td>
-    //       <td>${element.category}</td>
-    //       <td>${element.price}</td>
-    //       <td>
-    //                   <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
-    //                   <i class="material-icons edit" data-id="${element.productId}">&#xE254;</i>
-    //               </a>
-    //               <!-- View Link -->
-    //               <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
-    //                   <i data-id="${element.productId}" class="view material-icons">&#xE417;</i>
-    //               </a>
-    //           <a href="#"  title="Delete"  data-id="${element.productId}" class="delete trigger-btn"><i
-    //                   class=" material-icons text-danger">&#xE872;</i></a>
-    //       </td>
-    //      </tr>`
 
-    // }
-
+    // Update the pagination controls
+    updatePaginationControls(numPages);
 }
+
+function updatePaginationControls(numPages) {
+    const paginationUl = document.querySelector('.pagination');
+    paginationUl.innerHTML = `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" aria-label="Previous" onclick="changePage(-1)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>`;
+
+    for (let i = 1; i <= numPages; i++) {
+        paginationUl.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>`;
+    }
+
+    paginationUl.innerHTML += `
+        <li class="page-item ${currentPage === numPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" aria-label="Next" onclick="changePage(1)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>`;
+}
+
+function changePage(amount) {
+    currentPage += amount;
+    createTableOfData();
+}
+
+function selectPage(pageNum) {
+    currentPage = pageNum;
+    createTableOfData();
+}
+
+// Initial call to populate the table
+createTableOfData();
 
 
 // Declare variables for later use; these will be assigned values at runtime
@@ -605,4 +664,5 @@ table_headings.forEach((head, i) => {
         }
         // console.log(head);
     }
+});
 });

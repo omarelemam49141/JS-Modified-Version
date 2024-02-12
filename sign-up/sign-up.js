@@ -1,19 +1,20 @@
 import { isValidEmail, isValidPassword, isValidName } from "../js/profile.js";
-import {users} from "../js/classes.js"
+import { users } from "../js/classes.js";
+import { getNewUserOrder } from "../js/general-methods.js";
 
 window.addEventListener("load", function () {
     // Attach the form submission handler to the form
     let signUpForm = document.querySelector('.signupForm');
     signUpForm.addEventListener('submit', handleFormSubmit);
 
-    if(this.location.href.includes("sign-up.html")) {
+    if (this.location.href.includes("sign-up.html")) {
         document.getElementById('togglePassword').addEventListener('click', function (e) {
             const password = document.getElementById('password');
-            const confirmPassword=document.getElementById('confirmPassword')
+            const confirmPassword = document.getElementById('confirmPassword')
             const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
             password.setAttribute('type', type);
             confirmPassword.setAttribute('type', type);
-            
+
             this.classList.toggle('fa-eye-slash');
         })
     }
@@ -22,7 +23,7 @@ window.addEventListener("load", function () {
 function showValidationMessages(validationMessages) {
     validationMessages.forEach(mssg => {
         console.log(mssg);
-        if(mssg == "Passwords do not match.") {
+        if (mssg == "Passwords do not match.") {
             document.querySelector("#confirmMessage").innerHTML = mssg;
         }
     });
@@ -48,13 +49,13 @@ function handleFormSubmit(event) {
     var emailExists = usersArray.some(function (user) {
         return user.userEmail.toLowerCase() === email.toLowerCase();
     });
-    var usernameExists = usersArray.some((user)=> {
+    var usernameExists = usersArray.some((user) => {
         return user.userName.toLowerCase() == username.toLowerCase();
     })
 
     if (emailExists) {
         document.getElementById('emailMessage').innerHTML = "This email is already taken. Please choose a different email.";
-        document.getElementById('emailMessage').style="color: red";
+        document.getElementById('emailMessage').style = "color: red";
         document.getElementById('emailMessage').style.display = "block";
         document.getElementById('userNameMessage').style.display = "none";
         emailExists = false;
@@ -67,7 +68,7 @@ function handleFormSubmit(event) {
         document.getElementById('userNameMessage').style.display = "none";
         document.getElementById('emailMessage').style.display = "none";
         let maxId = Math.max(...usersArray.map(user => user.userID), 0); //get max id
-        var user = new users(maxId + 1, username, password, email, role,userGender);
+        var user = new users(maxId + 1, username, password, email, role, userGender);
 
         usersArray.push(user);
         console.log(user);
@@ -75,20 +76,32 @@ function handleFormSubmit(event) {
 
         //check if the admin is the one who is trying to add a new user account then don't navigate
         let loggedInUserRole;
-        if(localStorage.getItem("loggedInUser")!=null)
-        {
+        if (localStorage.getItem("loggedInUser") != null) {
             loggedInUserRole = JSON.parse(localStorage.getItem("loggedInUser")).userRole;
         }
 
-        if(loggedInUserRole == "admin")
-        {
+
+        if (loggedInUserRole == "admin") {
             location.reload();
             return;
         }
 
-        localStorage.setItem("loggedInUser",JSON.stringify(user));
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-        window.location.href =(`../${role}.html`) ;
+        // new wishlist
+        let loggedInUserWishlist = {"userID" :user.userID ,"products" :[]};    
+        let userWishlist = JSON.parse(sessionStorage.getItem("userWishlist"));
+        loggedInUserWishlist["products"] = userWishlist;
+
+        let wishlists = JSON.parse(localStorage.getItem("wishlists"));
+        wishlists[wishlists.length] = loggedInUserWishlist;
+                
+        localStorage.setItem("wishlists",JSON.stringify(wishlists));
+        //////
+        getNewUserOrder();
+        window.location.href = (`../${role}.html`);
+
+
     }
 }
 
@@ -125,4 +138,4 @@ function validateForm() {
 }
 
 
-export {validateForm, handleFormSubmit};
+export { validateForm, handleFormSubmit };

@@ -1,12 +1,102 @@
 import { carts, userCart } from "./classes.js";
 //general method
-export function updateLocalStorage(key, value)
-{
-	localStorage.setItem(key, JSON.stringify(value));
+export function updateLocalStorage(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+}
+
+
+export function getNewUserOrder() {
+    //make a new variable
+    let newusersCarts;
+    //get the loggedInUser
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    //Check if the customer made a cart
+    if ((localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart")).length > 0) || (localStorage.getItem("noUserCart") && JSON.parse(localStorage.getItem("noUserCart")).length > 0)) {
+        //check if there are carts saved in the local storage
+        if (localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).cartsArr.length > 0) {
+            //If yes(there are carts in the local storage), then get them
+            newusersCarts = new carts();
+            JSON.parse(localStorage.getItem("usersCarts")).cartsArr.forEach(cart => {
+                newusersCarts.addCart(cart);
+            });
+        } else {
+            //else(there are no carts in the local storage)), then make a new carts object
+            newusersCarts = new carts();
+        }
+        //Make a new userCart object with a value of the made cart
+        let usercar = JSON.parse(localStorage.getItem("cart")) || JSON.parse(localStorage.getItem("noUserCart"));
+        let customerCart = new userCart(loggedInUser.userID, usercar);
+
+        //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
+        if (newusersCarts.cartsArr.length > 0) {
+            newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj => cartObj.customerID != loggedInUser.userID);
+        }
+        //add the new cart
+        newusersCarts.addCart(customerCart);
+        //update the local storage
+        localStorage.setItem("usersCarts", JSON.stringify(newusersCarts));
+    }
+
+    //delete the cart from the customer local storage
+    localStorage.removeItem("noUserCart");
+}
+export function getUserOrder() {
+    //make a new variable
+    let newusersCarts;
+    //get the loggedInUser
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    //Check if the customer made a cart
+    if ((localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart")).length > 0) || (localStorage.getItem("noUserCart") && JSON.parse(localStorage.getItem("noUserCart")).length > 0)) {
+        //check if there are carts saved in the local storage
+        if (localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).cartsArr.length > 0) {
+            //If yes(there are carts in the local storage), then get them
+            newusersCarts = new carts();
+            JSON.parse(localStorage.getItem("usersCarts")).cartsArr.forEach(cart => {
+                newusersCarts.addCart(cart);
+            });
+        } else {
+            //else(there are no carts in the local storage)), then make a new carts object
+            newusersCarts = new carts();
+        }
+        //Make a new userCart object with a value of the made cart
+        let allOrders = JSON.parse(localStorage.getItem("usersCarts")) || [];
+
+        let usercar = allOrders["cartsArr"].filter((ele) => {
+            return ele["customerID"] == loggedInUser.userID;
+        })
+        let NoUserCart = JSON.parse(localStorage.getItem("noUserCart"));
+        let i=0;
+        if (NoUserCart) {
+            NoUserCart.forEach((ele) => {
+                if(ele.product_id!=usercar[0].cart[i].product_id){
+                    usercar[0].cart.push(ele);
+                }
+                while(usercar[0].cart[i+1]){
+                i++;
+            }
+            })
+        }
+
+        let customerCart = new userCart(loggedInUser.userID,usercar[0].cart);
+
+        //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
+        if (newusersCarts.cartsArr.length > 0) {
+            newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj => cartObj.customerID != loggedInUser.userID);
+        }
+        //add the new cart
+        newusersCarts.addCart(customerCart);
+        //update the local storage
+        localStorage.setItem("usersCarts", JSON.stringify(newusersCarts));
+    }
+
+    //delete the cart from the customer local storage
+    localStorage.removeItem("noUserCart");
+
 }
 
 //logout
 export function LogOut() {
+
     document.getElementById("user-DropDown").addEventListener("click", function (e) {
         if (e.target.id == "logOut") {
             //make a new variable
@@ -16,7 +106,7 @@ export function LogOut() {
             //Check if the customer made a cart
             if (localStorage.getItem("cart") && JSON.parse(localStorage.getItem("cart")).length > 0) {
                 //check if there are carts saved in the local storage
-                if(localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).cartsArr.length > 0) {
+                if (localStorage.getItem("usersCarts") && JSON.parse(localStorage.getItem("usersCarts")).cartsArr.length > 0) {
                     //If yes(there are carts in the local storage), then get them
                     newusersCarts = new carts();
                     JSON.parse(localStorage.getItem("usersCarts")).cartsArr.forEach(cart => {
@@ -30,9 +120,9 @@ export function LogOut() {
                 let customerCart = new userCart(loggedInUser.userID, JSON.parse(localStorage.getItem("cart")));
 
                 //check if there are old carts in the local storage then delete the customer old cart if it is there and add the new cart
-                if(newusersCarts.cartsArr.length > 0) {
-                    newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj=>cartObj.customerID!=loggedInUser.userID);
-                } 
+                if (newusersCarts.cartsArr.length > 0) {
+                    newusersCarts.cartsArr = newusersCarts.cartsArr.filter(cartObj => cartObj.customerID != loggedInUser.userID);
+                }
                 //add the new cart
                 newusersCarts.addCart(customerCart);
                 //update the local storage
@@ -54,20 +144,19 @@ export function loadCustomerCart() {
     //get all users' carts
     let usersCarts = JSON.parse(localStorage.getItem("usersCarts")) || [];
     //get the loggedInUser cart if it exists
-    let loggedInUserCart = usersCarts.cartsArr.filter(cart=>cart.customerID == loggedInUserId)[0];
+    let usersCartsArray = usersCarts.cartsArr || [];
+    let loggedInUserCart = usersCartsArray.filter(cart => cart.customerID == loggedInUserId)[0];
     //set the cart in the local storage with the loggedInUserCart
-    if(loggedInUserCart) {
+    if (loggedInUserCart) {
         localStorage.setItem("cart", JSON.stringify(loggedInUserCart.cart));
     }
 }
 
 //Rendering the navbar according to the user role (customer, seller or admin)
-export function renderingNavBar()
-{
+export function renderingNavBar() {
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if (loggedInUser != null) {
-        if(loggedInUser.userRole=="admin")
-        {
+    if (loggedInUser) {
+        if (loggedInUser.userRole == "admin") {
             document.querySelector(".header_section .container").innerHTML = `
 				<nav class="navbar navbar-expand-lg custom_nav-container ">
 				<a class="navbar-brand" href="index.html"><img width="250" src="images/logo.png" alt="#" /></a>
@@ -80,7 +169,7 @@ export function renderingNavBar()
 						<a class="nav-link" href="admin.html">Home <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret">${loggedInUser.userName}</span></a>
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label" id="welcome-user"> <span class="caret" id="loggedInUser">${loggedInUser.userName}</span></a>
 						<ul class="dropdown-menu" id="user-DropDown">
 							<li><a href="profile.html">Profile</a></li>
 							<li><a href="usersCRUD.html">Users</a></li>
@@ -98,8 +187,7 @@ export function renderingNavBar()
 			</nav>
             `;
         }
-        else if(loggedInUser.userRole == "customer")
-        {
+        else if (loggedInUser.userRole == "customer") {
             //add the list items to the dropdown menu
             let userDropDown = document.getElementById("user-DropDown");
             userDropDown.innerHTML = `
@@ -110,25 +198,23 @@ export function renderingNavBar()
             //change the a href to the customer page
             document.getElementById("homeLink").setAttribute("href", "customer.html");
             document.getElementById("loggedInUser").innerHTML = "Welcome, " + JSON.parse(localStorage.getItem("loggedInUser")).userName;
-            if(loggedInUser.userRole=="customer")
-            {
+            if (loggedInUser.userRole == "customer") {
                 document.querySelector("#orderHistory").style.display = "block";
-				document.querySelector("#cartListItem").style.display = "block";
-            } 
-			
+                document.querySelector("#cartListItem").style.display = "block";
+            }
+
         }
-		else 
-		{
-			//add the list items to the dropdown menu
+        else {
+            //add the list items to the dropdown menu
             let userDropDown = document.getElementById("user-DropDown");
             userDropDown.innerHTML = `
             <li><a href="profile.html">Profile</a></li>
             <li><a href="orderHistory.html" id="orderHistory">Orders</a></li>
             <li><a href="#" id="logOut">Log out</a></li>
             `;
-			document.getElementById("homeLink").setAttribute("href", "seller.html");
-			document.getElementById("loggedInUser").innerHTML = "Welcome, " + JSON.parse(localStorage.getItem("loggedInUser")).userName;
-		}
+            document.getElementById("homeLink").setAttribute("href", "seller.html");
+            document.getElementById("loggedInUser").innerHTML = "Welcome, " + JSON.parse(localStorage.getItem("loggedInUser")).userName;
+        }
     } else {
         document.getElementById("loggedInUser").innerHTML = "Account";
         //add the list items to the dropdown menu
@@ -137,9 +223,6 @@ export function renderingNavBar()
         <li><a href="sign-up/sign-up.html">Sign up</a></li>
         <li><a href="Login/login.html">Log in</a></li>
         `;
-
-		
-
         //change the a href to the index page
         document.getElementById("homeLink").setAttribute("href", "index.html");
     }

@@ -7,12 +7,13 @@ let searchBar = document.getElementById('searchBar');
  let deleteButtons = document.querySelectorAll('.delete');
  let table_headings, table_rows;
 
-
+document.addEventListener('DOMContentLoaded', function() { 
 
 // Data Arrays
 let arrOfproduct = JSON.parse(localStorage.getItem("products")) || [];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
+let currentPage = 1;
+const itemsPerPage = 4;
 
 // Initialize table and event listeners on window load
 window.addEventListener("load", function () {
@@ -37,7 +38,30 @@ window.addEventListener("load", function () {
     // deleteProduct();
 
     
+    document.querySelector("#paginationContainer").addEventListener("click", function(e){
+        if(isFinite(e.target.innerHTML)) {
+            selectPage(Number(e.target.innerHTML));
+        }
+    })
 
+    document.querySelector('body').addEventListener('click', function(e) {
+        if (e.target.matches('.page-link')) {
+            e.preventDefault(); // Prevent the default anchor action
+
+            const action = e.target.getAttribute('aria-label');
+
+            if (action === 'Previous') {
+                changePage(-1);
+            } else if (action === 'Next') {
+                changePage(1);
+            } else if (e.target.textContent) {
+                const pageNum = parseInt(e.target.textContent);
+                if (!isNaN(pageNum)) {
+                    selectPage(pageNum);
+                }
+            }
+        }
+    });
 
 
 
@@ -93,30 +117,6 @@ function handleViewClick(productId) {
 
 
 
-function displayErrors(errors) {
-    document.querySelectorAll('.form-text.text-danger').forEach(small => {
-        small.textContent = '';
-    });
-
-    // Set error messages
-    if (errors.productId) {
-        document.querySelector("#productIdMessage").textContent = errors.productId;
-    }
-    if (errors.productName) {
-        document.querySelector("#nameMessage").textContent = errors.productName;
-    }
-    if (errors.images) {
-        document.querySelector("#imagesMessage").textContent = errors.images;
-    }
-    if (errors.sellerName) {
-        document.querySelector("#sellerMessage").textContent = errors.sellerName;
-    }
-    if (errors.price) {
-        document.querySelector("#priceMessage").textContent = errors.price;
-    }
-    // Show or hide the error message box
-
-}
 
 
 
@@ -158,8 +158,12 @@ function handleSearch() {
 
 
 function creatTableofData() {
-    for (let index = arrOfproduct.length-1; index >= 0; index--) {
-        let element = arrOfproduct[index];
+    tbody.innerHTML = ''; // Clear the table first
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const paginatedItems = arrOfproduct.slice(startIndex, endIndex);
+    const numPages = Math.ceil(arrOfproduct.length / itemsPerPage);
+    paginatedItems.forEach(element => {
         if(JSON.parse(localStorage.getItem("loggedInUser")).userRole=="admin") {
             tbody.innerHTML += `
           <tr>
@@ -178,36 +182,43 @@ function creatTableofData() {
                       class=" material-icons text-danger">&#xE872;</i></a>
           </td>
          </tr>`
-        } else {
-            tbody.innerHTML += `
-          <tr>
-            <td>${element.productId}</td>
-            <td>${element.productName}</td>
-            <td><img src="${element["images"][0]}"/></td>
-            <td>${element.sellerName}</td>
-            <td>${element.category}</td>
-            <td>${element.price}</td>
-            <td>
-                    <a href="#" class="edit" title="Edit" data-bs-toggle="modal" data-bs-target="#userFormModal">
-                        <i class="material-icons edit" data-id="${element.productId}">&#xE254;</i>
-                    </a>
-                    <!-- View Link -->
-                    <a href="#" title="View" data-bs-toggle="modal" data-bs-target="#exampleModalLong2" >
-                        <i data-id="${element.productId}" class="view material-icons">&#xE417;</i>
-                    </a>
-                <a href="#"  title="Delete"  data-id="${element.productId}" class="delete trigger-btn"><i
-                        class=" material-icons text-danger">&#xE872;</i></a>
-                </td>
-         </tr>`
-        }
+        } 
         
-
+        
+    })
+    updatePaginationControls(numPages);
     }
-    
+function updatePaginationControls(numPages) {
+    const paginationUl = document.querySelector('.pagination');
+    paginationUl.innerHTML = `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+            <a class="page-link" href="#" aria-label="Previous" onclick="changePage(-1)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>`;
+
+    for (let i = 1; i <= numPages; i++) {
+        paginationUl.innerHTML += `<li class="page-item ${i === currentPage ? 'active' : ''}"><a class="page-link" href="#">${i}</a></li>`;
+    }
+
+    paginationUl.innerHTML += `
+        <li class="page-item ${currentPage === numPages ? 'disabled' : ''}">
+            <a class="page-link" href="#" aria-label="Next" onclick="changePage(1)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>`;
 }
 
+function changePage(amount) {
+    currentPage += amount;
+    creatTableofData()}
 
-// Declare variables for later use; these will be assigned values at runtime
+function selectPage(pageNum) {
+    currentPage = pageNum;
+    creatTableofData()}
+
+// Initial call to populate the table
+creatTableofData()// Declare variables for later use; these will be assigned values at runtime
 
 /////
 
@@ -238,8 +249,7 @@ function deleteProduct(idDeleProduct) {
     var positionThisProductInProduct;
     var positionThisProductInCart;
     var actualDeleted = idDeleProduct;
-    console.log("id elem  clicked", idDeleProduct);
-    console.log("actualDeleted clicked", actualDeleted);
+  
 
 
     // ------sweet alert ------
@@ -305,3 +315,4 @@ function deleteProduct(idDeleProduct) {
         }
     });
 }
+})

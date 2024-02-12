@@ -1,6 +1,23 @@
 import { addToCart, iconCartSpan } from "./addtoCart.js";
 import { renderingNavBar, LogOut } from "./general-methods.js";
 
+let iconAddToCart;
+let cart;
+
+// form-control btn btn-warning fa fa-shopping-cart iconAddToCart
+//////////////////////////////////////////////////////////////////////////////////
+if(!localStorage.getItem("loggedInUser") || (localStorage.getItem("loggedInUser") && JSON.parse(localStorage.getItem("loggedInUser")).userRole == "customer")) {
+    iconAddToCart = document.querySelectorAll(".iconAddToCart");
+    if (JSON.parse(localStorage.getItem('cart'))) {
+        cart = JSON.parse(localStorage.getItem('cart'));
+    } else {
+        if (iconCartSpan) {
+            iconCartSpan.innerText = 0;
+        }
+    }
+} 
+
+
 
 
 window.addEventListener("load", function () {
@@ -29,7 +46,7 @@ window.addEventListener("load", function () {
 
 
     let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-    if(loggedInUser.userRole !='customer'){
+    if(loggedInUser && loggedInUser.userRole !='customer'){
         document.querySelector(".in-stock").style.display = "none";     
     }
 
