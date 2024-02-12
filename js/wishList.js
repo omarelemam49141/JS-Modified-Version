@@ -15,7 +15,7 @@ window.addEventListener('load',function(){
     if(!loggedInUser)
     {
         let userWishlist = JSON.parse(this.sessionStorage.getItem("userWishlist"))
-        this.document.getElementById("wishlistCounter").innerText = userWishlist.length;
+        this.document.getElementById("wishlistCounter").innerText = userWishlist.length ||0;
     }
     else if(loggedInUser.userRole =="customer")
     {
